@@ -2,6 +2,7 @@ package com.example.user.netty_chatsystem.Chat_Client.handler;
 
 
 import com.example.user.netty_chatsystem.Chat_biz.entity.Message_entity;
+import com.example.user.netty_chatsystem.Chat_biz.entity.OfflineMessage;
 import com.example.user.netty_chatsystem.Chat_biz.entity.file.ServerFile;
 import com.example.user.netty_chatsystem.Chat_core.connetion.IMConnection;
 import com.example.user.netty_chatsystem.Chat_core.handler.IMHandler;
@@ -13,6 +14,7 @@ import com.example.user.netty_chatsystem.Chat_core.transport.IMResponse;
 import com.example.user.netty_chatsystem.Chat_server.dto.AckDTO;
 import com.example.user.netty_chatsystem.Chat_server.dto.FileDTO;
 import com.example.user.netty_chatsystem.Chat_server.dto.MessageDTO;
+import com.example.user.netty_chatsystem.Chat_server.dto.OfflineMessageDTO;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -25,18 +27,28 @@ import java.io.RandomAccessFile;
 public class Client_MessageHandler extends IMHandler<IMRequest> {
 
     public static Listener mListener;
+    public static offlineMessageListener mOfflineMessageListener;
 
     public interface Listener{
         public void onInterestingEvent(Message_entity message);
+    }
+
+    public interface offlineMessageListener{
+        public void onOfflineInterestingEvent(String[] offlineMessageArray);
     }
 
     public void setListener(Listener listener){
         mListener = listener;
     }
 
+    public void setOfflineMessageListener(offlineMessageListener offlineMessageListener){mOfflineMessageListener = offlineMessageListener;}
+
     public void someUserfulThingTheClassDoes(Message_entity message){
-        System.out.println("mlistener is " + mListener);
         mListener.onInterestingEvent(message);
+    }
+
+    public void offlineMessageClassDoes(String[] offlineMessageArray){
+        mOfflineMessageListener.onOfflineInterestingEvent(offlineMessageArray);
     }
 
     private String FILE_SAVE_PATH = "C:";
@@ -56,6 +68,9 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
     public void dispatch(IMConnection connection, IMRequest request) {
         Header header = request.getHeader();
         switch (header.getCommandId()) {
+            case Commands.USER_MESSAGE_OFFLINE:
+                recevieOfflineMessage(connection , request);
+                break;
             case Commands.USER_MESSAGE_REQUEST:
                 receiveMessage(connection, request);
                 break;
@@ -77,6 +92,13 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
                 connection.close();
                 break;
         }
+    }
+
+    private void recevieOfflineMessage(IMConnection connection , IMRequest request){
+        OfflineMessageDTO offlineMessageDTO = request.readEntity(OfflineMessageDTO.class);
+        OfflineMessage offlineMessage = offlineMessageDTO.getOfflineMessage();
+        String[] offlineMessageArray = offlineMessage.getOfflineMessageArray();
+        offlineMessageClassDoes(offlineMessageArray);
     }
 
     private void receiveMessage(IMConnection connection, IMRequest request) {
