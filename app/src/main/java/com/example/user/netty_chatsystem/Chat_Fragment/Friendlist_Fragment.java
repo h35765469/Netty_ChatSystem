@@ -31,12 +31,12 @@ import java.util.List;
  * Created by user on 2016/3/12.
  */
 public class Friendlist_Fragment extends BaseFragment {
-    public static final String[] titles = new String[] { "Strawberry"};
+    public static final String[] titles = new String[] { "Strawberry" , "banana" , "apple" , "pitch"};
 
 
-    public static final Integer[] images = { R.drawable.bomb};
+    public static final Integer[] images = { R.drawable.bomb , R.drawable.bomb_clock , R.drawable.avatar , R.drawable.line};
 
-    public String [] Id_array = {"123"};
+    public String [] Id_array = {"123" , "456" , "a2131464@yahoo.com.tw" , "gg"};
 
     //更改在設定中觀察者的眼睛圖示
     public int eyechange_count = 0;
@@ -110,7 +110,7 @@ public class Friendlist_Fragment extends BaseFragment {
         //啟動Friendlist_listview的按鈕監聽器
         Friendlist_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 final Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
                 dialog.setContentView(R.layout.resource_friendlist_dialog);
 
@@ -137,7 +137,7 @@ public class Friendlist_Fragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
-                        bundle.putString("friend_id", "123");
+                        bundle.putString("friend_id",Id_array[position]);
                         Intent it = new Intent();
                         it.putExtras(bundle);
                         it.setClass(getActivity(), Chat_Activity.class);
