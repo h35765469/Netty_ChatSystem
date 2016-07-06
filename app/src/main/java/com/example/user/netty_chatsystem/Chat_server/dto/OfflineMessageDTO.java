@@ -16,6 +16,9 @@ public class OfflineMessageDTO implements IMSerializer {
        this.offlineMessage = offlineMessage;
    }
 
+    public OfflineMessage getOfflineMessage(){
+        return offlineMessage;
+    }
 
     public DataBuffer encode(short version) {
         DataBuffer buffer = new DataBuffer();
