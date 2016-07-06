@@ -99,6 +99,12 @@ public class Chat_Activity extends AppCompatActivity  {
                 Show_GetMessage(message);
             }
         });
+        client_messageHandler.setOfflineMessageListener(new Client_MessageHandler.offlineMessageListener(){
+            @Override
+            public void onOfflineInterestingEvent(String[] offlineMessageArray){
+                showOfflineMessage(offlineMessageArray);
+            }
+        });
         initControls();
     }
 
@@ -308,6 +314,21 @@ public class Chat_Activity extends AppCompatActivity  {
         resp.setHeader(header);
         resp.writeEntity(new MessageDTO(message));
         connection.sendResponse(resp);
+    }
+
+    public void showOfflineMessage(String[] offlineMessageArray){
+        for(int i = 0 ; i < offlineMessageArray.length ; i++){
+            ChatMessage getmsg = new ChatMessage();
+            getmsg.setId(2);
+            getmsg.setMe(false);
+            getmsg.setMessage(offlineMessageArray[i]);
+            getmsg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("GetMsg", getmsg);
+            Message msg = new Message();
+            msg.setData(bundle);
+            handler.sendMessage(msg);
+        }
     }
 
     public void Show_GetMessage(Message_entity message){
