@@ -115,6 +115,7 @@ public class Chat_Activity extends AppCompatActivity  {
         login_id = Client_UserHandler.getLogin_id();
 
         loadSqliteHistory();
+        loadOfflineMessage();
 
         sendmessage_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,6 +291,23 @@ public class Chat_Activity extends AppCompatActivity  {
                 e.printStackTrace();
             }
         }*/
+    }
+
+    private void loadOfflineMessage(){
+        connection = Client_UserHandler.getConnection();
+        Message_entity message = new Message_entity();
+        message.setTo(friend_id);
+        message.setFrom(login_id);
+        message.setMessage(" ");
+
+
+        IMResponse resp = new IMResponse();
+        Header header = new Header();
+        header.setHandlerId(Handlers.MESSAGE);
+        header.setCommandId(Commands.USER_MESSAGE_OFFLINE);
+        resp.setHeader(header);
+        resp.writeEntity(new MessageDTO(message));
+        connection.sendResponse(resp);
     }
 
     public void Show_GetMessage(Message_entity message){
