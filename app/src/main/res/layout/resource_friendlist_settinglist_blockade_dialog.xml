@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:transitionGroup="false"
+    android:nestedScrollingEnabled="false"
+    tools:context="com.example.ellis_wu.customdialogdemo.CustomDialogActivity"
+    android:id="@+id/dialogBackground"
+    android:gravity="center_vertical|center_horizontal">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:background="@drawable/linearlayout_conrner_style">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_vertical|center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="你確定要封鎖這位好友嗎?"
+                android:id="@+id/textView5"
+                android:textColor="#000200" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/blockade_yes_imageview"
+                android:layout_weight="1"
+                android:src="@drawable/imageview_yes_style" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/blockade_no_imageview"
+                android:layout_weight="1"
+                android:src="@drawable/imageview_delete_style" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleProgressBar">
+        <attr name="min" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="progress1" format="integer" />
+        <attr name="progressbarColor" format="color" />
+        <attr name="progressBarThickness" format="dimension" />
+    </declare-styleable>
+
+
+    <declare-styleable name="AbstractWheelPicker">
+        <attr name="wheel_data" format="reference" />
+        <attr name="wheel_style" format="enum">
+            <enum name="straight" value="0" />
+            <enum name="curved" value="1" />
+        </attr>
+        <attr name="wheel_direction" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="wheel_item_index" format="integer" />
+        <attr name="wheel_item_same_size" format="boolean" />
+        <attr name="wheel_item_count" format="integer" />
+        <attr name="wheel_item_space" format="dimension" />
+        <attr name="wheel_text_size" format="dimension" />
+        <attr name="wheel_text_color" format="color" />
+        <attr name="wheel_text_color_current" format="color" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ColorPreference">
+        <attr name="dialogTitle" format="string|reference" />
+        <attr name="colors" format="reference" />
+        <attr name="columns" format="integer" />
+        <attr name="material" format="boolean" />
+    </declare-styleable>
+
+</resources>

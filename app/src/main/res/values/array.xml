@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="WheelArrayDefault">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>∞</item>
+    </string-array>
+    <string-array name="WheelArrayConstellation">
+        <item>Aquarius</item>
+        <item>Pisces</item>
+        <item>Aries</item>
+        <item>Taurus</item>
+        <item>Gemini</item>
+        <item>Cancer</item>
+        <item>Leo</item>
+        <item>Virgo</item>
+        <item>Libra</item>
+        <item>Scorpio</item>
+        <item>Sagittarius</item>
+        <item>Capricorn</item>
+    </string-array>
+    <string-array name="WheelArrayZodiac">
+        <item>Rat</item>
+        <item>Ox</item>
+        <item>Tiger</item>
+        <item>Hare</item>
+        <item>Dragon</item>
+        <item>Snake</item>
+        <item>Horse</item>
+        <item>Sheep</item>
+        <item>Monkey</item>
+        <item>Cock</item>
+        <item>Dog</item>
+        <item>Boar</item>
+    </string-array>
+
+    <array name="default_rainbow">
+        <item>@color/tomato</item>
+        <item>@color/tangerine</item>
+        <item>@color/banana</item>
+        <item>@color/basil</item>
+        <item>@color/sage</item>
+        <item>@color/peacock</item>
+        <item>@color/blueberry</item>
+        <item>@color/lavender</item>
+        <item>@color/grape</item>
+        <item>@color/flamingo</item>
+        <item>@color/graphite</item>
+    </array>
+
+    <string-array name="default_rainbow_name">
+        <item>@string/tomato</item>
+        <item>@string/tangerine</item>
+        <item>@string/banana</item>
+        <item>@string/basil</item>
+        <item>@string/sage</item>
+        <item>@string/peacock</item>
+        <item>@string/blueberry</item>
+        <item>@string/lavender</item>
+        <item>@string/grape</item>
+        <item>@string/flamingo</item>
+        <item>@string/graphite</item>
+    </string-array>
+</resources>

@@ -1,0 +1,25 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Netty_ChatSystem</string>
+    <string name="profile_me">My Profile Pic</string>
+    <string name="profile_other">Other profile pic</string>
+    <string name="facebook_app_id">243989642647643</string>
+
+    <string name="color_picker_default_title">Select a Color</string>
+    <!-- Content description for a color square. -->
+    <string name="color_swatch_description">Color <xliff:g example="14" id="color_index">%1$d</xliff:g></string>
+    <!-- Content description for a selected color square. -->
+    <string name="color_swatch_description_selected">Color <xliff:g example="14" id="color_index">%1$d</xliff:g> selected</string>
+
+    <string name="tomato">Tomato</string>
+    <string name="tangerine">Tangerine</string>
+    <string name="banana">Banana</string>
+    <string name="basil">Basil</string>
+    <string name="sage">Sage</string>
+    <string name="peacock">Peacock</string>
+    <string name="blueberry">Blueberry</string>
+    <string name="lavender">Lavender</string>
+    <string name="grape">Grape</string>
+    <string name="flamingo">Flamingo</string>
+    <string name="graphite">Graphite</string>
+    <string name="default_color">Default color</string>
+</resources>

@@ -1,0 +1,52 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="wrapping_fa_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">50dp</item>
+    </style>
+
+    <style name="selectorDialog" parent="@android:style/Theme.Dialog">
+        <!-- 邊框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 整個 layout 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 拿掉標題 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@drawable/dialog_style</item>
+        <!-- 由 XML 設定 Dialog 視窗是否變暗 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 亮度從 0 到 1.0 -->
+        <item name="android:backgroundDimAmount">0.2</item>
+    </style>
+
+    <style name= "CustomizedWindowTitleBackgroundColor" >
+        <item name= "android:background" >@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="TitleBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">false</item>
+        <item name= "android:windowTitleBackgroundStyle" >@style/CustomizedWindowTitleBackgroundColor</item>
+        <item name="android:windowTitleSize" >38dip</item>
+    </style>
+
+    <style name="FriendlistBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
+
+    <style name="TwoWayView">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+</resources>

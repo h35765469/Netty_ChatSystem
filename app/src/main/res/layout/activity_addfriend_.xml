@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.netty_chatsystem.Addfriend_Activity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/layout_edging"
+        android:layout_alignParentTop="false"
+        android:id="@+id/addfriend_title_linearlayout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:id="@+id/addfriend_back_imageview"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="增加好友"
+            android:id="@+id/textView10"
+            android:layout_marginTop="10dp"
+            android:textColor="#489ded" />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addfriend_listview"
+        android:layout_weight="1"
+        android:layout_below="@+id/addfriend_title_linearlayout"
+        android:layout_above="@+id/imageView3" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_weight="1"
+        android:src="@drawable/home"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

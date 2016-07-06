@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:weightSum="3"
+    android:background="#76d3f9"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight="0.5"
+        android:layout_gravity="left|center"
+        android:gravity="left"
+        android:id="@+id/back_imageview"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/arrow" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:maxHeight="50dp"
+        android:text="Waeo"
+        android:layout_marginLeft="15dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:id="@+id/actionbar_titleview"
+        android:textSize="18sp"/>
+
+</LinearLayout>

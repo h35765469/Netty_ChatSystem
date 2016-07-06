@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/icon_layout"
+    android:background="#ffffff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/drawboard_layout"
+        android:background="#ffffff">
+
+        <com.example.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.DrawableView
+            android:id="@+id/paintView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false" />
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/drawboard_cleanboard_imageivew"
+        android:src="@drawable/no"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/drawboard_pen_imageivew"
+        android:layout_above="@+id/drawboard_word_imageview"
+        android:src="@drawable/pen"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="30dp" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/drawboard_word_imageview"
+        android:layout_alignParentBottom="false"
+        android:layout_centerVertical="true"
+        android:src="@drawable/word"
+        android:layout_marginLeft="10dp" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/drawboard_accessory_imageview"
+        android:layout_below="@+id/drawboard_word_imageview"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/attach" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/drawboard_store_imageview"
+        android:src="@drawable/arrow_store"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/drawboard_send_imageview"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/arrows"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/drawboard_back_imageview"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/drawback"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/drawboard_effect_imageveiw"
+        android:src="#d62a2a"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true" />
+
+
+
+</RelativeLayout>
