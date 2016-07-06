@@ -25,8 +25,12 @@ public class Search_Activity extends AppCompatActivity {
     // Listview Adapter
     SimpleAdapter adapter;
 
-    private int[] images = {R.mipmap.ic_launcher , R.drawable.arrows,R.drawable.attach , R.drawable.arrows_white};
-    private String[] strings = {"HTC One X", "HTC Wildfire S", "HTC Sense" , "Dell Inspiron"};
+    public static final Integer[] images = { R.drawable.bomb , R.drawable.bomb_clock , R.drawable.avatar , R.drawable.line};
+
+    public String [] Id_array = {"123" , "456" , "a2131464@yahoo.com.tw" , "gg"};
+
+    private String[] strings = {"Strawberry" , "banana" , "apple" , "pitch"};
+
     List<Map<String,Object>> addfriend_items;
     List<Map<String,Object>>searchResults;
 
