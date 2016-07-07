@@ -10,15 +10,28 @@ import com.example.user.netty_chatsystem.Chat_core.transport.IMSerializer;
  */
 public class OfflineMessageDTO implements IMSerializer {
 
-    OfflineMessage offlineMessage;
+    private OfflineMessage offlineMessage;
 
-   public OfflineMessageDTO(OfflineMessage offlineMessage){
-       this.offlineMessage = offlineMessage;
-   }
+    public OfflineMessageDTO() {
 
-    public OfflineMessage getOfflineMessage(){
+    }
+
+    public OfflineMessageDTO(OfflineMessage offlineMessage) {
+        this.offlineMessage = offlineMessage;
+    }
+
+    /*public Long getTo() {
+        return message.getTo();
+    }*/
+
+    public OfflineMessage getOfflineMessage() {
         return offlineMessage;
     }
+
+    public void setMessage(OfflineMessage offlineMessage) {
+        this.offlineMessage = offlineMessage;
+    }
+
 
     public DataBuffer encode(short version) {
         DataBuffer buffer = new DataBuffer();
@@ -28,9 +41,11 @@ public class OfflineMessageDTO implements IMSerializer {
 
 
     public void decode(DataBuffer buffer, short version) {
-        if(offlineMessage == null){
+        if (offlineMessage == null) {
             offlineMessage = new OfflineMessage();
         }
         offlineMessage.setOfflineMessageArray(buffer.readStringArray());
+
     }
 }
+
