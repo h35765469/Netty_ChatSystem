@@ -1,6 +1,5 @@
 package com.example.user.netty_chatsystem;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,15 +8,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.netty_chatsystem.Chat_Client.ChatClient;
+import com.example.user.netty_chatsystem.Chat_Sharepreference.SharePreferenceManager;
 import com.example.user.netty_chatsystem.Chat_mongodb.ServerRequest;
 import com.facebook.FacebookSdk;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
     EditText Password_edit;
     List<NameValuePair> params;
     SharedPreferences pref;
-    Dialog reset;
     ServerRequest sr;
     ChatClient chatClient;
+
+    // SharePreferenceManagerr Class
+    SharePreferenceManager sharePreferenceManager;
 
     //以下為facebook的使用變數
     /*private CallbackManager callbackManager;
@@ -114,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        //SharepreferencesManager
+        sharePreferenceManager = new SharePreferenceManager(getApplicationContext());
+
         sr = new ServerRequest();
         pref = getSharedPreferences("AppPref",MODE_PRIVATE);
         chatClient = new ChatClient();
@@ -129,11 +132,6 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject json = sr.getJSON("http://192.168.43.157:3000/login",params);
                 if(json != null){
                     try{
-                        JSONArray jsonArray = json.getJSONArray("response");
-                        String []jsonstr = new String[jsonArray.length()];
-                        for(int i = 0 ; i < jsonArray.length() ; i++){
-                            jsonstr[i] = jsonArray.getString(i);
-                        }
                         if(json.getBoolean("res")){
                             String token = json.getString("token");
                             String grav = json.getString("grav");
@@ -142,8 +140,14 @@ public class MainActivity extends AppCompatActivity {
                             edit.putString("token", token);
                             edit.putString("grav", grav);
                             edit.commit();
+
+
+                            // Creating user login session
+                            // For testing i am stroing name, email as follow
+                            // Use user real data
+                            sharePreferenceManager.createLoginSession(Account_edit.getText().toString(), Password_edit.getText().toString());
+
                             try {
-                                chatClient.run(Account_edit.getText().toString(), Password_edit.getText().toString());
                                 Intent profactivity = new Intent(MainActivity.this, Character_Activity.class);
 
                                 startActivity(profactivity);
@@ -153,8 +157,6 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                         }
-
-                        Toast.makeText(getApplication(),jsonstr[2], Toast.LENGTH_LONG).show();
                     }catch(JSONException e){
                         e.printStackTrace();
                     }
