@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.example.user.netty_chatsystem.Character_Activity;
+import com.example.user.netty_chatsystem.Chat_Activity;
 import com.example.user.netty_chatsystem.R;
 
 /**
@@ -26,7 +26,8 @@ public class ChatBroadcastReceiver extends BroadcastReceiver {
         Notification notification;
 
         NotificationManager manager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
-        Intent notificationIntent = new Intent(context , Character_Activity.class);
+        Intent notificationIntent = new Intent(context , Chat_Activity.class);
+        notificationIntent.putExtra("friend_id", intent.getStringExtra("from"));
         PendingIntent pendinfIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
         Notification.Builder builder = new Notification.Builder(context);
