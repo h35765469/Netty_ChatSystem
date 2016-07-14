@@ -44,4 +44,9 @@ public class Commands {
     public static final short USER_FILE_SUCCESS = 0x3003;
     public static final short USER_FILE_FALI = 0x3000;
 
+    /*
+    登出
+     */
+    public static final short USER_LOGOUT_REQUEST = 0x0004;
+
 }
