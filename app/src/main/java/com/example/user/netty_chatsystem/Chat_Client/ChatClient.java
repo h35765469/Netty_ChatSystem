@@ -12,6 +12,7 @@ import com.example.user.netty_chatsystem.Chat_server.dto.UserDTO;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -24,6 +25,14 @@ public class ChatClient {
     private final int port;
     EventLoopGroup group;
 
+    ChannelFutureListener listener;
+    ChannelFuture future;
+    EventLoopGroup eventLoopGroup;
+
+
+
+
+
     public ChatClient() {
         host = "192.168.43.157";
         port = 8080;
@@ -34,6 +43,7 @@ public class ChatClient {
         this.host = host;
         this.port = port;
     }
+
 
     public void run(String account,String password) throws Exception {
         createBootstrap(new Bootstrap(),group,account,password);
@@ -75,6 +85,8 @@ public class ChatClient {
 
     public void createBootstrap(Bootstrap bootstrap , EventLoopGroup group,String account , String password){
         try {
+            eventLoopGroup = group;
+
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
                     .option(ChannelOption.SO_KEEPALIVE, true)
@@ -83,10 +95,13 @@ public class ChatClient {
                     .handler(new ChatClientInitializer(this, account, password));
 
 
+
             bootstrap.remoteAddress(host, port);
-            ChannelFuture future = bootstrap.connect().addListener(new ConnectionListener(this, account, password));
+            listener = new ConnectionListener(this, account, password);
+            future = bootstrap.connect().addListener(listener);
+            //future.removeListener(listener);
             // awaitUninterruptibly() 等待連接成功
-            ConnectionListener listener = new ConnectionListener(this,account,password);
+
             //Channel channel = future.awaitUninterruptibly().channel();
             /*if(channel.isActive()){
                 login(channel, account, password);
@@ -94,5 +109,8 @@ public class ChatClient {
         }catch(Exception e){
 
         }
+    }
+    public void close(){
+        eventLoopGroup.shutdownGracefully();
     }
 }
