@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,7 +26,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-
+import com.example.user.netty_chatsystem.Chat_AnimationElement.BrokenEffect.BrokenTouchListener;
+import com.example.user.netty_chatsystem.Chat_AnimationElement.BrokenEffect.BrokenView;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.Accessory_picture.StickerImageView;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.Accessory_picture.StickerTextView;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.DrawableView;
@@ -37,13 +38,16 @@ import com.example.user.netty_chatsystem.R;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.mingle.entity.MenuEntity;
+import com.mingle.sweetpick.DimEffect;
+import com.mingle.sweetpick.SweetSheet;
+import com.mingle.sweetpick.ViewPagerDelegate;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by user on 2016/4/12.
@@ -61,6 +65,18 @@ public class  DrawBoardFragement extends Fragment {
     // to take a picture
     private static final int CAMERA_PIC_REQUEST = 1111;
     private static final int GALLERY_PIC_REQUEST = 1112;
+
+    //選取訊息特效的狀態條
+    private SweetSheet sweetSheet;
+    private RelativeLayout relativeLayout;
+
+    //破玻璃特效
+    private BrokenView brokenView;
+    private BrokenTouchListener colorfulListener;
+    private BrokenTouchListener whiteListener;
+    private Paint whitePaint;
+    private boolean effectEnable = true;
+
 
     ImageView drawboard_cleanboard_imageview;
     ImageView drawboard_effect_imageview;
@@ -94,7 +110,6 @@ public class  DrawBoardFragement extends Fragment {
     private ArrayList<View> mViewsArray = new ArrayList<View>();
     private ArrayList<StickerImageView> stickerImageViews = new ArrayList<StickerImageView>();
 
-    private static DrawBoardFragement mDrawBoardFragement;
     private PageTwoFragment pageTwoFragment;
 
     FragmentManager fragmentManager;
@@ -102,23 +117,28 @@ public class  DrawBoardFragement extends Fragment {
     //筆的顏色
     private int selectedColor;
 
+
+    public SweetSheet getSweetSheet(){
+        return sweetSheet;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater ,ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.drawboard_fragment, container, false);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mDrawBoardFragement = this;
         pageTwoFragment =new PageTwoFragment();
 
         fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        initUi(rootView ,  fragmentTransaction);
+        initUi(rootView, fragmentTransaction);
 
         return rootView;
     }
@@ -151,9 +171,10 @@ public class  DrawBoardFragement extends Fragment {
         drawboard_pen_imageview = (ImageView)rootView.findViewById(R.id.drawboard_pen_imageivew);
         drawboard_word_imageview = (ImageView)rootView.findViewById(R.id.drawboard_word_imageview);
         drawboard_accessory_imageview = (ImageView)rootView.findViewById(R.id.drawboard_accessory_imageview);
-        drawboard_layout = (RelativeLayout)rootView.findViewById(R.id.drawboard_layout);
         drawboard_back_imageview = (ImageView)rootView.findViewById(R.id.drawboard_back_imageview);
         drawboard_store_imageview = (ImageView)rootView.findViewById(R.id.drawboard_store_imageview);
+        drawboard_layout = (RelativeLayout)rootView.findViewById(R.id.drawboard_layout);
+        relativeLayout = (RelativeLayout)rootView.findViewById(R.id.icon_layout);
 
         config.setStrokeColor(getResources().getColor(android.R.color.black));
         config.setShowCanvasBounds(true);
@@ -169,6 +190,13 @@ public class  DrawBoardFragement extends Fragment {
             public void onClick(View v) {
                 fragmentTransaction.replace(R.id.cameraContainer, pageTwoFragment);
                 fragmentTransaction.commit();
+            }
+        });
+
+        drawboard_effect_imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupEffectViewpager();
             }
         });
 
@@ -315,6 +343,33 @@ public class  DrawBoardFragement extends Fragment {
         });*/
     }
 
+    //初始化破玻璃特效頁面
+    private void initBrokenLayout(){
+        brokenView = BrokenView.add2Window(getActivity());
+
+        whitePaint = new Paint();
+        whitePaint.setColor(0xffffffff);
+
+
+        colorfulListener = new BrokenTouchListener.Builder(brokenView).
+                setComplexity(8).
+                setBreakDuration(500).
+                setFallDuration(1000).
+                setCircleRiftsRadius(20).
+                build();
+        whiteListener = new BrokenTouchListener.Builder(brokenView).
+                setComplexity(8).
+                setBreakDuration(500).
+                setFallDuration(1000).
+                setCircleRiftsRadius(20).
+                setPaint(whitePaint).
+                build();
+
+        relativeLayout.setOnTouchListener(colorfulListener);
+
+        brokenView.setEnable(effectEnable);
+    }
+
     //儲存圖片
     public void PictureSave(){
         long now = System.currentTimeMillis();
@@ -401,6 +456,7 @@ public class  DrawBoardFragement extends Fragment {
         drawboard_store_imageview.setVisibility(View.VISIBLE);
     }
 
+    //獲取圖片的路徑
     public String getPath(Uri uri){
         String[] filePathColumn={MediaStore.Images.Media.DATA};
 
@@ -411,6 +467,28 @@ public class  DrawBoardFragement extends Fragment {
         return cursor.getString(columnIndex);
     }
 
+    //設置訊息特效的狀態列
+    private void setupEffectViewpager() {
+
+        sweetSheet = new SweetSheet(relativeLayout);
+        //从menu 中设置数据源
+        sweetSheet.setMenuList(R.menu.menu_sweet);
+        sweetSheet.setDelegate(new ViewPagerDelegate());
+        sweetSheet.setBackgroundEffect(new DimEffect(0.5f));
+        sweetSheet.setOnMenuItemClickListener(new SweetSheet.OnMenuItemClickListener() {
+            @Override
+            public boolean onItemClick(int position, MenuEntity menuEntity1) {
+
+                Toast.makeText(getActivity(), menuEntity1.title + "  " + position, Toast.LENGTH_SHORT).show();
+                initBrokenLayout();
+                return true;
+            }
+        });
+
+        sweetSheet.toggle();
+
+
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // usedView is a bool that checks is a view was destroyed and this was reused.
         // if it wasn't reused, this means we create a new one.
