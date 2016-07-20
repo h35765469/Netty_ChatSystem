@@ -2,6 +2,7 @@ package com.example.user.netty_chatsystem.Chat_Client.handler;
 
 
 import com.example.user.netty_chatsystem.Chat_biz.bean.Presence;
+import com.example.user.netty_chatsystem.Chat_biz.entity.Login;
 import com.example.user.netty_chatsystem.Chat_core.connetion.IMConnection;
 import com.example.user.netty_chatsystem.Chat_core.handler.IMHandler;
 import com.example.user.netty_chatsystem.Chat_core.protocol.Commands;
@@ -22,6 +23,21 @@ public class Client_UserHandler extends IMHandler<IMRequest> {
 
     public static IMConnection mConnection;
     public static String login_id;
+
+
+    public static FriendListListener friendListListener;
+
+    public interface FriendListListener{
+        public void onFriendListEvent(String[] friendArray);
+    }
+
+    public void setFriendListListener(FriendListListener friendListListener1){
+        friendListListener = friendListListener1;
+    }
+
+    public void clientUserHandlerClassDoes(String[] friendArray){
+        friendListListener.onFriendListEvent(friendArray);
+    }
 
 
 
@@ -86,6 +102,9 @@ public class Client_UserHandler extends IMHandler<IMRequest> {
         mConnection = connection;
         LoginDTO loginDTO = request.readEntity(LoginDTO.class);
         login_id = loginDTO.getLogin().getAccount();
+        Login login = loginDTO.getLogin();
+        String[] friendArray = login.getFriendArray();
+        clientUserHandlerClassDoes(friendArray);
     }
 
     /**
