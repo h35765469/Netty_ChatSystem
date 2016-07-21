@@ -20,6 +20,12 @@ public class Commands {
     public static final short LOGIN_FAIL = 0x1000;
 
     /**
+     * 載入朋友
+     */
+    public static final short FRIEND_REQUEST = 0x0003;
+    public static final short FRIEND_SUCCESS = 0x3003;
+
+    /**
      * 登录 Channel
      */
     public static final short LOGIN_CHANNEL_REQUEST = 0x0002;
