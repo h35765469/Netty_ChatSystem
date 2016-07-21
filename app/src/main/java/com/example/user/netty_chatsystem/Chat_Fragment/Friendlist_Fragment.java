@@ -13,18 +13,27 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.user.netty_chatsystem.Addfriend_Activity;
-import com.example.user.netty_chatsystem.Character_Activity;
 import com.example.user.netty_chatsystem.ChangePassword_Activity;
 import com.example.user.netty_chatsystem.Chat_Activity;
+import com.example.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
 import com.example.user.netty_chatsystem.Chat_Listview_Friendlist.CustomBaseAdapter;
 import com.example.user.netty_chatsystem.Chat_Listview_Friendlist.CustomBaseAdapter_horizontal;
 import com.example.user.netty_chatsystem.Chat_Listview_Friendlist.RowItem;
+import com.example.user.netty_chatsystem.Chat_Sharepreference.SharePreferenceManager;
+import com.example.user.netty_chatsystem.Chat_biz.entity.Friend;
+import com.example.user.netty_chatsystem.Chat_core.connetion.IMConnection;
+import com.example.user.netty_chatsystem.Chat_core.protocol.Commands;
+import com.example.user.netty_chatsystem.Chat_core.protocol.Handlers;
+import com.example.user.netty_chatsystem.Chat_core.transport.Header;
+import com.example.user.netty_chatsystem.Chat_core.transport.IMResponse;
+import com.example.user.netty_chatsystem.Chat_server.dto.FriendDTO;
 import com.example.user.netty_chatsystem.R;
 import com.example.user.netty_chatsystem.Search_Activity;
 
 import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -43,6 +52,12 @@ public class Friendlist_Fragment extends BaseFragment {
 
     //更改最愛朋友的按鈕
     private int favorite_count = 0;
+
+    //連上server的連接
+    IMConnection connection;
+
+    // sharePreferenceManager
+    SharePreferenceManager sharePreferenceManager;
 
 
 
@@ -82,7 +97,8 @@ public class Friendlist_Fragment extends BaseFragment {
         Friendlist_character_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Character_Activity().mViewPager.setCurrentItem(1);
+                //new Character_Activity().mViewPager.setCurrentItem(1);
+                loadFriendList();
             }
         });
 
@@ -264,6 +280,33 @@ public class Friendlist_Fragment extends BaseFragment {
     @Override
     public void initData(Bundle savedInstanceState){
 
+    }
+
+    //載入朋友列
+    public void loadFriendList(){
+        sharePreferenceManager = new SharePreferenceManager(getActivity().getApplicationContext());
+        // get user data from sharePreference
+        HashMap<String, String> user = sharePreferenceManager.getUserDetails();
+
+        // name
+        final String username = user.get(SharePreferenceManager.KEY_NAME);
+
+
+
+
+        connection = Client_UserHandler.getConnection();
+        Friend friend = new Friend();
+        friend.setUserName(username);
+        String[] friendArray = new String[0];
+        friend.setFriendArray(friendArray);
+
+        IMResponse resp = new IMResponse();
+        Header header = new Header();
+        header.setHandlerId(Handlers.USER);
+        header.setCommandId(Commands.FRIEND_REQUEST);
+        resp.setHeader(header);
+        resp.writeEntity(new FriendDTO(friend));
+        connection.sendResponse(resp);
     }
 
 
