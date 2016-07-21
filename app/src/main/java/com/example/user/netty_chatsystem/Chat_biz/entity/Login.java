@@ -12,6 +12,8 @@ public class Login extends BaseEntity {
     private String authToken;
     private long activeTime;
 
+    String[] friendArray;
+
     public Login(){
 
     }
@@ -50,6 +52,14 @@ public class Login extends BaseEntity {
 
     public void setActiveTime(long activeTime) {
         this.activeTime = activeTime;
+    }
+
+    public String[] getFriendArray(){
+        return friendArray;
+    }
+
+    public void setFriendArray(String[] friendArray){
+        this.friendArray = friendArray;
     }
 
     @Override
