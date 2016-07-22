@@ -48,6 +48,9 @@ public class Friendlist_Fragment extends BaseFragment {
 
     public String [] Id_array;
 
+    // name
+    String username;
+
     //更改在設定中觀察者的眼睛圖示
     public int eyechange_count = 0;
 
@@ -117,7 +120,7 @@ public class Friendlist_Fragment extends BaseFragment {
         HashMap<String, String> user = sharePreferenceManager.getUserDetails();
 
         // name
-        final String username = user.get(SharePreferenceManager.KEY_NAME);
+        username = user.get(SharePreferenceManager.KEY_NAME);
 
 
         Client_UserHandler clientUserHandler = new Client_UserHandler();
@@ -158,6 +161,7 @@ public class Friendlist_Fragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent();
+                it.putExtra("friendArray" , friendArray);
                 it.setClass(getActivity(), Search_Activity.class);
                 startActivity(it);
             }
@@ -359,6 +363,24 @@ public class Friendlist_Fragment extends BaseFragment {
 
     }
 
+    //刪除好友
+    public void removeFriend(String username){
+        connection = Client_UserHandler.getConnection();
+        Friend friend = new Friend();
+        friend.setUserName(username);
+        friend.setFriendUserName("456");
+        String[] friendArray = new String[0];
+        friend.setFriendArray(friendArray);
+
+        IMResponse resp = new IMResponse();
+        Header header = new Header();
+        header.setHandlerId(Handlers.USER);
+        header.setCommandId(Commands.FRIEND_REMOVE_REQUEST);
+        resp.setHeader(header);
+        resp.writeEntity(new FriendDTO(friend));
+        connection.sendResponse(resp);
+    }
+
 
     //設定dialog_setiing上按鈕的功能
     public void Assign_settingdialog(final Dialog setting_dialog){
@@ -461,6 +483,7 @@ public class Friendlist_Fragment extends BaseFragment {
                 delete_yes_imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        removeFriend(username);
                         delete_dialog.dismiss();
                     }
                 });
