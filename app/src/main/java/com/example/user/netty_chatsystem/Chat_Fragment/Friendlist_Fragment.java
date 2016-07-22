@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.example.user.netty_chatsystem.Addfriend_Activity;
 import com.example.user.netty_chatsystem.ChangePassword_Activity;
 import com.example.user.netty_chatsystem.Chat_Activity;
 import com.example.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
@@ -45,7 +44,7 @@ public class Friendlist_Fragment extends BaseFragment {
     public String[] titles;
 
 
-    public static final Integer[] images = { R.drawable.bomb , R.drawable.bomb, R.drawable.bomb};
+    public static final Integer[] images = { R.drawable.bomb ,  R.drawable.bomb};
 
     public String [] Id_array;
 
@@ -113,6 +112,14 @@ public class Friendlist_Fragment extends BaseFragment {
         Friendlist_listview = (ListView)view.findViewById(R.id.friendlist_listview);
         favorite_listview = (TwoWayView)view.findViewById(R.id.lvItems);
 
+        sharePreferenceManager = new SharePreferenceManager(getActivity().getApplicationContext());
+        // get user data from sharePreference
+        HashMap<String, String> user = sharePreferenceManager.getUserDetails();
+
+        // name
+        final String username = user.get(SharePreferenceManager.KEY_NAME);
+
+
         Client_UserHandler clientUserHandler = new Client_UserHandler();
         clientUserHandler.setFriendListListener(new Client_UserHandler.FriendListListener() {
             @Override
@@ -130,7 +137,7 @@ public class Friendlist_Fragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 //new Character_Activity().mViewPager.setCurrentItem(1);
-                loadFriendList();
+                loadFriendList(username);
             }
         });
 
@@ -139,9 +146,10 @@ public class Friendlist_Fragment extends BaseFragment {
         Friendlist_addfriend_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent();
+                /*Intent it = new Intent();
                 it.setClass(getActivity(), Addfriend_Activity.class);
-                startActivity(it);
+                startActivity(it);*/
+                addFriend(username);
             }
         });
 
@@ -315,20 +323,11 @@ public class Friendlist_Fragment extends BaseFragment {
     }
 
     //載入朋友列
-    public void loadFriendList(){
-        sharePreferenceManager = new SharePreferenceManager(getActivity().getApplicationContext());
-        // get user data from sharePreference
-        HashMap<String, String> user = sharePreferenceManager.getUserDetails();
-
-        // name
-        final String username = user.get(SharePreferenceManager.KEY_NAME);
-
-
-
-
+    public void loadFriendList(String username){
         connection = Client_UserHandler.getConnection();
         Friend friend = new Friend();
         friend.setUserName(username);
+        friend.setFriendUserName("");
         String[] friendArray = new String[0];
         friend.setFriendArray(friendArray);
 
@@ -339,6 +338,25 @@ public class Friendlist_Fragment extends BaseFragment {
         resp.setHeader(header);
         resp.writeEntity(new FriendDTO(friend));
         connection.sendResponse(resp);
+    }
+
+    //新增好友
+    public void addFriend(String username){
+        connection = Client_UserHandler.getConnection();
+        Friend friend = new Friend();
+        friend.setUserName(username);
+        String[] friendArray = new String[0];
+        friend.setFriendArray(friendArray);
+        friend.setFriendUserName("456");
+
+        IMResponse resp = new IMResponse();
+        Header header = new Header();
+        header.setHandlerId(Handlers.USER);
+        header.setCommandId(Commands.FRIEND_ADD_REQUEST);
+        resp.setHeader(header);
+        resp.writeEntity(new FriendDTO(friend));
+        connection.sendResponse(resp);
+
     }
 
 
