@@ -3,6 +3,8 @@ package com.example.user.netty_chatsystem.Chat_Fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,12 +42,12 @@ import java.util.List;
  * Created by user on 2016/3/12.
  */
 public class Friendlist_Fragment extends BaseFragment {
-    public static final String[] titles = new String[] { "Strawberry" , "banana" , "apple" , "pitch"};
+    public String[] titles;
 
 
-    public static final Integer[] images = { R.drawable.bomb , R.drawable.bomb_clock , R.drawable.avatar , R.drawable.line};
+    public static final Integer[] images = { R.drawable.bomb , R.drawable.bomb, R.drawable.bomb};
 
-    public String [] Id_array = {"123" , "456" , "a2131464@yahoo.com.tw" , "gg"};
+    public String [] Id_array;
 
     //更改在設定中觀察者的眼睛圖示
     public int eyechange_count = 0;
@@ -59,7 +61,38 @@ public class Friendlist_Fragment extends BaseFragment {
     // sharePreferenceManager
     SharePreferenceManager sharePreferenceManager;
 
+    String[] friendArray;
 
+
+    ListView Friendlist_listview;
+    TwoWayView favorite_listview;
+
+
+    //用來處理獲得friend array之後的handler
+    protected Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg)
+        {
+            super.handleMessage(msg);
+            // Put code here...
+            friendArray = msg.getData().getStringArray("friendArray");
+            titles = friendArray;
+            Id_array = friendArray;
+
+            List<RowItem> rowItems = new ArrayList<RowItem>();
+
+            for(int i = 0 ; i < titles.length ; i++){
+                RowItem item = new RowItem(images[i], titles[i],Id_array[i]);
+                rowItems.add(item);
+            }
+            CustomBaseAdapter adapter = new CustomBaseAdapter(getActivity(),rowItems);
+            CustomBaseAdapter_horizontal adapter_horizontal = new CustomBaseAdapter_horizontal(getActivity(),rowItems);
+
+            Friendlist_listview.setAdapter(adapter);
+            favorite_listview.setAdapter(adapter_horizontal);
+
+        }
+    };
 
 
     @Override
@@ -77,21 +110,20 @@ public class Friendlist_Fragment extends BaseFragment {
         final ImageView Friendlist_character_imageview = (ImageView)view.findViewById(R.id.friendlist_character_imageview);
         final ImageView Friendlist_addfriend_imageview = (ImageView)view.findViewById(R.id.friendlist_addfriend_imageview);
 
-        final ListView Friendlist_listview = (ListView)view.findViewById(R.id.friendlist_listview);
-        final TwoWayView favorite_listview = (TwoWayView)view.findViewById(R.id.lvItems);
+        Friendlist_listview = (ListView)view.findViewById(R.id.friendlist_listview);
+        favorite_listview = (TwoWayView)view.findViewById(R.id.lvItems);
 
-        List<RowItem> rowItems;
-
-        rowItems = new ArrayList<RowItem>();
-        for(int i = 0 ; i < titles.length ; i++){
-            RowItem item = new RowItem(images[i], titles[i],Id_array[i]);
-            rowItems.add(item);
-        }
-        CustomBaseAdapter adapter = new CustomBaseAdapter(getActivity(),rowItems);
-        CustomBaseAdapter_horizontal adapter_horizontal = new CustomBaseAdapter_horizontal(getActivity(),rowItems);
-
-        Friendlist_listview.setAdapter(adapter);
-        favorite_listview.setAdapter(adapter_horizontal);
+        Client_UserHandler clientUserHandler = new Client_UserHandler();
+        clientUserHandler.setFriendListListener(new Client_UserHandler.FriendListListener() {
+            @Override
+            public void onFriendListEvent(String[] friendArray) {
+                Message message = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putStringArray("friendArray", friendArray);
+                message.setData(bundle);
+                handler.sendMessage(message);
+            }
+        });
 
         //註冊character的按鈕監聽
         Friendlist_character_imageview.setOnClickListener(new View.OnClickListener() {
