@@ -20,10 +20,26 @@ public class Commands {
     public static final short LOGIN_FAIL = 0x1000;
 
     /**
-     * 載入朋友
+     * 朋友
      */
     public static final short FRIEND_REQUEST = 0x0003;
     public static final short FRIEND_SUCCESS = 0x3003;
+
+    public static final short FRIEND_ADD_REQUEST = 0x0030;
+    public static final short FRIEND_ADD_SUCCESS = 0x3030;
+
+    public static final short FRIEND_REMOVE_REQUEST = 0x0004;
+    public static final short FRIEND_REMOVE_SUCCESS = 0x4004;
+
+    public static final short FRIEND_FAVORITE_REQUEST = 0x0005;
+    public static final short FRIEND_FAVORITE_SUCCESS = 0x5005;
+
+    public static final short FRIEND_BLOCK_REQUEST = 0x0006;
+    public static final short FRIEND_BLOCK_SUCCESS = 0x6006;
+
+    public static final short FRIEND_EDITNAME_REQUEST = 0x0007;
+
+
 
     /**
      * 登录 Channel
