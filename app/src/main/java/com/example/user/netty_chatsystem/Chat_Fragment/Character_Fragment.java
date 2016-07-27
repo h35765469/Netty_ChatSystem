@@ -1,9 +1,9 @@
 package com.example.user.netty_chatsystem.Chat_Fragment;
 
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -16,17 +16,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.netty_chatsystem.BombMessage_video_Activity;
 import com.example.user.netty_chatsystem.Character_Activity;
-import com.example.user.netty_chatsystem.Chat_Client.ChatClient;
-import com.example.user.netty_chatsystem.Chat_Client.handler.Client_MessageHandler;
-import com.example.user.netty_chatsystem.Chat_Service.ChatBroadcastReceiver;
+import com.example.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
 import com.example.user.netty_chatsystem.Chat_Service.ChatService;
 import com.example.user.netty_chatsystem.Chat_Sharepreference.SharePreferenceManager;
-import com.example.user.netty_chatsystem.Chat_biz.entity.Message_entity;
+import com.example.user.netty_chatsystem.Chat_core.connetion.IMConnection;
+import com.example.user.netty_chatsystem.Chat_core.protocol.Commands;
+import com.example.user.netty_chatsystem.Chat_core.protocol.Handlers;
+import com.example.user.netty_chatsystem.Chat_core.transport.Header;
+import com.example.user.netty_chatsystem.Chat_core.transport.IMResponse;
+import com.example.user.netty_chatsystem.Myself_setting_Activity;
 import com.example.user.netty_chatsystem.R;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by user on 2016/3/16.
@@ -35,24 +38,16 @@ public class Character_Fragment extends Fragment {
     // Session Manager Class
     SharePreferenceManager sharePreferenceManager;
 
-    ChatClient chatClient;
+    //連上Server的connection變數
+    IMConnection connection;
 
     private ChatService.ChatBinder chatBinder;
-
-    //發送廣播事件用的Action
-    public static final String BROADCAT_ACTION = "com.netty_chatsystem.ChatBroadcast";
-
-    //建立接受廣播接收元件
-    ChatBroadcastReceiver chatBroadcastReceiver = new ChatBroadcastReceiver();
-
-    //宣告client_MessageHandler用來獲取message
-    Client_MessageHandler client_messageHandler;
 
     public Character_Fragment(){
 
     }
 
-    private ServiceConnection connection =  new  ServiceConnection() {
+    private ServiceConnection serviceConnection =  new  ServiceConnection() {
 
         @Override
         public  void  onServiceDisconnected(ComponentName name) {
@@ -78,8 +73,6 @@ public class Character_Fragment extends Fragment {
         sharePreferenceManager = new SharePreferenceManager(getActivity().getApplicationContext());
 
 
-        chatClient = new ChatClient();
-
         Toast.makeText(getActivity().getApplicationContext(), "User Login Status: " + sharePreferenceManager.isLoggedIn(), Toast.LENGTH_LONG).show();
 
         /**
@@ -99,32 +92,20 @@ public class Character_Fragment extends Fragment {
        final String password = user.get(SharePreferenceManager.KEY_EMAIL);
 
         try {
-            //Intent startIntent =  new  Intent(getActivity() , ChatService.class );
-            /*startIntent.putExtra("username" , username);
+            Intent startIntent =  new  Intent(getActivity() , ChatService.class );
+            startIntent.putExtra("username" , username);
             startIntent.putExtra("password", password);
-            //getActivity().startService(startIntent);
-            //getActivity().bindService(startIntent, connection, Context.BIND_AUTO_CREATE);*/
-            chatClient.run(username,password);
+            if(!username.equals("")) {
+                if(!isServiceRunning()){
+                    getActivity().startService(startIntent);
+                }
+                //getActivity().bindService(startIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+            }
 
         }catch(Exception e){
             e.printStackTrace();
         }
 
-
-        // 建立準備發送廣播事件的Intent物件
-        client_messageHandler = new Client_MessageHandler();
-        client_messageHandler.setListener(new Client_MessageHandler.Listener() {
-            @Override
-            public void onInterestingEvent(Message_entity message) {
-                if (username.equals(message.getTo())) {
-                    getActivity().registerReceiver(chatBroadcastReceiver, new IntentFilter(BROADCAT_ACTION));
-                    Intent intent = new Intent(BROADCAT_ACTION);
-                    intent.putExtra("from" , message.getFrom());
-                    intent.putExtra("content" , message.getMessage());
-                    getActivity().sendBroadcast(intent);
-                }
-            }
-        });
 
         /**
          * Logout button click event
@@ -135,8 +116,18 @@ public class Character_Fragment extends Fragment {
             public void onClick(View v) {
                 //close the service
                 Intent stopIntent =  new  Intent( getActivity() , ChatService.class );
-                //getActivity().stopService(stopIntent);
-                //getActivity().unbindService(connection);
+                getActivity().stopService(stopIntent);
+                //getActivity().unbindService(serviceConnection);
+
+                connection = Client_UserHandler.getConnection();
+
+                IMResponse resp = new IMResponse();
+                Header header = new Header();
+                header.setHandlerId(Handlers.MESSAGE);
+                header.setCommandId(Commands.USER_LOGOUT_REQUEST);
+                resp.setHeader(header);
+                connection.sendResponse(resp);
+
 
                 // Clear the session data
                 // This will clear all session data and
@@ -150,8 +141,9 @@ public class Character_Fragment extends Fragment {
         menuicon_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent();
-                it.setClass(getActivity(),BombMessage_video_Activity.class);
+                Intent it = getActivity().getIntent();
+                //it.setClass(getActivity(),BombMessage_video_Activity.class);
+                it.setClass(getActivity(), Myself_setting_Activity.class);
                 startActivity(it);
             }
         });
@@ -177,6 +169,18 @@ public class Character_Fragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public boolean isServiceRunning(){
+        final ActivityManager activityManager = (ActivityManager)getActivity().getSystemService(getActivity().ACTIVITY_SERVICE);
+        final List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
+
+        for (ActivityManager.RunningServiceInfo runningServiceInfo : services) {
+            if (runningServiceInfo.service.getClassName().equals("com.example.user.netty_chatsystem.Chat_Service.ChatService")){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
