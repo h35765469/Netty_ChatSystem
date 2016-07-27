@@ -10,6 +10,8 @@ public class Friend {
     private String[] friendArray;
     private int isFavorite = 0;
     private int isBlock = 0;
+    private int[] favoriteArray = {0};
+    private int[] blockArray = {0};
 
 
     public Friend(){
@@ -68,6 +70,22 @@ public class Friend {
 
     public void setIsBlock(int isBlock){
         this.isBlock = isBlock;
+    }
+
+    public int[] getFavoriteArray(){
+        return favoriteArray;
+    }
+
+    public void setFavoriteArray(int[] favoriteArray){
+        this.favoriteArray = favoriteArray;
+    }
+
+    public int[] getBlockArray(){
+        return blockArray;
+    }
+
+    public void setBlockArray(int[] blockArray){
+        this.blockArray = blockArray;
     }
 
 
