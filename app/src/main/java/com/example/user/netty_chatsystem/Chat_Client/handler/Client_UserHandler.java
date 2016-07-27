@@ -29,15 +29,15 @@ public class Client_UserHandler extends IMHandler<IMRequest> {
     public static FriendListListener friendListListener;
 
     public interface FriendListListener{
-        public void onFriendListEvent(String[] friendArray);
+        public void onFriendListEvent(String[] friendArray, int[] favoriteArray, int[] blockArray);
     }
 
     public void setFriendListListener(FriendListListener friendListListener1){
         friendListListener = friendListListener1;
     }
 
-    public void clientUserHandlerClassDoes(String[] friendArray){
-        friendListListener.onFriendListEvent(friendArray);
+    public void clientUserHandlerClassDoes(String[] friendArray, int[] favoriteArray, int[] blockArray){
+        friendListListener.onFriendListEvent(friendArray, favoriteArray, blockArray);
     }
 
 
@@ -127,8 +127,7 @@ public class Client_UserHandler extends IMHandler<IMRequest> {
     private void onFriendSuccess(IMConnection connection , IMRequest request){
         FriendDTO friendDTO = request.readEntity(FriendDTO.class);
         Friend friend = friendDTO.getFriend();
-        String[] friendArray = friend.getFriendArray();
-        clientUserHandlerClassDoes(friendArray);
+        clientUserHandlerClassDoes(friend.getFriendArray(),friend.getFavoriteArray(),friend.getBlockArray());
     }
 
     public static IMConnection getConnection(){
