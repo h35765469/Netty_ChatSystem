@@ -80,17 +80,23 @@ public class Friendlist_Fragment extends BaseFragment {
             super.handleMessage(msg);
             // Put code here...
             friendArray = msg.getData().getStringArray("friendArray");
+            int[] favoriteArray = msg.getData().getIntArray("favoriteArray");
+            int[] blockArray = msg.getData().getIntArray("blockArray");
             titles = friendArray;
             Id_array = friendArray;
 
             List<RowItem> rowItems = new ArrayList<RowItem>();
+            List<RowItem> favoriteRowItems = new ArrayList<RowItem>();
 
             for(int i = 0 ; i < titles.length ; i++){
                 RowItem item = new RowItem(images[i], titles[i],Id_array[i]);
+                if(favoriteArray[i] == 1){
+                    favoriteRowItems.add(item);
+                }
                 rowItems.add(item);
             }
             CustomBaseAdapter adapter = new CustomBaseAdapter(getActivity(),rowItems);
-            CustomBaseAdapter_horizontal adapter_horizontal = new CustomBaseAdapter_horizontal(getActivity(),rowItems);
+            CustomBaseAdapter_horizontal adapter_horizontal = new CustomBaseAdapter_horizontal(getActivity(),favoriteRowItems);
 
             Friendlist_listview.setAdapter(adapter);
             favorite_listview.setAdapter(adapter_horizontal);
@@ -132,10 +138,12 @@ public class Friendlist_Fragment extends BaseFragment {
         Client_UserHandler clientUserHandler = new Client_UserHandler();
         clientUserHandler.setFriendListListener(new Client_UserHandler.FriendListListener() {
             @Override
-            public void onFriendListEvent(String[] friendArray) {
+            public void onFriendListEvent(String[] friendArray, int[] favoriteArray, int[] blockArray) {
                 Message message = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putStringArray("friendArray", friendArray);
+                bundle.putIntArray("favoriteArray", favoriteArray);
+                bundle.putIntArray("blockArray" , blockArray);
                 message.setData(bundle);
                 handler.sendMessage(message);
             }
@@ -236,13 +244,14 @@ public class Friendlist_Fragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         if (favorite_count == 0) {
-                            favorite_imageview.setImageResource(R.drawable.candy);
-                            favorite_count = 1;
-                        } else {
                             favorite_imageview.setImageResource(R.drawable.candy_red);
+                            favorite_count = 1;
+                            setFavoriteFriend(username , Id_array[position],1);
+                        } else {
+                            favorite_imageview.setImageResource(R.drawable.candy);
                             favorite_count = 0;
+                            setFavoriteFriend(username , Id_array[position],0);
                         }
-                        setFavoriteFriend(username , Id_array[position]);
                     }
                 });
             }
@@ -313,13 +322,14 @@ public class Friendlist_Fragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         if(favorite_count == 0){
-                            favorite_imageview.setImageResource(R.drawable.candy);
-                            favorite_count = 1;
-                        }else{
                             favorite_imageview.setImageResource(R.drawable.candy_red);
+                            favorite_count = 1;
+                            setFavoriteFriend(username , Id_array[position],1);
+                        }else{
+                            favorite_imageview.setImageResource(R.drawable.candy);
                             favorite_count = 0;
+                            setFavoriteFriend(username , Id_array[position],0);
                         }
-                        setFavoriteFriend(username , Id_array[position]);
                     }
                 });
             }
@@ -357,7 +367,7 @@ public class Friendlist_Fragment extends BaseFragment {
         Friend friend = new Friend();
         friend.setUserName(username);
         friend.setFriendArray(new String[0]);
-        friend.setFriendUserName("h35765452@yahoo.com.tw");
+        friend.setFriendUserName("456");
         friend.setFriendName("");
 
         IMResponse resp = new IMResponse();
@@ -389,13 +399,14 @@ public class Friendlist_Fragment extends BaseFragment {
     }
 
     //設為最愛
-    public void setFavoriteFriend(String username , String friendName){
+    public void setFavoriteFriend(String username , String friendName , int isFavorite){
         connection = Client_UserHandler.getConnection();
         Friend friend = new Friend();
         friend.setUserName(username);
         friend.setFriendUserName(friendName);
         friend.setFriendName("");
         friend.setFriendArray(new String[0]);
+        friend.setIsFavorite(isFavorite);
 
         IMResponse resp = new IMResponse();
         Header header = new Header();
