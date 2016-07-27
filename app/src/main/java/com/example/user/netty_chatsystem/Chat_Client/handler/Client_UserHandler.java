@@ -2,13 +2,14 @@ package com.example.user.netty_chatsystem.Chat_Client.handler;
 
 
 import com.example.user.netty_chatsystem.Chat_biz.bean.Presence;
-import com.example.user.netty_chatsystem.Chat_biz.entity.Login;
+import com.example.user.netty_chatsystem.Chat_biz.entity.Friend;
 import com.example.user.netty_chatsystem.Chat_core.connetion.IMConnection;
 import com.example.user.netty_chatsystem.Chat_core.handler.IMHandler;
 import com.example.user.netty_chatsystem.Chat_core.protocol.Commands;
 import com.example.user.netty_chatsystem.Chat_core.protocol.Handlers;
 import com.example.user.netty_chatsystem.Chat_core.transport.Header;
 import com.example.user.netty_chatsystem.Chat_core.transport.IMRequest;
+import com.example.user.netty_chatsystem.Chat_server.dto.FriendDTO;
 import com.example.user.netty_chatsystem.Chat_server.dto.LoginDTO;
 import com.example.user.netty_chatsystem.Chat_server.dto.PresenceDTO;
 
@@ -38,7 +39,6 @@ public class Client_UserHandler extends IMHandler<IMRequest> {
     public void clientUserHandlerClassDoes(String[] friendArray){
         friendListListener.onFriendListEvent(friendArray);
     }
-
 
 
     @Override
@@ -73,6 +73,9 @@ public class Client_UserHandler extends IMHandler<IMRequest> {
             case Commands.USER_PRESENCE_CHANGED:
                 onPresenceChanged(connection, request);
                 break;
+
+            case Commands.FRIEND_SUCCESS:
+                onFriendSuccess(connection, request);
             default:
                 break;
         }
@@ -102,9 +105,6 @@ public class Client_UserHandler extends IMHandler<IMRequest> {
         mConnection = connection;
         LoginDTO loginDTO = request.readEntity(LoginDTO.class);
         login_id = loginDTO.getLogin().getAccount();
-        Login login = loginDTO.getLogin();
-        String[] friendArray = login.getFriendArray();
-        clientUserHandlerClassDoes(friendArray);
     }
 
     /**
@@ -122,6 +122,13 @@ public class Client_UserHandler extends IMHandler<IMRequest> {
         System.out.println("onKicked");
 
         connection.close();
+    }
+
+    private void onFriendSuccess(IMConnection connection , IMRequest request){
+        FriendDTO friendDTO = request.readEntity(FriendDTO.class);
+        Friend friend = friendDTO.getFriend();
+        String[] friendArray = friend.getFriendArray();
+        clientUserHandlerClassDoes(friendArray);
     }
 
     public static IMConnection getConnection(){
