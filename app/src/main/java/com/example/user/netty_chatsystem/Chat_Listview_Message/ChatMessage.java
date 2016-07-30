@@ -1,5 +1,7 @@
 package com.example.user.netty_chatsystem.Chat_Listview_Message;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ public class ChatMessage implements Serializable {
     private long id;
     private boolean isMe;
     private String message;
+    private Bitmap bitmap;
     private Long userId;
     private String dateTime;
 
@@ -29,6 +32,12 @@ public class ChatMessage implements Serializable {
     }
     public void setMessage(String message) {
         this.message = message;
+    }
+    public Bitmap getBitmap(){
+        return bitmap;
+    }
+    public void setBitmap(Bitmap bitmap){
+        this.bitmap = bitmap;
     }
     public long getUserId() {
         return userId;
