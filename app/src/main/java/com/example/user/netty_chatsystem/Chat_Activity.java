@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,7 +40,6 @@ import com.example.user.netty_chatsystem.Chat_server.dto.FileDTO;
 import com.example.user.netty_chatsystem.Chat_server.dto.MessageDTO;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -91,7 +93,6 @@ public class Chat_Activity extends AppCompatActivity  {
         sr = new ServerRequest();
         pref = getSharedPreferences("AppPref",MODE_PRIVATE);
 
-
         client_messageHandler = new Client_MessageHandler();
         client_messageHandler.setListener(new Client_MessageHandler.Listener() {
             @Override
@@ -99,9 +100,9 @@ public class Chat_Activity extends AppCompatActivity  {
                 Show_GetMessage(message);
             }
         });
-        client_messageHandler.setOfflineMessageListener(new Client_MessageHandler.offlineMessageListener(){
+        client_messageHandler.setOfflineMessageListener(new Client_MessageHandler.offlineMessageListener() {
             @Override
-            public void onOfflineInterestingEvent(String[] offlineMessageArray){
+            public void onOfflineInterestingEvent(String[] offlineMessageArray) {
                 showOfflineMessage(offlineMessageArray);
             }
         });
@@ -120,7 +121,10 @@ public class Chat_Activity extends AppCompatActivity  {
         friend_id = bundle.getString("friend_id");
         login_id = Client_UserHandler.getLogin_id();
 
+        //createTable();
+        //載入sqlite裡的聊天紀錄
         loadSqliteHistory();
+        //載入在遠端伺服器的離線紀錄
         loadOfflineMessage();
 
         sendmessage_imageview.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +135,7 @@ public class Chat_Activity extends AppCompatActivity  {
                 if (TextUtils.isEmpty(messageText)) {
                     return;
                 }
-                //saveSqliteHistory(messageText , 0);
+                saveSqliteHistory(messageText, 0);
 
                 connection = Client_UserHandler.getConnection();
                 Message_entity message = new Message_entity();
@@ -155,7 +159,6 @@ public class Chat_Activity extends AppCompatActivity  {
                 chatMessage.setMe(true);
 
                 message_edit.setText("");
-
                 displayMessage(chatMessage);
             }
         });
@@ -163,13 +166,13 @@ public class Chat_Activity extends AppCompatActivity  {
         bombSend_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent();
+                Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, 1);*/
-                Intent it = new Intent();
+                startActivityForResult(intent, 2);
+                /*Intent it = new Intent();
                 it.setClass(Chat_Activity.this, BombMessage_video_Activity.class);
-                startActivity(it);
+                startActivity(it);*/
             }
         });
 
@@ -211,35 +214,30 @@ public class Chat_Activity extends AppCompatActivity  {
             cv.put("to_id" , login_id);
         }
         cv.put("content", messageText);
+
+        String [] array = friend_id.split("@");
+
         //調用insert方法，將數據插入數據庫
-        db.insert("stu_table", null, cv);
+        db.insert("msg_to_" + array[0], null, cv);
         //關閉數據庫
         db.close();
+
     }
 
-
+    //可建立sqlite的資料表
+    private void createTable(){
+        MyDBHelper dbHelper = new MyDBHelper(Chat_Activity.this, "msg_to_123", null, 1);
+        SQLiteDatabase db =dbHelper.getWritableDatabase();
+        db.execSQL("create table msg_to_456(id INTEGER PRIMARY KEY AUTOINCREMENT , from_id varchar(50) , to_id varchar(50) , content varchar(500))");
+    }
 
     private void loadSqliteHistory(){
-
-        params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("from",friend_id));
-        params.add(new BasicNameValuePair("to",login_id));
-        ServerRequest sr = new ServerRequest();
-        //JSONObject json = sr.getJSON("http://192.168.43.157/offlinemessage_get",params);
-
         chatHistory = new ArrayList<ChatMessage>();
         ChatMessage msg = new ChatMessage();
-        msg.setId(1);
-        msg.setMe(false);
-        msg.setMessage("1");
-        chatHistory.add(msg);
         adapter = new ChatAdapter(Chat_Activity.this, new ArrayList<ChatMessage>());
         messagesContainer.setAdapter(adapter);
-        for(int i=0; i<chatHistory.size(); i++) {
-            ChatMessage message = chatHistory.get(i);
-            displayMessage(message);
-        }
 
+        String [] array = friend_id.split("@");
         //以下為從sqlite載回聊天紀錄
         MyDBHelper dbHelper =  new  MyDBHelper(Chat_Activity.this , "msg_to_123" , null , 1 );
         //得到一個可寫的數據庫
@@ -251,12 +249,12 @@ public class Chat_Activity extends AppCompatActivity  {
         //參數5：分組方式
         //參數6：having條件
         //參數7：排序方式
-        Cursor cursor = db.query( "stu_table" ,  new  String[]{ "id" , "from_id" , "to_id" , "content" },  "id" ,  null ,  null ,  null ,  null );
+        Cursor cursor = db.query("msg_to_" + array[0] ,  new  String[]{ "id" , "from_id" , "to_id" , "content" },  "id" ,  null ,  null ,  null ,  null );
         while (cursor.moveToNext()){
             String from_id = cursor.getString(cursor.getColumnIndex( "from_id" ));
             String content = cursor.getString(cursor.getColumnIndex( "content" ));
             ChatMessage sqliteMsg = new ChatMessage();
-            sqliteMsg.setId(1);
+            sqliteMsg.setId(2);
             if(from_id.equals(login_id)) {
                 sqliteMsg.setMe(true);
             }else{
@@ -265,38 +263,11 @@ public class Chat_Activity extends AppCompatActivity  {
             sqliteMsg.setMessage(content);
             displayMessage(sqliteMsg);
         }
+        //db =dbHelper.getWritableDatabase();
+        //db.execSQL("DROP TABLE IF EXISTS " + "stu_table");
 
         //關閉數據庫
         db.close();
-
-        /*if(json!=null){
-            try{
-                JSONArray jsonArray = json.getJSONArray("response");
-                String []jsonstr = new String[jsonArray.length()];
-                for(int i = 0 ; i < jsonArray.length() ; i++){
-                    jsonstr[i] = jsonArray.getString(i);
-                }
-                chatHistory = new ArrayList<ChatMessage>();
-
-                for(int i = 0 ; i < jsonstr.length ; i++){
-                    ChatMessage msg = new ChatMessage();
-                    msg.setId(1);
-                    msg.setMe(false);
-                    msg.setMessage(jsonstr[i]);
-                    chatHistory.add(msg);
-                }
-
-                adapter = new ChatAdapter(Chat_Activity.this, new ArrayList<ChatMessage>());
-                messagesContainer.setAdapter(adapter);
-                for(int i=0; i<chatHistory.size(); i++) {
-                    ChatMessage message = chatHistory.get(i);
-                    displayMessage(message);
-                }
-
-            }catch(JSONException e){
-                e.printStackTrace();
-            }
-        }*/
     }
 
     private void loadOfflineMessage(){
@@ -314,7 +285,7 @@ public class Chat_Activity extends AppCompatActivity  {
         resp.setHeader(header);
         resp.writeEntity(new MessageDTO(message));
         connection.sendResponse(resp);
-    }
+     }
 
     public void showOfflineMessage(String[] offlineMessageArray){
         for(int i = 0 ; i < offlineMessageArray.length ; i++){
@@ -323,6 +294,8 @@ public class Chat_Activity extends AppCompatActivity  {
             getmsg.setMe(false);
             getmsg.setMessage(offlineMessageArray[i]);
             getmsg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+            System.out.println("offline :" + offlineMessageArray[i]);
+            saveSqliteHistory(offlineMessageArray[i] , 1);
             Bundle bundle = new Bundle();
             bundle.putSerializable("GetMsg", getmsg);
             Message msg = new Message();
@@ -333,7 +306,7 @@ public class Chat_Activity extends AppCompatActivity  {
 
     public void Show_GetMessage(Message_entity message){
         if(friend_id.equals(message.getFrom())) {
-            //saveSqliteHistory(message.getMessage() , 1);
+            saveSqliteHistory(message.getMessage() , 1);
             ChatMessage getmsg = new ChatMessage();
             getmsg.setId(2);
             getmsg.setMe(false);
@@ -363,6 +336,9 @@ public class Chat_Activity extends AppCompatActivity  {
 
         }
     };
+
+
+
 
     //專門處理送出去與接受過來file的handler
     protected Handler fileHandler = new Handler(){
@@ -417,9 +393,63 @@ public class Chat_Activity extends AppCompatActivity  {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // usedView is a bool that checks is a view was destroyed and this was reused.
         // if it wasn't reused, this means we create a new one.
-        if (resultCode == RESULT_OK) {
+        /*if (resultCode == RESULT_OK) {
                 selectedImage = data.getData();
                 fileHandler.obtainMessage(1).sendToTarget();
+        }*/if(requestCode == 2){
+            Uri selectedImage = data.getData();
+            getPath(selectedImage);
+            try {
+                InputStream is;
+                is = this.getContentResolver().openInputStream(selectedImage);
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inJustDecodeBounds = true;
+                //BitmapFactory.decodeStream(bis,null,opts);
+                BitmapFactory.decodeStream(is, null, opts);
+
+                //The new size we want to scale to
+                final int REQUIRED_SIZE = 200;
+
+                //Find the correct scale value. It should be the power of 2.
+                int scale = 1;
+                while (opts.outWidth / scale / 2 >= REQUIRED_SIZE || opts.outHeight / scale / 2 >= REQUIRED_SIZE)
+                    scale *= 2;
+
+                opts.inSampleSize = scale;
+                opts.inJustDecodeBounds = false;
+                is = null;
+                System.gc();
+                InputStream is2 = this.getContentResolver().openInputStream(selectedImage);
+
+                Bitmap returnedImage = BitmapFactory.decodeStream(is2, null, opts);
+                ChatMessage getmsg = new ChatMessage();
+                getmsg.setId(2);
+                getmsg.setMe(true);
+                getmsg.setMessage("");
+                getmsg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+                getmsg.setBitmap(returnedImage);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("GetMsg", getmsg);
+                Message msg = new Message();
+                msg.setData(bundle);
+                handler.sendMessage(msg);
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
+
+    //獲取圖片的路徑
+    public String getPath(Uri uri){
+        String[] filePathColumn={MediaStore.Images.Media.DATA};
+
+        Cursor cursor=this.getContentResolver().query(uri, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex=cursor.getColumnIndex(filePathColumn[0]);
+        return cursor.getString(columnIndex);
+    }
+
+
 }
