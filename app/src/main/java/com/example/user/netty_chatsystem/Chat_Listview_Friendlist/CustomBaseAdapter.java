@@ -1,26 +1,14 @@
 package com.example.user.netty_chatsystem.Chat_Listview_Friendlist;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.ImageFormat;
-import android.media.Image;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.user.netty_chatsystem.Chat_Activity;
-import com.example.user.netty_chatsystem.Friendlist_Activity;
 import com.example.user.netty_chatsystem.R;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -58,6 +46,7 @@ public class CustomBaseAdapter extends BaseAdapter {
         }
         RowItem rowItem = (RowItem)getItem(position);
 
+
         holder.txtTitle.setText(rowItem.getTitle());
         holder.imageView.setImageResource(rowItem.getImageId());
 
@@ -65,7 +54,13 @@ public class CustomBaseAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void addMessage(RowItem rowItem){
+        rowItems.add(0,rowItem);
+    }
 
+    public boolean inMessage(RowItem rowItem){
+       return rowItems.contains(rowItem);
+    }
 
     @Override
     public int getCount(){
