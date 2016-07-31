@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.user.netty_chatsystem"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -57,4 +57,5 @@ dependencies {
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'//飛出式menu
     compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
     compile 'com.facebook.android:facebook-android-sdk:4.12.1'
+    compile 'com.roughike:bottom-bar:1.4.0.1'//使用漂亮TAB
 }
