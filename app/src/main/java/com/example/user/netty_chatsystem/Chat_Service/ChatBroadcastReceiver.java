@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.user.netty_chatsystem.Chat_Activity;
@@ -15,6 +16,24 @@ import com.example.user.netty_chatsystem.R;
  * Created by user on 2016/7/12.
  */
 public class ChatBroadcastReceiver extends BroadcastReceiver {
+
+    //**以下相關函式皆為通知MessageListFragment更改介面元件使用
+    public static ChangeMessageListListener mChangeMessageListListener;
+
+    public interface ChangeMessageListListener{
+        public void onChangeMessageListEvent(String from , String content);
+    }
+
+    public void setChangeMessageListListener(ChangeMessageListListener mChangeMessageListListener){
+        this.mChangeMessageListListener = mChangeMessageListListener;
+    }
+
+    public void ChatBroadcastReceiverDoes(String from , String content){
+        mChangeMessageListListener.onChangeMessageListEvent(from,content);
+    }
+    //****************************************************************
+
+
 
 
     // 接收廣播後執行這個方法
@@ -27,7 +46,9 @@ public class ChatBroadcastReceiver extends BroadcastReceiver {
 
         NotificationManager manager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
         Intent notificationIntent = new Intent(context , Chat_Activity.class);
-        notificationIntent.putExtra("friend_id", intent.getStringExtra("from"));
+        Bundle bundle = new Bundle();
+        bundle.putString("friend_id", intent.getStringExtra("from"));
+        notificationIntent.putExtras(bundle);
         PendingIntent pendinfIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
         Notification.Builder builder = new Notification.Builder(context);
@@ -47,5 +68,9 @@ public class ChatBroadcastReceiver extends BroadcastReceiver {
 
         notification = builder.getNotification();
         manager.notify(11, notification);
-    }
+
+        if(intent.getStringExtra("from") != null){
+            ChatBroadcastReceiverDoes(intent.getStringExtra("from"),intent.getStringExtra("content"));
+        }
+}
 }
