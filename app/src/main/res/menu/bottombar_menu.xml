@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bb_menu_recents"
+        android:icon="@drawable/avatar"
+        android:title="Profile" />
+    <item
+        android:id="@+id/bb_menu_favorites"
+        android:icon="@drawable/phonebook"
+        android:title="Memory" />
+    <item
+        android:id="@+id/bb_menu_nearby"
+        android:icon="@drawable/camera_black"
+        android:title="Camera" />
+    <item
+        android:id="@+id/bb_menu_friends"
+        android:icon="@drawable/candy"
+        android:title="Friends" />
+    <item
+        android:id="@+id/bb_menu_food"
+        android:icon="@drawable/c10"
+        android:title="Message" />
+</menu>
