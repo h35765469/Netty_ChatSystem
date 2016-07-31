@@ -1,9 +1,11 @@
 package com.example.user.netty_chatsystem.Chat_Listview_Friendlist;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 2016/3/2.
  */
-public class RowItem {
+public class RowItem  implements Serializable {
     private int imageId;
     private String title;
     private String id;
@@ -31,4 +33,14 @@ public class RowItem {
 
     public String getId(){return id;}
     public void setId(String id){this.id = id;}
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean bres = false;
+        if (obj instanceof RowItem) {
+            RowItem o = (RowItem) obj;
+            bres = (this.imageId==o.imageId) & (this.title.equals(o.title)) & (this.id.equals(o.id));
+        }
+        return bres;
+    }
 }
