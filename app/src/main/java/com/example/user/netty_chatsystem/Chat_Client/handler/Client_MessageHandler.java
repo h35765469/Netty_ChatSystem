@@ -28,6 +28,7 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
 
     public static Listener mListener;
     public static offlineMessageListener mOfflineMessageListener;
+    public static receiveFileListener mReceiveFileListener;
 
     public interface Listener{
         public void onInterestingEvent(Message_entity message);
@@ -37,11 +38,19 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
         public void onOfflineInterestingEvent(String[] offlineMessageArray);
     }
 
+    public interface receiveFileListener{
+        public void onReceiveFileEvent();
+    }
+
     public void setListener(Listener listener){
         mListener = listener;
     }
 
     public void setOfflineMessageListener(offlineMessageListener offlineMessageListener){mOfflineMessageListener = offlineMessageListener;}
+
+    public void setReceiveFileListener(receiveFileListener receiveFileListener){
+        mReceiveFileListener = receiveFileListener;
+    }
 
     public void someUserfulThingTheClassDoes(Message_entity message){
         mListener.onInterestingEvent(message);
@@ -49,6 +58,10 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
 
     public void offlineMessageClassDoes(String[] offlineMessageArray){
         mOfflineMessageListener.onOfflineInterestingEvent(offlineMessageArray);
+    }
+
+    public void receiveFileDoes(){
+        mReceiveFileListener.onReceiveFileEvent();
     }
 
     private String FILE_SAVE_PATH = "C:";
@@ -82,6 +95,9 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
                 break;
             case Commands.USER_FILE_SUCCESS:
                 onUserFileSuccess(connection , request);
+                break;
+            case Commands.USER_LOGOUT_REQUEST:
+                connection.close();
                 break;
             case Commands.ERROR_USER_NOT_EXISTS: {
                 System.out.println("用户不存在接收不到消息～～");
@@ -139,6 +155,7 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
         }catch(Exception e){
             e.printStackTrace();
         }
+        receiveFileDoes();
     }
 
     private void onUserFileSuccess(IMConnection connection , IMRequest request){
