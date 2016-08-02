@@ -49,6 +49,7 @@ public class MessageDTO implements IMSerializer {
         buffer.writeByte(message.getType());
         buffer.writeString(message.getMessage());
         buffer.writeLong(message.getCreateAt());
+        buffer.writeInt(message.getRead());
         return buffer;
     }
 
@@ -63,5 +64,6 @@ public class MessageDTO implements IMSerializer {
         message.setType(buffer.readByte());
         message.setMessage(buffer.readString());
         message.setCreateAt(buffer.readLong());
+        message.setRead(buffer.readInt());
     }
 }
