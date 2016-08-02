@@ -13,7 +13,7 @@ public class Message_entity extends BaseEntity {
     private String from;
 
     private byte type;
-    private boolean read;
+    private int read = 0;
     private String message;
     private long createAt;
     private long readAt;
@@ -52,11 +52,11 @@ public class Message_entity extends BaseEntity {
         this.type = type;
     }
 
-    public boolean isRead() {
+    public int getRead() {
         return read;
     }
 
-    public void setRead(boolean read) {
+    public void setRead(int read) {
         this.read = read;
     }
 
