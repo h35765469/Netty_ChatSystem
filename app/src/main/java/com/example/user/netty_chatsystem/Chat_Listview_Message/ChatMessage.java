@@ -12,6 +12,7 @@ public class ChatMessage implements Serializable {
     private boolean isMe;
     private String message;
     private Bitmap bitmap;
+    private boolean isEffect = false;
     private Long userId;
     private String dateTime;
 
@@ -21,24 +22,33 @@ public class ChatMessage implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
+
     public boolean getIsme() {
         return isMe;
     }
     public void setMe(boolean isMe) {
         this.isMe = isMe;
     }
+
     public String getMessage() {
         return message;
     }
     public void setMessage(String message) {
         this.message = message;
     }
+
     public Bitmap getBitmap(){
         return bitmap;
     }
     public void setBitmap(Bitmap bitmap){
         this.bitmap = bitmap;
     }
+
+    public boolean getIsEffect(){ return isEffect;}
+    public void setIsEffect(boolean isEffect){
+        this.isEffect = isEffect;
+    }
+
     public long getUserId() {
         return userId;
     }
