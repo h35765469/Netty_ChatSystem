@@ -56,6 +56,7 @@ public class Commands {
     public static final short USER_MESSAGE_REQUEST = 0x0001;
     public static final short USER_MESSAGE_SUCCESS = 0x1001;
     public static final short USER_MESSAGE_OFFLINE = 0x1000;
+    public static final short USER_MESSAGE_ALREADYREAD = 0x0011;
     public static final short ERROR_USER_NOT_EXISTS = 0x1002;
 
 
