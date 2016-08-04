@@ -27,11 +27,16 @@ import java.io.RandomAccessFile;
 public class Client_MessageHandler extends IMHandler<IMRequest> {
 
     public static Listener mListener;
+    public static alreadyReadListener mAlreadyReadListener;
     public static offlineMessageListener mOfflineMessageListener;
     public static receiveFileListener mReceiveFileListener;
 
     public interface Listener{
         public void onInterestingEvent(Message_entity message);
+    }
+
+    public interface alreadyReadListener{
+        public void onAlreadyReadEvent(Message_entity message);
     }
 
     public interface offlineMessageListener{
@@ -46,6 +51,10 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
         mListener = listener;
     }
 
+    public void setAlreadyReadListener(alreadyReadListener alreadyReadListener){
+        mAlreadyReadListener = alreadyReadListener;
+    }
+
     public void setOfflineMessageListener(offlineMessageListener offlineMessageListener){mOfflineMessageListener = offlineMessageListener;}
 
     public void setReceiveFileListener(receiveFileListener receiveFileListener){
@@ -54,6 +63,10 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
 
     public void someUserfulThingTheClassDoes(Message_entity message){
         mListener.onInterestingEvent(message);
+    }
+
+    public void getReadClientMessageHandlerDoes(Message_entity message){
+        mAlreadyReadListener.onAlreadyReadEvent(message);
     }
 
     public void offlineMessageClassDoes(String[] offlineMessageArray){
@@ -90,6 +103,9 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
             case Commands.USER_MESSAGE_SUCCESS:
                 onUserMessageSuccess(connection, request);
                 break;
+            case Commands.USER_MESSAGE_ALREADYREAD:
+                onUserMessageAlreadyRead(connection, request);
+                break;
             case Commands.USER_FILE_REQUEST:
                 receiveFile(connection , request);
                 break;
@@ -121,8 +137,6 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
         MessageDTO messageDTO = request.readEntity(MessageDTO.class);
         Message_entity message = messageDTO.getMessage();
 
-        System.out.println("message: " + message.getFrom());
-
         someUserfulThingTheClassDoes(message);
 
         // 回應告訴對方已經收到，如果对方接收不到回應需要重複發送消息，客户端也需要對重複的消息做處理
@@ -137,6 +151,13 @@ public class Client_MessageHandler extends IMHandler<IMRequest> {
 
     private void onUserMessageSuccess(IMConnection connection, IMRequest request) {
         AckDTO ack = request.readEntity(AckDTO.class);
+    }
+
+    private void onUserMessageAlreadyRead(IMConnection connection, IMRequest request){
+        MessageDTO messageDTO = request.readEntity(MessageDTO.class);
+        Message_entity message = messageDTO.getMessage();
+
+        getReadClientMessageHandlerDoes(message);
     }
 
     private void receiveFile(IMConnection connection , IMRequest request){
