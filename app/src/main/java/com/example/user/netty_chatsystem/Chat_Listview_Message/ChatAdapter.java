@@ -56,6 +56,7 @@ public class ChatAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         ChatMessage chatMessage = getItem(position);
+
         LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
@@ -70,7 +71,11 @@ public class ChatAdapter extends BaseAdapter {
         //to simulate whether it me or other sender
         setAlignment(holder, myMsg);
         holder.txtMessage.setText(chatMessage.getMessage());
-        holder.txtInfo.setText(chatMessage.getDate());
+        if(chatMessage.getIsRead() == 1){
+            holder.txtInfo.setText("已讀");
+        }else{
+            holder.txtInfo.setText("");
+        }
         holder.picMessage.setImageBitmap(chatMessage.getBitmap());
 
         return convertView;
