@@ -19,9 +19,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.user.netty_chatsystem.Chat_Client.handler.Client_MessageHandler;
 import com.example.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
@@ -82,28 +84,75 @@ public class Chat_Activity extends AppCompatActivity  {
     private int sumCountpackage = 0;
     Uri selectedImage;
 
+    public static boolean isRead ;
+
+
+    @Override
+    public void onBackPressed() {
+        isRead = false;
+        finish();
+    }
+
+    @Override
+    protected  void onDestroy(){
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.resource_chat_actionbar);
 
+        //進入頁面後就判定為已讀
+        isRead = true;
+
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.resource_chat_actionbar);
         sr = new ServerRequest();
-        pref = getSharedPreferences("AppPref",MODE_PRIVATE);
+        pref = getSharedPreferences("AppPref", MODE_PRIVATE);
 
         client_messageHandler = new Client_MessageHandler();
         client_messageHandler.setListener(new Client_MessageHandler.Listener() {
             @Override
             public void onInterestingEvent(Message_entity message) {
-                Show_GetMessage(message);
+                if(isRead) {
+                    Show_GetMessage(message);
+                }
             }
         });
+
+        client_messageHandler.setAlreadyReadListener(new Client_MessageHandler.alreadyReadListener() {
+            @Override
+            public void onAlreadyReadEvent(Message_entity message) {
+                showRead(message);
+            }
+        });
+
         client_messageHandler.setOfflineMessageListener(new Client_MessageHandler.offlineMessageListener() {
             @Override
             public void onOfflineInterestingEvent(String[] offlineMessageArray) {
                 showOfflineMessage(offlineMessageArray);
+            }
+        });
+
+        client_messageHandler.setReceiveFileListener(new Client_MessageHandler.receiveFileListener() {
+            @Override
+            public void onReceiveFileEvent() {
+                ChatMessage getmsg = new ChatMessage();
+                getmsg.setId(2);
+                getmsg.setMe(false);
+                getmsg.setMessage("");
+                getmsg.setIsEffect(true);
+                getmsg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+                Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.blue_concave);
+                getmsg.setBitmap(icon);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("GetMsg", getmsg);
+                Message msg = new Message();
+                msg.setData(bundle);
+                handler.sendMessage(msg);
             }
         });
         initControls();
@@ -127,17 +176,36 @@ public class Chat_Activity extends AppCompatActivity  {
         //載入在遠端伺服器的離線紀錄
         loadOfflineMessage();
 
+        //用來判斷是否為別人傳來的訊息，並且傳出已讀的訊息
+        if(!adapter.getItem(adapter.getCount()-1).getIsme()){
+            Message_entity message = new Message_entity();
+            message.setFrom(friend_id);
+            message.setTo(login_id);
+            message.setRead(1);
+
+            connection = Client_UserHandler.getConnection();
+            IMResponse resp = new IMResponse();
+            Header header = new Header();
+            header.setHandlerId(Handlers.MESSAGE);
+            header.setCommandId(Commands.USER_MESSAGE_ALREADYREAD);
+            resp.setHeader(header);
+            resp.writeEntity(new MessageDTO(message));
+            connection.sendResponse(resp);
+        }
+
+
         sendmessage_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adapter.getItem(adapter.getCount()-1).setIsRead(0);
 
+                connection = Client_UserHandler.getConnection();
                 String messageText = message_edit.getText().toString();
                 if (TextUtils.isEmpty(messageText)) {
                     return;
                 }
                 saveSqliteHistory(messageText, 0);
 
-                connection = Client_UserHandler.getConnection();
                 Message_entity message = new Message_entity();
                 message.setTo(friend_id);
                 message.setFrom(login_id);
@@ -171,8 +239,22 @@ public class Chat_Activity extends AppCompatActivity  {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, 2);
                 /*Intent it = new Intent();
-                it.setClass(Chat_Activity.this, BombMessage_video_Activity.class);
+                it.setClass(Chat_Activity.this, EffectShowActivity.class);
                 startActivity(it);*/
+                ChatMessage getmsg = new ChatMessage();
+                getmsg.setId(2);
+                getmsg.setMe(true);
+                getmsg.setMessage("");
+                getmsg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+                Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.blue_concave);
+                getmsg.setBitmap(icon);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("GetMsg", getmsg);
+                Message msg = new Message();
+                msg.setData(bundle);
+                handler.sendMessage(msg);
             }
         });
 
@@ -181,7 +263,21 @@ public class Chat_Activity extends AppCompatActivity  {
         back_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isRead = false;
                 finish();
+            }
+        });
+
+        messagesContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (adapter.getItem(position).getIsEffect()) {
+                    Intent it = new Intent();
+                    it.setClass(Chat_Activity.this, EffectShowActivity.class);
+                    startActivity(it);
+                } else {
+                    Toast.makeText(Chat_Activity.this, "click list " + position, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -228,7 +324,7 @@ public class Chat_Activity extends AppCompatActivity  {
     private void createTable(){
         MyDBHelper dbHelper = new MyDBHelper(Chat_Activity.this, "msg_to_123", null, 1);
         SQLiteDatabase db =dbHelper.getWritableDatabase();
-        db.execSQL("create table msg_to_456(id INTEGER PRIMARY KEY AUTOINCREMENT , from_id varchar(50) , to_id varchar(50) , content varchar(500))");
+        db.execSQL("create table msg_to_h35765469(id INTEGER PRIMARY KEY AUTOINCREMENT , from_id varchar(50) , to_id varchar(50) , content varchar(500))");
     }
 
     private void loadSqliteHistory(){
@@ -285,6 +381,7 @@ public class Chat_Activity extends AppCompatActivity  {
         resp.setHeader(header);
         resp.writeEntity(new MessageDTO(message));
         connection.sendResponse(resp);
+
      }
 
     public void showOfflineMessage(String[] offlineMessageArray){
@@ -306,7 +403,11 @@ public class Chat_Activity extends AppCompatActivity  {
 
     public void Show_GetMessage(Message_entity message){
         if(friend_id.equals(message.getFrom())) {
-            saveSqliteHistory(message.getMessage() , 1);
+            //將前一個訊息的已讀符號拿到
+            if(adapter.getItem(adapter.getCount()-1).getIsme()){
+                adapter.getItem(adapter.getCount()-1).setIsRead(0);
+            }
+            saveSqliteHistory(message.getMessage(), 1);
             ChatMessage getmsg = new ChatMessage();
             getmsg.setId(2);
             getmsg.setMe(false);
@@ -317,7 +418,27 @@ public class Chat_Activity extends AppCompatActivity  {
             Message msg = new Message();
             msg.setData(bundle);
             handler.sendMessage(msg);
+
+            //判斷是否為已讀
+            message.setRead(1);
+            connection = Client_UserHandler.getConnection();
+            IMResponse resp = new IMResponse();
+            Header header = new Header();
+            header.setHandlerId(Handlers.MESSAGE);
+            header.setCommandId(Commands.USER_MESSAGE_ALREADYREAD);
+            resp.setHeader(header);
+            resp.writeEntity(new MessageDTO(message));
+            connection.sendResponse(resp);
         }
+    }
+
+    //展現已讀
+    public void showRead(Message_entity message){
+        Message msg = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putInt("isRead" , message.getRead());
+        msg.setData(bundle);
+        readHandler.sendMessage(msg);
     }
 
     //專門處理接收過來的訊息的handler , 並將它放在list view上
@@ -334,6 +455,16 @@ public class Chat_Activity extends AppCompatActivity  {
             displayMessage(getmsg);
 
 
+        }
+    };
+
+    protected Handler readHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            adapter.getItem(adapter.getCount()-2).setIsRead(0);
+            adapter.getItem(adapter.getCount()-1).setIsRead(msg.getData().getInt("isRead"));
+            adapter.notifyDataSetChanged();
         }
     };
 
@@ -393,10 +524,10 @@ public class Chat_Activity extends AppCompatActivity  {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // usedView is a bool that checks is a view was destroyed and this was reused.
         // if it wasn't reused, this means we create a new one.
-        /*if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
                 selectedImage = data.getData();
                 fileHandler.obtainMessage(1).sendToTarget();
-        }*/if(requestCode == 2){
+        } /*if(requestCode == 2){
             Uri selectedImage = data.getData();
             getPath(selectedImage);
             try {
@@ -438,7 +569,7 @@ public class Chat_Activity extends AppCompatActivity  {
             }catch(Exception e){
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     //獲取圖片的路徑
