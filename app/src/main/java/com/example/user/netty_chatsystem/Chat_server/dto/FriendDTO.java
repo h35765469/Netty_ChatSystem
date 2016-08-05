@@ -32,6 +32,7 @@ public class FriendDTO implements IMSerializer {
         buffer.writeString(friend.getFriendName());
         buffer.writeString(friend.getFriendUserName());
         buffer.writeStringArray(friend.getFriendArray());
+        buffer.writeStringArray(friend.getFriendNameArray());
         buffer.writeInt(friend.getIsFavorite());
         buffer.writeInt(friend.getIsBlock());
         buffer.writeIntArray(friend.getFavoriteArray());
@@ -47,6 +48,7 @@ public class FriendDTO implements IMSerializer {
         friend.setFriendName(buffer.readString());
         friend.setFriendUserName(buffer.readString());
         friend.setFriendArray(buffer.readStringArray());
+        friend.setFriendNameArray(buffer.readStringArray());
         friend.setIsFavorite(buffer.readInt());
         friend.setIsBlock(buffer.readInt());
         friend.setFavoriteArray(buffer.readIntArray());
