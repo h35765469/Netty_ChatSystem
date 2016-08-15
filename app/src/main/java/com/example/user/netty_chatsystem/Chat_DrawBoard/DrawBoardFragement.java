@@ -1,14 +1,17 @@
 package com.example.user.netty_chatsystem.Chat_DrawBoard;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -28,26 +31,36 @@ import android.widget.Toast;
 
 import com.example.user.netty_chatsystem.Chat_AnimationElement.BrokenEffect.BrokenTouchListener;
 import com.example.user.netty_chatsystem.Chat_AnimationElement.BrokenEffect.BrokenView;
+import com.example.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.Accessory_picture.StickerImageView;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.Accessory_picture.StickerTextView;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.DrawableView;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.DrawableViewConfig;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.penColor.colorpicker.ColorPickerDialog;
 import com.example.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.penColor.colorpicker.ColorPickerSwatch;
+import com.example.user.netty_chatsystem.Chat_Sqlite_ChatHistory.MyDBHelper;
+import com.example.user.netty_chatsystem.Chat_biz.entity.file.ServerFile;
+import com.example.user.netty_chatsystem.Chat_core.connetion.IMConnection;
+import com.example.user.netty_chatsystem.Chat_core.protocol.Commands;
+import com.example.user.netty_chatsystem.Chat_core.protocol.Handlers;
+import com.example.user.netty_chatsystem.Chat_core.transport.Header;
+import com.example.user.netty_chatsystem.Chat_core.transport.IMResponse;
+import com.example.user.netty_chatsystem.Chat_server.dto.FileDTO;
 import com.example.user.netty_chatsystem.R;
-import com.facebook.share.ShareApi;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
 import com.mingle.entity.MenuEntity;
 import com.mingle.sweetpick.DimEffect;
 import com.mingle.sweetpick.SweetSheet;
 import com.mingle.sweetpick.ViewPagerDelegate;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by user on 2016/4/12.
@@ -65,6 +78,13 @@ public class  DrawBoardFragement extends Fragment {
     // to take a picture
     private static final int CAMERA_PIC_REQUEST = 1111;
     private static final int GALLERY_PIC_REQUEST = 1112;
+
+    //傳送資料用得變數
+    private int dataLength = 1024;
+    private int sumCountpackage = 0;
+    private String login_id;
+    private String friend_id;
+
 
     //選取訊息特效的狀態條
     private SweetSheet sweetSheet;
@@ -138,6 +158,10 @@ public class  DrawBoardFragement extends Fragment {
         fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        Intent intent = getActivity().getIntent();
+        login_id = intent.getStringExtra("login_id");
+        friend_id = intent.getStringExtra("friend_id");
+
         initUi(rootView, fragmentTransaction);
 
         return rootView;
@@ -176,9 +200,11 @@ public class  DrawBoardFragement extends Fragment {
         drawboard_layout = (RelativeLayout)rootView.findViewById(R.id.drawboard_layout);
         relativeLayout = (RelativeLayout)rootView.findViewById(R.id.icon_layout);
 
+        drawableView.setEnabled(false);
+
         config.setStrokeColor(getResources().getColor(android.R.color.black));
         config.setShowCanvasBounds(true);
-        config.setStrokeWidth(20.0f);
+        config.setStrokeWidth(10.0f);
         config.setMinZoom(1.0f);
         config.setMaxZoom(3.0f);
         config.setCanvasHeight(metrics.heightPixels);
@@ -203,6 +229,7 @@ public class  DrawBoardFragement extends Fragment {
         drawboard_pen_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                drawableView.setEnabled(true);
 
                 selectedColor = ContextCompat.getColor(getActivity(), R.color.flamingo);
                 FragmentTransaction fragmentTransactionPen = fragmentManager.beginTransaction();
@@ -229,7 +256,6 @@ public class  DrawBoardFragement extends Fragment {
 
                 });
 
-                drawboard_back_imageview.setVisibility(View.VISIBLE);
             }
         });
 
@@ -286,14 +312,58 @@ public class  DrawBoardFragement extends Fragment {
             @Override
             public void onClick(View v) {
                 Bitmap image = loadBitmapFromView(drawboard_layout);
-                SharePhoto photo = new SharePhoto.Builder()
-                        .setBitmap(image)
-                        .build();
-                SharePhotoContent content = new SharePhotoContent.Builder()
-                        .addPhoto(photo)
-                        .build();
-                ShareApi.share(content, null);
-                Toast.makeText(getActivity(),"ffffff",Toast.LENGTH_SHORT).show();
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bytes = stream.toByteArray();
+
+                if ((bytes.length % dataLength == 0))
+                    sumCountpackage = bytes.length / dataLength;
+                else
+                    sumCountpackage = (bytes.length / dataLength) + 1;
+
+                Log.i("TAG", "文件總長度:" + bytes.length);
+                final ServerFile serverFile = new ServerFile();
+                serverFile.setSumCountPackage(sumCountpackage);
+                serverFile.setCountPackage(1);
+                serverFile.setBytes(bytes);
+                serverFile.setSendId(login_id);
+                serverFile.setReceiveId(friend_id);
+                serverFile.setFileName(Build.MANUFACTURER + "-" + UUID.randomUUID() + ".jpg");
+                IMConnection connection = Client_UserHandler.getConnection();
+                IMResponse resp = new IMResponse();
+                Header header = new Header();
+                header.setHandlerId(Handlers.MESSAGE);
+                header.setCommandId(Commands.USER_FILE_REQUEST);
+                resp.setHeader(header);
+                resp.writeEntity(new FileDTO(serverFile));
+                connection.sendResponse(resp);
+                System.out.println("文件已經讀取完畢");
+
+                //Find the dir to save cached images**************************************************************************
+                File cacheDir;
+                if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+                    //Creates a new File instance from a parent abstract pathname and a child pathname string.
+                    cacheDir=new File(android.os.Environment.getExternalStorageDirectory(),"TTImages_cache");
+                else
+                    cacheDir= getActivity().getCacheDir();
+                if(!cacheDir.exists())
+                    cacheDir.mkdirs();
+
+                cacheDir = new File(cacheDir , String.valueOf(image.toString().hashCode()));
+
+                saveSqliteHistory(cacheDir.getAbsolutePath(),0,"1");
+
+                try {
+                    RandomAccessFile randomAccessFile = new RandomAccessFile(cacheDir, "rw");
+                    randomAccessFile.write(bytes);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                //******************************************************************************************
+
+                getActivity().setResult(-1);
+                getActivity().finish();
             }
         });
 
@@ -341,6 +411,35 @@ public class  DrawBoardFragement extends Fragment {
                 drawableView.undo();
             }
         });*/
+
+    }
+
+    //儲存資料進sqlite裡
+    private void saveSqliteHistory(String messageText , int me , String type){
+        //創建MyDBHelper對象
+        MyDBHelper dbHelper = new MyDBHelper(getActivity(), "Chat.db", null, 1);
+        //得到一個可讀的SQLiteDatabase對象
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        //生成ContentValues​​對象 //key:列名，value:想插入的值
+        ContentValues cv = new ContentValues();
+
+        //往ContentValues​​對象存放數據，鍵-值對模式
+        if(me == 0) {
+            cv.put("from_id", login_id);
+            cv.put("to_id", friend_id);
+        }else{
+            cv.put("from_id", friend_id);
+            cv.put("to_id" , login_id);
+        }
+        cv.put("content", messageText);
+        cv.put("type" , type);
+
+        //調用insert方法，將數據插入數據庫
+        db.insert("Message", null, cv);
+        //關閉數據庫
+        db.close();
+
     }
 
     //初始化破玻璃特效頁面
@@ -378,7 +477,7 @@ public class  DrawBoardFragement extends Fragment {
         {
             hideButton();
             fos = new FileOutputStream(String.format(Environment.getExternalStorageDirectory().getAbsolutePath()+"/edited_%d.png",now));
-            drawableView.obtainBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
+            //drawableView.obtainBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
             loadBitmapFromView(drawboard_layout).compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
             fos.close();
@@ -481,7 +580,7 @@ public class  DrawBoardFragement extends Fragment {
 
                 Toast.makeText(getActivity(), menuEntity1.title + "  " + position, Toast.LENGTH_SHORT).show();
                 initBrokenLayout();
-                return true;
+                return false;
             }
         });
 
@@ -524,17 +623,8 @@ public class  DrawBoardFragement extends Fragment {
                 Log.i(TAG, "Creating another View");
                 StickerImageView stickerImageView = new StickerImageView(getActivity());
                 stickerImageView.setImageBitmap(returnedImage);
-                //TouchView newView = new TouchView(getActivity(),mDrawBoardFragement,new BitmapDrawable(returnedImage),mViewsCount,1f);
-                //newView.setImageLocation(getPath(selectedImage));
-                //newView.setClickable(true);
-                // below is to ensure red border is drawn on new selected image
-                //newView.setmSelected(true);
-                //mViewsArray.add(newView);
                 stickerImageViews.add(stickerImageView);
-                //drawboard_layout.addView(mViewsArray.get(mViewsCount));
                 drawboard_layout.addView(stickerImageView);
-                //newView.invalidate();
-                //mViewsCount+=1;
             }
             catch(NullPointerException e){
                 //Do nothing
@@ -575,17 +665,7 @@ public class  DrawBoardFragement extends Fragment {
                 Log.i(TAG, "Creating another View");
                 StickerImageView stickerImageView = new StickerImageView(getActivity());
                 stickerImageView.setImageBitmap(returnedImage);
-
-                //TouchView newView = new TouchView(getActivity(),mDrawBoardFragement,new BitmapDrawable(returnedImage),mViewsCount,1f);
-                //newView.setImageLocation(getPath(selectedImage));
-                //newView.setClickable(true);
-                // below is to ensure red border is drawn on new selected image
-                //newView.setmSelected(true);
-                //mViewsArray.add(newView);
-                //drawboard_layout.addView(mViewsArray.get(mViewsCount));
                 drawboard_layout.addView(stickerImageView);
-                //newView.invalidate();
-                //mViewsCount+=1;
             } catch (FileNotFoundException e) {
 
             }
