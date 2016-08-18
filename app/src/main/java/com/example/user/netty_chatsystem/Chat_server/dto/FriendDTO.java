@@ -36,7 +36,7 @@ public class FriendDTO implements IMSerializer {
         buffer.writeInt(friend.getIsFavorite());
         buffer.writeInt(friend.getIsBlock());
         buffer.writeInt(friend.getViewer());
-        buffer.writeIntArray(friend.getFavoriteArray());
+           buffer.writeIntArray(friend.getFavoriteArray());
         buffer.writeIntArray(friend.getBlockArray());
         buffer.writeIntArray(friend.getViewerArray());
         return buffer;
