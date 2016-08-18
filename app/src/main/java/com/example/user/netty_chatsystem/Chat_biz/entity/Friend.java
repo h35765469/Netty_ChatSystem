@@ -6,12 +6,16 @@ package com.example.user.netty_chatsystem.Chat_biz.entity;
 public class Friend {
     private String friendUserName;
     private String friendName;
+    private String originalFriendName="";
     private String username;
     private String[] friendArray;
+    private String[] friendNameArray={};
     private int isFavorite = 0;
     private int isBlock = 0;
+    private int viewer = 0;
     private int[] favoriteArray = {0};
     private int[] blockArray = {0};
+    private int[] viewerArray = {0};
 
 
     public Friend(){
@@ -39,6 +43,14 @@ public class Friend {
         this.friendName = friendName;
     }
 
+    public String getOriginalFriendName(){
+        return originalFriendName;
+    }
+
+    public void setOriginalFriendName(String myselfFriendName){
+        this.originalFriendName = originalFriendName;
+    }
+
     public String getUserName(){
         return username;
     }
@@ -46,6 +58,7 @@ public class Friend {
     public void setUserName(String username){
         this.username = username;
     }
+
 
     public String[] getFriendArray(){
         return friendArray;
@@ -55,6 +68,11 @@ public class Friend {
         this.friendArray = friendArray;
     }
 
+    public String[] getFriendNameArray(){return friendNameArray;}
+
+    public void setFriendNameArray(String[] friendNameArray){
+        this.friendNameArray = friendNameArray;
+    }
 
     public int getIsFavorite(){
         return isFavorite;
@@ -70,6 +88,14 @@ public class Friend {
 
     public void setIsBlock(int isBlock){
         this.isBlock = isBlock;
+    }
+
+    public int getViewer(){
+        return viewer;
+    }
+
+    public void setViewer(int viewer){
+        this.viewer = viewer;
     }
 
     public int[] getFavoriteArray(){
@@ -88,5 +114,12 @@ public class Friend {
         this.blockArray = blockArray;
     }
 
+    public int[] getViewerArray(){
+        return viewerArray;
+    }
+
+    public void setViewerArray(int[] viewerArray){
+        this.viewerArray = viewerArray;
+    }
 
 }
