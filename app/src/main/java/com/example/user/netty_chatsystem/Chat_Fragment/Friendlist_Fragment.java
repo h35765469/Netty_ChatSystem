@@ -1,7 +1,9 @@
 package com.example.user.netty_chatsystem.Chat_Fragment;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.example.user.netty_chatsystem.ChangePassword_Activity;
@@ -23,6 +26,7 @@ import com.example.user.netty_chatsystem.Chat_Listview_Friendlist.CustomBaseAdap
 import com.example.user.netty_chatsystem.Chat_Listview_Friendlist.CustomBaseAdapter_horizontal;
 import com.example.user.netty_chatsystem.Chat_Listview_Friendlist.RowItem;
 import com.example.user.netty_chatsystem.Chat_Sharepreference.SharePreferenceManager;
+import com.example.user.netty_chatsystem.Chat_Sqlite_ChatHistory.MyDBHelper;
 import com.example.user.netty_chatsystem.Chat_biz.entity.Friend;
 import com.example.user.netty_chatsystem.Chat_core.connetion.IMConnection;
 import com.example.user.netty_chatsystem.Chat_core.protocol.Commands;
@@ -35,6 +39,7 @@ import com.example.user.netty_chatsystem.Search_Activity;
 
 import org.lucasr.twowayview.TwoWayView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +54,7 @@ public class Friendlist_Fragment extends BaseFragment {
     public static final Integer[] images = { R.drawable.bomb ,  R.drawable.bomb};
 
     public String [] Id_array;
+    public String [] friendNameArray;
 
     // name
     String username;
@@ -71,6 +77,9 @@ public class Friendlist_Fragment extends BaseFragment {
     ListView Friendlist_listview;
     TwoWayView favorite_listview;
 
+    //將listview的adapter作為全域變數
+    private CustomBaseAdapter adapter;
+
 
     //用來處理獲得friend array之後的handler
     protected Handler handler = new Handler(){
@@ -80,6 +89,7 @@ public class Friendlist_Fragment extends BaseFragment {
             super.handleMessage(msg);
             // Put code here...
             friendArray = msg.getData().getStringArray("friendArray");
+            friendNameArray = msg.getData().getStringArray("friendNameArray");
             int[] favoriteArray = msg.getData().getIntArray("favoriteArray");
             int[] blockArray = msg.getData().getIntArray("blockArray");
             titles = friendArray;
@@ -89,13 +99,13 @@ public class Friendlist_Fragment extends BaseFragment {
             List<RowItem> favoriteRowItems = new ArrayList<RowItem>();
 
             for(int i = 0 ; i < titles.length ; i++){
-                RowItem item = new RowItem(images[i], titles[i],Id_array[i]);
+                RowItem item = new RowItem(images[i], friendNameArray[i],Id_array[i]);
                 if(favoriteArray[i] == 1){
                     favoriteRowItems.add(item);
                 }
                 rowItems.add(item);
             }
-            CustomBaseAdapter adapter = new CustomBaseAdapter(getActivity(),rowItems);
+            adapter = new CustomBaseAdapter(getActivity(),rowItems);
             CustomBaseAdapter_horizontal adapter_horizontal = new CustomBaseAdapter_horizontal(getActivity(),favoriteRowItems);
 
             Friendlist_listview.setAdapter(adapter);
@@ -138,10 +148,11 @@ public class Friendlist_Fragment extends BaseFragment {
         Client_UserHandler clientUserHandler = new Client_UserHandler();
         clientUserHandler.setFriendListListener(new Client_UserHandler.FriendListListener() {
             @Override
-            public void onFriendListEvent(String[] friendArray, int[] favoriteArray, int[] blockArray) {
+            public void onFriendListEvent(String[] friendArray, String[] friendNameArray , int[] favoriteArray, int[] blockArray) {
                 Message message = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putStringArray("friendArray", friendArray);
+                bundle.putStringArray("friendNameArray", friendNameArray);
                 bundle.putIntArray("favoriteArray", favoriteArray);
                 bundle.putIntArray("blockArray" , blockArray);
                 message.setData(bundle);
@@ -187,13 +198,16 @@ public class Friendlist_Fragment extends BaseFragment {
                 final Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
                 dialog.setContentView(R.layout.resource_friendlist_dialog);
 
+                TextView friendName_textview = (TextView)dialog.findViewById(R.id.friendname_textview);
+                friendName_textview.setText(friendNameArray[position]);
+
                 // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
                 WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
                 lp.dimAmount = 0.2f;
                 dialog.getWindow().setAttributes(lp);
                 dialog.show();
 
-                //進入虛擬人物房間
+                //進入memory區
                 ImageView roomicon_imageview = (ImageView) dialog.findViewById(R.id.roomicon_imageview);
                 roomicon_imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -226,9 +240,8 @@ public class Friendlist_Fragment extends BaseFragment {
                     public void onClick(View v) {
                         final Dialog setting_dialog = new Dialog(getActivity(), R.style.selectorDialog);
                         setting_dialog.setContentView(R.layout.resource_friendlist_settinglist_dialog);
-
                         //設定dialog_setiing上按鈕的功能
-                        Assign_settingdialog(setting_dialog ,Id_array[position]);
+                        Assign_settingdialog(setting_dialog, Id_array[position] , position);
 
                         // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
                         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
@@ -265,11 +278,16 @@ public class Friendlist_Fragment extends BaseFragment {
                 final Dialog dialog = new Dialog(getActivity(),R.style.selectorDialog);
                 dialog.setContentView(R.layout.resource_friendlist_dialog);
 
+                TextView friendName_textview = (TextView)dialog.findViewById(R.id.friendname_textview);
+                friendName_textview.setText(friendNameArray[position]);
+
                 // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
                 WindowManager.LayoutParams lp=dialog.getWindow().getAttributes();
                 lp.dimAmount=0.2f;
                 dialog.getWindow().setAttributes(lp);
                 dialog.show();
+
+
 
                 //進入虛擬人物房間
                 ImageView roomicon_imageview = (ImageView)dialog.findViewById(R.id.roomicon_imageview);
@@ -306,7 +324,7 @@ public class Friendlist_Fragment extends BaseFragment {
                         setting_dialog.setContentView(R.layout.resource_friendlist_settinglist_dialog);
 
                         //設定dialog_setiing上按鈕的功能
-                        Assign_settingdialog(setting_dialog , Id_array[position]);
+                        Assign_settingdialog(setting_dialog , Id_array[position] , position);
 
                         // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
                         WindowManager.LayoutParams lp=dialog.getWindow().getAttributes();
@@ -363,12 +381,16 @@ public class Friendlist_Fragment extends BaseFragment {
 
     //新增好友
     public void addFriend(String username){
+        saveFriendInSqlite();
+
         connection = Client_UserHandler.getConnection();
         Friend friend = new Friend();
         friend.setUserName(username);
         friend.setFriendArray(new String[0]);
-        friend.setFriendUserName("456");
+        friend.setFriendUserName("h35765452@yahoo.com.tw");
         friend.setFriendName("");
+
+        //createSqliteTable(username);
 
         IMResponse resp = new IMResponse();
         Header header = new Header();
@@ -377,6 +399,54 @@ public class Friendlist_Fragment extends BaseFragment {
         resp.setHeader(header);
         resp.writeEntity(new FriendDTO(friend));
         connection.sendResponse(resp);
+
+    }
+
+
+    //新增好友訊息到friend的sqlite裡
+    private void saveFriendInSqlite(){
+        //創建MyDBHelper對象
+        MyDBHelper dbHelper = new MyDBHelper(getActivity() , "Chat.db", null, 1);
+        //得到一個可讀的SQLiteDatabase對象
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        //生成ContentValues​​對象 //key:列名，value:想插入的值
+        ContentValues cv = new ContentValues();
+
+        //往ContentValues​​對象存放數據，鍵-值對模式
+        cv.put("username", username);
+        cv.put("friendusername", "h35765452@yahoo.com.tw");
+        cv.put("friendname", "h35765452@yahoo.com.tw");
+
+        //0代表未封鎖 1 代表封鎖
+        cv.put("block" , "0");
+
+        //0代表顯示可讀 ，1代表不顯示
+        cv.put("viewer", "0");
+
+        File cacheDir=new File(android.os.Environment.getExternalStorageDirectory(),"TTImages_cache");
+        cacheDir = new File(cacheDir,"1944246116" );
+        cv.put("friendprofile", cacheDir.getAbsolutePath());
+
+
+        //調用insert方法，將數據插入數據庫
+        db.insert("Friend", null, cv);
+        //關閉數據庫
+        db.close();
+
+    }
+
+    //更改觀察者狀態到sqlite裡
+    public void updateViewerInSqlite(){
+        //創建MyDBHelper對象
+        MyDBHelper dbHelper = new MyDBHelper(getActivity() , "Chat.db", null, 1);
+        //得到一個可讀的SQLiteDatabase對象
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        //生成ContentValues​​對象 //key:列名，value:想插入的值
+        ContentValues cv = new ContentValues();
+        cv.put("viewer","1");
+        db.update("Friend", cv , "id = 1",null);
 
     }
 
@@ -435,6 +505,25 @@ public class Friendlist_Fragment extends BaseFragment {
         connection.sendResponse(resp);
     }
 
+    //設定觀察者
+    public void setViewFriend(String username , String friendUserName , int viewer){
+        connection = Client_UserHandler.getConnection();
+        Friend friend = new Friend();
+        friend.setUserName(username);
+        friend.setFriendUserName(friendUserName);
+        friend.setFriendName("");
+        friend.setFriendArray(new String[0]);
+        friend.setViewer(viewer);
+
+        IMResponse resp = new IMResponse();
+        Header header = new Header();
+        header.setHandlerId(Handlers.USER);
+        header.setCommandId(Commands.FRIEND_VIEWER_REQUEST);
+        resp.setHeader(header);
+        resp.writeEntity(new FriendDTO(friend));
+        connection.sendResponse(resp);
+    }
+
     //編輯姓名
     public void editFriendName(String username , String friendUserName , String friendName){
         connection = Client_UserHandler.getConnection();
@@ -451,16 +540,17 @@ public class Friendlist_Fragment extends BaseFragment {
         resp.setHeader(header);
         resp.writeEntity(new FriendDTO(friend));
         connection.sendResponse(resp);
+
     }
 
 
     //設定dialog_setiing上按鈕的功能
-    public void Assign_settingdialog(final Dialog setting_dialog , final String friendName){
+    public void Assign_settingdialog(final Dialog setting_dialog , final String friendUserName , final int position){
+
         ImageView editnameicon_imageview = (ImageView)setting_dialog.findViewById(R.id.editnameicon_imageview);
         ImageView viewericon_imageview = (ImageView)setting_dialog.findViewById(R.id.viewericon_imageview);
         ImageView blockadeicon_imageview = (ImageView)setting_dialog.findViewById(R.id.blockadeicon_imageview);
         ImageView deleteicon_imageview = (ImageView)setting_dialog.findViewById(R.id.deleteicon_imageview);
-
 
         editnameicon_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -477,7 +567,9 @@ public class Friendlist_Fragment extends BaseFragment {
                 editname_yes_imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        editFriendName(username,friendName,friendname_edit.getText().toString());
+                        editFriendName(username,friendUserName,friendname_edit.getText().toString());
+                        adapter.getItem(position).setTitle(friendname_edit.getText().toString());
+                        adapter.notifyDataSetChanged();
                         editname_dialog.dismiss();
                     }
                 });
@@ -506,10 +598,13 @@ public class Friendlist_Fragment extends BaseFragment {
                         if(eyechange_count == 0){
                             eye_imageview.setImageResource(R.drawable.medical_open);
                             eyechange_count = 1;
+                            //updateViewerInSqlite();
+                            setViewFriend(username,friendUserName,0);
                         }
                         else{
                             eye_imageview.setImageResource(R.drawable.medical_close);
                             eyechange_count = 0;
+                            setViewFriend(username,friendUserName,1);
                         }
                     }
                 });
@@ -530,7 +625,7 @@ public class Friendlist_Fragment extends BaseFragment {
                 blockade_yes_imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setBlockFriend(username , friendName);
+                        setBlockFriend(username , friendUserName);
                         blockade_dialog.dismiss();
                     }
                 });
@@ -558,7 +653,7 @@ public class Friendlist_Fragment extends BaseFragment {
                 delete_yes_imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        removeFriend(username , friendName);
+                        removeFriend(username , friendUserName);
                         delete_dialog.dismiss();
                     }
                 });
