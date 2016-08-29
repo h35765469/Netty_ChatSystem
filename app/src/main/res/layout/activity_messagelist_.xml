@@ -11,8 +11,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/layout_edging">
+            android:layout_height="50dp">
 
 
             <ImageView
@@ -31,7 +30,8 @@
                 android:text="Message"
                 android:id="@+id/textView12"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:textColor="#2f52ec" />
 
         </RelativeLayout>
 
