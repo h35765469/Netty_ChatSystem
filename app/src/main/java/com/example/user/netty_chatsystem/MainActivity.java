@@ -27,6 +27,7 @@ import com.facebook.login.widget.LoginButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private ProfileTracker profileTracker;
     private AccessTokenTracker accessTokenTracker;
     //List<String> permissionNeeds = Arrays.asList("publish_actions");
-    List<String> permissionNeeds = new ArrayList<>();
+    List<String> permissionNeeds = new ArrayList<String>();
 
 
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        callbackManager = CallbackManager.Factory.create();
         Login_imageview = (ImageView)findViewById(R.id.login_imageview);
         Register_imageview = (ImageView)findViewById(R.id.signup_imageview);
         Account_edit = (EditText)findViewById(R.id.accounts);
@@ -80,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
         Forgetpassword_textview = (TextView)findViewById(R.id.forgetpassword_textview);
 
         facebookButton = (LoginButton)findViewById(R.id.facebook_button);
-        callbackManager = CallbackManager.Factory.create();
 
         //添加FB的適當權限
         permissionNeeds.add("public_profile");
         permissionNeeds.add("email");
         permissionNeeds.add("user_birthday");
-
+        permissionNeeds.add("user_friends");
         facebookButton.setReadPermissions(permissionNeeds);
+
 
         accessTokenTracker = new AccessTokenTracker() {
             @Override
@@ -118,16 +120,27 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onCompleted(JSONObject object , GraphResponse response){
-                        Bundle facebookData = getFacebookData(object);
-                        sharePreferenceManager.createLoginSession(facebookData.getString("email") , "facebook");
                         Intent intent = new Intent(MainActivity.this, Character_Activity.class);
+                        Bundle facebookData = getFacebookData(object);
+                        //loginType 0 : 普通登入 ， 1 : facebook登入
+                        facebookData.putInt("loginType" , 1);
+                        sharePreferenceManager.createLoginSession(facebookData.getString("email") , "facebook");
 
+                        //以下為獲取fb好友使用
+                        try{
+                            JSONArray rawName = response.getJSONObject().getJSONArray("data");
+                            facebookData.putString("fbFriend",rawName.toString());
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        //----------------------------------------
+                        intent.putExtras(facebookData);
                         startActivity(intent);
                         finish();
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields" , " id , first_name , last_name , email , gender , birthday, location");
+                parameters.putString("fields" , " id , first_name , last_name , email , gender , birthday, location , cover, picture.type(large)");
                 request.setParameters(parameters);
                 request.executeAsync();
 
