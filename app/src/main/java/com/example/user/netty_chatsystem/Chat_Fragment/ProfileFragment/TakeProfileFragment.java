@@ -3,6 +3,7 @@ package com.example.user.netty_chatsystem.Chat_Fragment.ProfileFragment;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.user.netty_chatsystem.Chat_Fragment.CameraFragment.OpenCameraFragment;
 import com.example.user.netty_chatsystem.Chat_Sharepreference.SharePreferenceManager;
@@ -41,24 +43,18 @@ public class TakeProfileFragment extends Fragment {
         ImageView takeProfileImg = (ImageView)rootView.findViewById(R.id.takeProfileImg);
         ImageView backImg = (ImageView)rootView.findViewById(R.id.backImg);
 
-        final DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.logo)
-                .showImageForEmptyUri(R.drawable.ic_empty)
-                .showImageOnFail(R.drawable.delete_color)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-
 
         SharePreferenceManager sharePreferenceManager = new SharePreferenceManager(getActivity());
-        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
-        ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File file = new File(directory.getAbsolutePath(), sharePreferenceManager.getProfileName());
-        com.example.user.netty_chatsystem.Chat_Fragment.CameraFragment.internal.utils.ImageLoader.Builder builder = new com.example.user.netty_chatsystem.Chat_Fragment.CameraFragment.internal.utils.ImageLoader.Builder(getActivity());
-        builder.load(file.getAbsolutePath()).build().into(profilePreviewImg);
+        if(sharePreferenceManager.getProfileName().length() > 0){
+            ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
+            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            File file = new File(directory.getAbsolutePath(), sharePreferenceManager.getProfileName());
+            com.example.user.netty_chatsystem.Chat_Fragment.CameraFragment.internal.utils.ImageLoader.Builder builder = new com.example.user.netty_chatsystem.Chat_Fragment.CameraFragment.internal.utils.ImageLoader.Builder(getActivity());
+            builder.load(file.getAbsolutePath()).build().into(profilePreviewImg);
+        }else{
+            profilePreviewImg.setBackgroundColor(Color.parseColor("#F22F08"));
+            profilePreviewImg.setImageResource(R.drawable.logo);
+        }
 
         takeProfileImg.setOnClickListener(new View.OnClickListener() {
             @Override
