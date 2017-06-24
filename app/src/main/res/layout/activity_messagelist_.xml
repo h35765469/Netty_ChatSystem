@@ -1,47 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.netty_chatsystem.Messagelist_Activity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
+        android:id="@+id/chatbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
+        <TextView
+            android:id="@+id/messageNameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="false"
+            android:layout_marginLeft="3dp"
+            android:gravity="fill_vertical"
+            android:text="驚喜包"
+            android:textColor="@android:color/background_light"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/messagelist_search_imageview"
-                android:src="@drawable/search"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Message"
-                android:id="@+id/textView12"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:textColor="#2f52ec" />
-
-        </RelativeLayout>
-
-        <ListView
+        <TextView
+            android:id="@+id/messageNumberTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/messagelist_listview"
-            android:headerDividersEnabled="true" />
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="22dp"
+            android:layout_toRightOf="@+id/messageNameTxt"
+            android:gravity="fill_vertical"
+            android:text="(2)"
+            android:textColor="@android:color/background_light"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/searchbarTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="false"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="21dp"
+            android:layout_toLeftOf="@+id/newpostTxt"
+            android:text="S"
+            android:textColor="@android:color/background_light"
+            android:textSize="22sp" />
 
+        <TextView
+            android:id="@+id/newpostTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="S"
+            android:textColor="@android:color/background_light"
 
-    </LinearLayout>
+            android:textSize="22sp" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/messagelist_listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chatbar"
+        android:divider="@drawable/listdivider"
+        android:dividerHeight="0dp"
+        />
+
+    <TextView
+        android:id="@+id/noMessageText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chatbar"
+        android:layout_centerInParent="false"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="無訊息"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
 </RelativeLayout>

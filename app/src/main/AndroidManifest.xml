@@ -1,78 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.user.netty_chatsystem" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cool.user.netty_chatsystem">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
-    <application>
-        <meta-data android:name="com.facebook.sdk.ApplicationId"  android:value="@string/facebook_app_id"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+
+
+    <application
+        android:icon="@drawable/logo_red"
+        android:label="WowChat">
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+
+        <service android:name="com.cool.user.netty_chatsystem.Chat_Service.ChatService"></service>
+
+        <receiver android:name="com.cool.user.netty_chatsystem.Chat_Service.ChatBroadcastReceiver">
+            <intent-filter>
+                <!-- 使用Action名稱設定接收的廣播事件 -->
+                <action android:name="com.netty_chatsystem.ChatBroadcast" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.cool.user.netty_chatsystem.Chat_Service.ChatAutoDeleteMessageCastReceiver"></receiver>
+
+        <receiver android:name=".Chat_Service.ChatRestartServiceBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.netty_chatsystem.ActivityRecognition.RestartService" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.cool.user.netty_chatsystem.Chat_Service.ChatRestartBroadCastReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.netty_chatsystem.ActivityRecognition.RestartSensor" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
 
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme" >
+            android:name="com.cool.user.netty_chatsystem.MainActivity"
+            android:largeHeap="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/FriendlistBarTheme">
+
+        </activity>
+
+        <activity
+            android:name="com.cool.user.netty_chatsystem.Chat_Album.CustomGalleryActivity"
+            android:theme="@style/FriendlistBarTheme">
         </activity>
         <activity
-            android:name=".Friendlist_Activity"
-            android:label="PetChat"
-            android:logo="@drawable/button"
-            android:theme="@style/FriendlistBarTheme" >
+            android:name="com.cool.user.netty_chatsystem.Chat_Album.PreviewPictureActivity"
+            android:theme="@style/FriendlistBarTheme">
         </activity>
         <activity
-            android:name=".Register_Activity"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:name="com.cool.user.netty_chatsystem.Register_Activity"
+            android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".Chat_Activity"
-            android:theme="@style/TitleBarTheme" >
-        </activity>
+            android:name="com.cool.user.netty_chatsystem.ChangePassword_Activity"
+            android:theme="@style/FriendlistBarTheme"></activity>
         <activity
-            android:name=".Character_Activity"
-            android:label="Pet"
-            android:logo="@drawable/dog_footprint"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
+            android:name="com.cool.user.netty_chatsystem.DrawBoard_Activity"
+            android:theme="@style/FriendlistBarTheme"></activity>
         <activity
-            android:name=".Bombmode_Activity"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:name="com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.MultiImageSelectorActivity"
+            android:theme="@style/FriendlistBarTheme"></activity>
+
         <activity
-            android:name=".Messagelist_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity
-            android:name=".Search_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity
-            android:name=".BombMessage_video_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity
-            android:name=".ChangePassword_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity
-            android:name=".Myself_setting_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity
-            android:name=".Addfriend_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity
-            android:name=".Phonebook_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity
-            android:name=".TextMessage_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity
-            android:name=".DrawBoard_Activity"
-            android:theme="@style/FriendlistBarTheme" >
-        </activity>
-        <activity android:name=".Logo_Activity"
+            android:name="com.cool.user.netty_chatsystem.Logo_Activity"
             android:theme="@style/FriendlistBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -80,17 +103,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider243989642647643"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true">
-        </provider>
+            android:authorities="com.facebook.app.FacebookContentProvider1901536723418390"
+            android:exported="true"></provider>
+
+        <activity
+            android:name="com.cool.user.netty_chatsystem.EffectShowActivity"
+            android:theme="@style/FriendlistBarTheme"></activity>
+        <activity
+            android:name="com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Camera.FaceTrackerActivity"
+            android:theme="@style/FriendlistBarTheme"></activity>
+        <activity
+            android:name="com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Camera.MainActivity2"
+            android:theme="@style/FriendlistBarTheme"></activity>
+        <activity
+            android:name="com.cool.user.netty_chatsystem.Chat_Fragment.CameraFragment.PreviewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/FriendlistBarTheme"></activity>
+
+        <activity
+            android:name="com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment.ProfilePreviewActivity"
+            android:theme="@style/FriendlistBarTheme">
+        </activity>
+
+        <activity
+            android:name=".Chat_Instruction.MyIntro"
+            android:theme="@style/FriendlistBarTheme"
+            ></activity>
+
     </application>
 
 </manifest>

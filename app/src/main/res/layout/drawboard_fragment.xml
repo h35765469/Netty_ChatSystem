@@ -11,22 +11,31 @@
         android:id="@+id/drawboard_layout"
         android:background="#ffffff">
 
-        <com.example.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.DrawableView
-            android:id="@+id/paintView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="false" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView3" />
+
+            <com.cool.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.DrawableView
+                android:id="@+id/paintView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:clickable="false"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="false"
+                android:layout_weight="1" />
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/drawboard_cleanboard_imageivew"
-        android:src="@drawable/no"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp" />
 
     <ImageView
         android:layout_width="30dp"
@@ -60,10 +69,11 @@
         android:layout_height="30dp"
         android:id="@+id/drawboard_store_imageview"
         android:src="@drawable/arrow_store"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="false"
+        android:layout_below="@+id/drawboard_accessory_imageview"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp" />
 
     <ImageView
         android:layout_width="30dp"
@@ -81,8 +91,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:src="@drawable/drawback"
-        android:layout_marginBottom="10dp"
-        android:visibility="invisible" />
+        android:layout_marginBottom="10dp" />
 
     <ImageView
         android:layout_width="30dp"
@@ -93,6 +102,21 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true" />
 
+    <ImageView
+        android:layout_width="800dp"
+        android:layout_height="800dp"
+        android:id="@+id/effectImg"
+        android:layout_margin="15dp"
+        android:background="@drawable/animation_list_boom" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/filterNameText"
+        android:layout_centerInParent="true"
+        android:textColor="#ffffff"
+        android:textSize="40dp" />
 
 
 </RelativeLayout>

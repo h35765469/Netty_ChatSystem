@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:transitionGroup="false"
     android:nestedScrollingEnabled="false"
-    tools:context="com.example.ellis_wu.customdialogdemo.CustomDialogActivity"
+    tools:context="com.cool.ellis_wu.customdialogdemo.CustomDialogActivity"
     android:id="@+id/dialogBackground"
     android:gravity="center_vertical|center_horizontal">
 

@@ -1,6 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp">
 
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/profileImg"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="false"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="121dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/profileImg"
+        android:layout_centerVertical="false"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/profileImg"
+        android:text="WenXuanLee"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_text"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/profileImg"
+        android:text="接收一個神祕訊息 !"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/content"
+        android:layout_centerVertical="false"
+        android:layout_marginTop="5dp"
+        android:text="20:15"
+        android:textColor="@android:color/background_dark"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

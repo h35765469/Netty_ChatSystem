@@ -1,111 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.user.netty_chatsystem.Register_Activity"
-    android:background="#76d3f9">
+    tools:context="com.cool.user.netty_chatsystem.Register_Activity"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentBottom="false"
-        android:layout_marginTop="40dp">
+        android:layout_height="40dp"
+        android:background="#F22F08">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/backImg"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/leftarrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="AmazeChat"
+            android:id="@+id/textView24"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
 
-            <ImageView android:id="@+id/image"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="30dip"
-                android:layout_marginTop="50dip"
-                android:layout_marginRight="30dip"
-                android:scaleType="centerInside"
-                android:maxHeight="4dp"
-                android:maxWidth="4dp"
-                android:minHeight="1dp"
-                android:minWidth="1dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/circle" />
-        </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="註冊帳號以及密碼"
+        android:id="@+id/textView25"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="30dip"
-            android:layout_marginRight="30dip">
+    <EditText
+        android:textColorHint="#b4b3b3" android:id="@+id/Account_edit"
+        android:layout_width="fill_parent" android:layout_height="40dp"
+        android:maxLines="1"
+        android:background="@drawable/linearlayout_conrner_style"
+        android:gravity="center"
+        android:hint="Username"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
+    <EditText
+        android:id="@+id/Password_edit"
+        android:layout_width="fill_parent" android:layout_height="40dp"
+        android:inputType="textPassword"
+        android:layout_marginTop="20dp"
+        android:hint="Password"
+        android:maxLines="1"
+        android:background="@drawable/linearlayout_conrner_style"
+        android:gravity="center"
+        android:textColorHint="#b4b3b3"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp" />
 
-                <com.beardedhen.androidbootstrap.BootstrapEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    app:bootstrapSize="md"
-                    app:bootstrapBrand="info"
-                    android:id="@+id/Account_edit"
-                    android:hint="E-mail" />
-            </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="註冊"
+        android:id="@+id/registerBtn"
+        android:background="@drawable/button_corner_style"
+        android:layout_marginTop="20dp"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
 
-                <com.beardedhen.androidbootstrap.BootstrapEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    app:bootstrapSize="md"
-                    app:bootstrapBrand="warning"
-                    android:hint="Password"
-                    android:id="@+id/Password_edit" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/Register_imageview"
-                    android:src="@drawable/button_register_style" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Login"
-                android:layout_gravity="center_horizontal"
-                android:textColor="#fefefe"
-                android:textSize="20dp"
-                android:id="@+id/login_textview" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

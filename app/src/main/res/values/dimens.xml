@@ -11,4 +11,22 @@
     <dimen name="color_swatch_small">48dip</dimen>
     <dimen name="color_swatch_margins_large">8dip</dimen>
     <dimen name="color_swatch_margins_small">4dip</dimen>
+
+
+    <!--畫板使用-->
+    <dimen name="space_size">2dp</dimen>
+    <dimen name="folder_cover_size">72dp</dimen>
+    <dimen name="grid_width">100dp</dimen>
+    <dimen name="bottom_marin">0dp</dimen>
+    <dimen name="right_margin">0dp</dimen>
+    <dimen name="control_btn_padding">2dp</dimen>
+    <dimen name="control_draw_padding">3dp</dimen>
+    <dimen name="control_layout_padding">15dp</dimen>
+    <dimen name="sketch_gv_padding">15dp</dimen>
+
+    <!--預設鍵盤高度-->
+    <dimen name="keyboard_height">230dip</dimen>
+
+    <dimen name="dgv_overlap_if_switch_straight_line">16dp</dimen>
+
 </resources>

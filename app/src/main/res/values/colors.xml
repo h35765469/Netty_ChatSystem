@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#FFE4E1E1</color>
-    <color name="colorAccent">#52fef9</color>
-    <color name="ColorPrimary">#FF5722</color>
-    <color name="ColorPrimaryDark">#E64A19</color>
+    <color name="colorPrimary">#EF5350</color>
+    <color name="colorPrimaryDark">#B71C1C</color>
+    <color name="colorAccent">#FF4081</color>
     <color name="transparent_background">#50000000</color>
 
     <color name="blue_light">#33b5e5</color>
@@ -32,5 +30,13 @@
     <color name="lavender">#7986cb</color>
     <color name="grape">#8e24aa</color>
     <color name="flamingo">#e67c73</color>
-    <color name="graphite">#616161</color>
+    <color name="graphite">#0000</color>
+
+    <color name="gray">#eeeeee</color>
+    <color name="com_bg_gray">#aaaaaaaa</color>
+
+    <color name="half_black">#808080</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="divider">#EEEEEE</color>
 </resources>

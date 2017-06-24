@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical" >
-
-<android.support.v4.view.ViewPager
-    android:id="@+id/container"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.oguzdev.circularfloatingactionmenu.samples.MenuWithCustomAnimationActivity"
-    tools:ignore="MergeRootFrame"
-    >
-</android.support.v4.view.ViewPager>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.cool.user.netty_chatsystem.Chat_Fragment.LockableViewPager
+        android:id="@+id/fragmentPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.oguzdev.circularfloatingactionmenu.samples.MenuWithCustomAnimationActivity"
+        tools:ignore="MergeRootFrame">
+    </com.cool.user.netty_chatsystem.Chat_Fragment.LockableViewPager>
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="gone"></FrameLayout>
+
+
+    <com.cool.user.netty_chatsystem.Chat_Fragment.MainFragment.ntb.NavigationTabBar
+        android:id="@+id/ntb_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        app:ntb_active_color="#F3CD05"
+        app:ntb_animation_duration="1"
+        app:ntb_bg_color="#FF929090"
+        app:ntb_inactive_color="#ffffff" />
+
 
 </LinearLayout>

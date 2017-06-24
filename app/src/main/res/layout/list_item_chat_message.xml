@@ -2,44 +2,122 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
     <LinearLayout
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/txtInfo"
+            android:id="@+id/nameText"
             android:layout_width="wrap_content"
-            android:layout_height="30sp"
-            android:layout_gravity="right"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray" />
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone" />
+
 
         <LinearLayout
             android:id="@+id/contentWithBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="@drawable/in_message_bg"
-            android:paddingLeft="10dp"
+            android:orientation="vertical"
             android:paddingBottom="10dp"
-            android:orientation="vertical">
+            android:paddingLeft="10dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/txtMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:longClickable="false"
+                android:maxWidth="240dp"
                 android:textColor="@android:color/black"
-                android:maxWidth="240dp" />
+                android:textIsSelectable="false" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/picMessage" />
+                android:id="@+id/picMessage"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/txtInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30sp"
+            android:layout_gravity="right"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/myself"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="false"
+        android:layout_below="@+id/other"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/myselfChatTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="false"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/myselfcorner"
+            android:paddingBottom="10dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:text="Hi this is Ben"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/other"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/otherChatTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentTop="false"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/userphoto"
+            android:background="@drawable/corner"
+
+            android:paddingBottom="10dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:text="Hi this is Ben"
+            android:textColor="@android:color/background_dark"
+            android:textSize="16sp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userphoto"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/logo_red" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

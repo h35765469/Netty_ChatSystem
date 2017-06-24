@@ -34,7 +34,7 @@
             android:layout_gravity="center"
             android:gravity="center" />
 
-        <com.example.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.penColor.colorpicker.ColorPickerPalette
+        <com.cool.user.netty_chatsystem.Chat_DrawBoard.DrawBoard.penColor.colorpicker.ColorPickerPalette
             android:id="@+id/color_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

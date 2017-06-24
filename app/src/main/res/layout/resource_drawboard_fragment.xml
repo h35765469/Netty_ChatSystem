@@ -12,13 +12,13 @@
         android:layout_marginTop="10dp"
         android:src="#e09eed" />
 
-    <com.example.user.netty_chatsystem.Chat_CustomeElement.ProgressBar.DrawBoard_drawview
+    <com.cool.user.netty_chatsystem.Chat_CustomeElement.ProgressBar.DrawBoard_drawview
         android:id="@+id/drawingview"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true">
 
-    </com.example.user.netty_chatsystem.Chat_CustomeElement.ProgressBar.DrawBoard_drawview>
+    </com.cool.user.netty_chatsystem.Chat_CustomeElement.ProgressBar.DrawBoard_drawview>
 
     <ImageView
         android:layout_width="30dp"

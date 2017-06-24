@@ -1,65 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:id="@+id/parentLayout">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/colorPrimary"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:id="@+id/chatBackTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="S"
+                    android:textColor="@android:color/background_light"
+
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/friendNameTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="false"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="false"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="fill_vertical"
+                    android:text="Evility"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RtlHardcoded" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="00:00聊天消除"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000000" />
+
             <ListView
                 android:id="@+id/messagesContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:stackFromBottom="true"
+                android:transcriptMode="alwaysScroll"
+                android:divider="@drawable/listdivider"
+                android:dividerHeight="0dp"
+                >
             </ListView>
+
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_style"
-            >
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
                 android:id="@+id/bombSend_imageview"
-                android:src="@drawable/bombmessage" />
-
-
-            <com.beardedhen.androidbootstrap.BootstrapEditText
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                app:bootstrapSize="md"
-                app:bootstrapBrand="info"
-                android:hint="Message"
-                android:id="@+id/messageEdit"
-                android:layout_alignParentBottom="true"
-                android:layout_weight="1"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:textColor="#020000" />
-
-            <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:src="@drawable/camera_black" />
+
+            <ImageView
+                android:id="@+id/stickerListImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/smile_gray"
+                android:visibility="gone" />
+
+
+            <EditText
+                android:id="@+id/messageEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_corner" />
+
+            <ImageView
                 android:id="@+id/messageSend_imageview"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/sendimage_picturechange" />
 
 
-
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/footer_for_stickers"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:background="@android:color/transparent"
+            android:focusableInTouchMode="false"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </RelativeLayout>

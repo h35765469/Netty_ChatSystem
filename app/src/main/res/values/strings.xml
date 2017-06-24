@@ -2,7 +2,8 @@
     <string name="app_name">Netty_ChatSystem</string>
     <string name="profile_me">My Profile Pic</string>
     <string name="profile_other">Other profile pic</string>
-    <string name="facebook_app_id">243989642647643</string>
+
+    <string name="facebook_app_id">1901536723418390</string>
 
     <string name="color_picker_default_title">Select a Color</string>
     <!-- Content description for a color square. -->
@@ -22,4 +23,44 @@
     <string name="flamingo">Flamingo</string>
     <string name="graphite">Graphite</string>
     <string name="default_color">Default color</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="folder_all">all</string>
+    <string name="folder_first">background</string>
+    <string name="sketch_count_alert">畫板已達最大數量</string>
+
+    <string name="msg_no_camera">No system camera found</string>
+    <string name="msg_amount_limit">Select images amount is limit</string>
+    <string name="action_done">Done</string>
+    <string name="action_button_string">%1$s(%2$d/%3$d)</string>
+    <string name="photo_unit">Shot</string>
+    <string name="error_image_not_exist">Image error</string>
+    <string name="error_no_permission">Has no permission</string>
+    <string name="permission_dialog_title">Permission Deny</string>
+    <string name="permission_dialog_ok">OK</string>
+    <string name="permission_dialog_cancel">CANCEL</string>
+    <string name="permission_rationale_write_storage">Storage write permission is needed to save the image.</string>
+
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+
+
+    <string name="cancel_label">Cancel</string>
+    <string name="ok_label">Ok</string>
+
+    <string name="settings_video_quality_title">Video size %s</string>
+    <string name="settings_photo_quality_title">Photo size</string>
+
+    <!-- Preview Activity -->
+    <string name="preview_controls_confirm">Save</string>
+    <string name="preview_controls_retake">Repeat</string>
+    <string name="preview_controls_cancel">Cancel</string>
+    <string name="preview_controls_crop">Crop</string>
+    <string name="preview_controls_original_ratio_label">Original</string>
+
+    <string name="app_intro_skip">Skip</string>
+
 </resources>
