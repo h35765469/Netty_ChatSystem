@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/collectPreviewRelativeLayout">
+
+    <ImageView
+        android:id="@+id/collectPreViewImg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/showCollectEffectImg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/nextCollectImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/rightarrow"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/iconbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="23dp"
+        android:alpha="0.6"
+        android:background="@android:color/black"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/deleteCollectImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="10dp"
+            android:baselineAlignBottom="false"
+            android:contextClickable="false"
+            app:srcCompat="@drawable/imageview_rubbishbin_style" />
+
+        <ImageView
+            android:id="@+id/collectEffectImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp"
+            android:baselineAlignBottom="false"
+            android:contextClickable="false"
+            app:srcCompat="@drawable/show" />
+
+        <ImageView
+            android:id="@+id/collectThinkImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="10dp"
+            android:baselineAlignBottom="false"
+            android:contextClickable="false"
+            app:srcCompat="@drawable/text"
+
+            />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/collectAddFriendImg"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/friend" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/collectProfileImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@+id/backTxt"
+        android:src="@drawable/profile"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/randomNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/collectProfileImg"
+        android:autoText="false"
+        android:freezesText="false"
+        android:text="WenXuanLee"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:ignore="TextViewEdits" />
+
+    <TextView
+        android:id="@+id/backTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="false"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+
+        android:text="S"
+        android:textColor="@android:color/background_light"
+        android:textSize="22sp"
+        android:visibility="gone" />
+
+    <com.cool.user.netty_chatsystem.Chat_Fragment.UItraViewPager.UltraViewPagerView
+        android:id="@+id/ultra_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/preview_activity_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <com.cool.user.netty_chatsystem.Chat_Fragment.CameraFragment.internal.ui.view.AspectFrameLayout
+        android:id="@+id/previewAspectFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <SurfaceView
+            android:id="@+id/video_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.cool.user.netty_chatsystem.Chat_Fragment.CameraFragment.internal.ui.view.AspectFrameLayout>
+
+    <FrameLayout
+        android:id="@+id/photo_preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:id="@+id/preview_control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#82212121"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/cancelImg"
+            android:layout_weight="1"
+            android:src="@drawable/ic_clear_white_24dp" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/sendImg"
+            android:layout_weight="1"
+            android:src="@drawable/rightarrow" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/saveImg"
+            android:layout_weight="1"
+            android:src="@drawable/arrow_store_white" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/selectEffectImg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/boxempty" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/shareSurpriseEdit"
+        android:layout_above="@+id/preview_control_panel"
+        android:layout_marginBottom="10dp"
+        android:textColor="#ffffff"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:hint="分享你的驚喜"
+        android:textColorHint="#ffffff" />
+
+</RelativeLayout>

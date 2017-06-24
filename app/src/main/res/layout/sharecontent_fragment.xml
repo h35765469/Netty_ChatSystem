@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/shareContentRelativeLayout">
+
+    <ImageView
+        android:id="@+id/downLoadedImg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/randEffectImg"
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <ImageView
+        android:id="@+id/reLoadContentImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/imageview_reloadcontent_style" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bootstrap_gray_dark"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/randContentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="驚喜"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#F22F08"
+            android:textIsSelectable="false"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/firstContentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="搶先看"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/iconbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="23dp"
+        android:alpha="0.6"
+        android:background="@android:color/black"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/collectRandomContentImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="10dp"
+            android:baselineAlignBottom="false"
+            android:contextClickable="false"
+            app:srcCompat="@drawable/like" />
+
+        <ImageView
+            android:id="@+id/launchEffectImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp"
+            android:baselineAlignBottom="false"
+            android:contextClickable="false"
+            app:srcCompat="@drawable/show" />
+
+        <ImageView
+            android:id="@+id/thinkImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="10dp"
+            android:baselineAlignBottom="false"
+            android:contextClickable="false"
+            app:srcCompat="@drawable/text"
+
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/addRandomFriendImg"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginLeft="320dp"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/friend" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/randomProfileImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/profile" />
+
+    <TextView
+        android:id="@+id/randomNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="40dp"
+        android:autoText="false"
+        android:freezesText="false"
+        android:text="WenXuanLee"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

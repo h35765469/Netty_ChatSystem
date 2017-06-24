@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.cool.user.netty_chatsystem.Chat_Fragment.LockableViewPager
+        android:id="@+id/previewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.oguzdev.circularfloatingactionmenu.samples.MenuWithCustomAnimationActivity"
+        tools:ignore="MergeRootFrame"
+        >
+    </com.cool.user.netty_chatsystem.Chat_Fragment.LockableViewPager>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/backImg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/leftarrow" />
+
+</RelativeLayout>
