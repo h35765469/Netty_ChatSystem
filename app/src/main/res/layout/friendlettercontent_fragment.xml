@@ -40,7 +40,8 @@
         <ListView
             android:id="@+id/friendLetterContentListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/noFirstContentText"
@@ -53,6 +54,12 @@
             android:textAppearance="@android:style/TextAppearance.Material.Large"
             android:textSize="15sp"
             android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/friendContentRecycleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadingEdge="none" />
     </RelativeLayout>
 
 </LinearLayout>
