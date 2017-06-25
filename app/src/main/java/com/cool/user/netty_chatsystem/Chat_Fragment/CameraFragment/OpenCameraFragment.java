@@ -114,7 +114,11 @@ public class OpenCameraFragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.replace(globalBundle.getInt("whichFragment"), new AlbumFragment());
+                Bundle bundle = new Bundle();
+                bundle.putInt("whichFragment", globalBundle.getInt("whichFragment"));
+                AlbumFragment albumFragment = new AlbumFragment();
+                albumFragment.setArguments(bundle);
+                fragmentTransaction.replace(globalBundle.getInt("whichFragment"), albumFragment);
                 fragmentTransaction.commit();
             }
         });
