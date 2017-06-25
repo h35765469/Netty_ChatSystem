@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/bootstrap_gray_dark"
         android:orientation="horizontal">
 
         <TextView
@@ -16,6 +17,7 @@
             android:gravity="center"
             android:text="驚喜"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff"
             android:textSize="15dp" />
 
         <TextView
