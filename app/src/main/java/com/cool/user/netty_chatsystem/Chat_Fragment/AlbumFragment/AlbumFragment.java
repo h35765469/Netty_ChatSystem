@@ -103,7 +103,7 @@ public class AlbumFragment extends Fragment {
                 bundle.putInt("whichFragment", globalBundle.getInt("whichFragment"));
                 PreviewFragment previewFragment = new PreviewFragment();
                 previewFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.allContainer, previewFragment);
+                fragmentTransaction.replace(globalBundle.getInt("whichFragment"), previewFragment);
                 fragmentTransaction.commit();
             }
         });
