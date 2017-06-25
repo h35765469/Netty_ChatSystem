@@ -12,7 +12,10 @@ import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -31,6 +34,7 @@ import com.cool.user.netty_chatsystem.Chat_Fragment.UItraViewPager.UltraViewPage
 import com.cool.user.netty_chatsystem.Chat_Fragment.UItraViewPager.UltraViewPagerView;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Chat_AnimationElement.BubbleEffect.BubbleView;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Chat_AnimationElement.HeartEffect.BezierEvaluator;
+import com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment.ProfilePreviewFragment;
 import com.cool.user.netty_chatsystem.Chat_MySQL.Config;
 import com.cool.user.netty_chatsystem.Chat_MySQL.DBConnector;
 import com.cool.user.netty_chatsystem.Chat_Sqlite_ChatHistory.MyDBHelper;
@@ -185,7 +189,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
             @Override
             public void onClick(View v) {
                 //bundle.putInt("position", position);
-                /*FragmentManager fragmentManager = context.getSupportFragmentManager();
+                FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 ProfilePreviewFragment profilePreviewFragment = new ProfilePreviewFragment();
                 Bundle profileBundle = new Bundle();
@@ -193,7 +197,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
                 profilePreviewFragment.setArguments(profileBundle);
                 fragmentTransaction.replace(R.id.profileContainer, profilePreviewFragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();*/
+                fragmentTransaction.commit();
             }
         });
 
