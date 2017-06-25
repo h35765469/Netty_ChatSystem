@@ -33,6 +33,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cool.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
+import com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.CollectFragment.CollectPreviewPagerViewAdapter;
+import com.cool.user.netty_chatsystem.Chat_Fragment.UItraViewPager.UltraViewPager;
+import com.cool.user.netty_chatsystem.Chat_Fragment.UItraViewPager.UltraViewPagerView;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Chat_AnimationElement.BubbleEffect.BubbleView;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Chat_AnimationElement.HeartEffect.BezierEvaluator;
 import com.cool.user.netty_chatsystem.Chat_MySQL.Config;
@@ -130,6 +133,14 @@ public class MyContentPreviewFragment extends Fragment {
 
         SharePreferenceManager sharePreferenceManager = new SharePreferenceManager(getActivity());
         final String loginId = sharePreferenceManager.getLoginId();
+
+        UltraViewPagerView ultraViewPagerView = (UltraViewPagerView)rootView.findViewById(R.id.ultra_viewpager);
+        ultraViewPagerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        ultraViewPagerView.setScrollMode(UltraViewPager.ScrollMode.VERTICAL);
+        MyContentPreviewPagerViewAdapter adapter = new MyContentPreviewPagerViewAdapter(loginId, ScreenWidth, ScreenHeight,
+                contentUrlArrayList, myContentDataArrayList, getActivity(), ultraViewPagerView);
+        ultraViewPagerView.setAdapter(adapter);
+        ultraViewPagerView.setCurrentItem(position);
 
         Typeface font = Typeface.createFromAsset(getActivity().getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
         backTxt.setTypeface(font);
