@@ -239,82 +239,16 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
                 yesImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(position < collectDataArrayList.size()) {
-                            //deleteCollectContentInSqlite(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
-                            //deleteCollectContentInRemoteMySql(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
-
-                            if (position == 0) {
-                                System.out.println("position 0" + position);
-                                collectDataArrayList.remove(position);
-                                collectUrlArrayList.remove(position);
-                                if(collectDataArrayList.isEmpty()){
-                                    //getActivity().getSupportFragmentManager().popBackStack();
-                                }
-                            }else if ((position + 1) != collectUrlArrayList.size()) {
-                                System.out.println("position + 1 " + position);
-                                collectDataArrayList.remove(position);
-                                collectUrlArrayList.remove(position);
-
-
-                            } else {
-                                System.out.println("其他 " + position);
-                                collectDataArrayList.remove(position);
-                                collectUrlArrayList.remove(position);
-
-                            }
-
-                            /*if (position < collectDataArrayList.size()) {
-                                collectNameText.setText(collectDataArrayList.get(position).getCollectNickName());
-                                ImageLoader.getInstance()
-                                        .displayImage(collectUrlArrayList.get(position), collectPreViewImg, options, new SimpleImageLoadingListener() {
-                                            @Override
-                                            public void onLoadingStarted(String imageUri, View view) {
-                                            }
-
-                                            @Override
-                                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                                            }
-
-                                            @Override
-                                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                                            }
-                                        }, new ImageLoadingProgressListener() {
-                                            @Override
-                                            public void onProgressUpdate(String imageUri, View view, int current, int total) {
-                                            }
-                                        });
-
-                                //載入大頭貼---------------------------------------
-                                if(collectDataArrayList.get(position).getCollectProfile().length() > 0) {
-                                    ImageLoader.getInstance()
-                                            .displayImage(Config.SERVER_PROFILE_ADDRESS + collectDataArrayList.get(position).getCollectProfile() + ".jpg", collectProfileImg, options, new SimpleImageLoadingListener() {
-                                                @Override
-                                                public void onLoadingStarted(String imageUri, View view) {
-                                                }
-
-                                                @Override
-                                                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                                                }
-
-                                                @Override
-                                                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                                                }
-                                            }, new ImageLoadingProgressListener() {
-                                                @Override
-                                                public void onProgressUpdate(String imageUri, View view, int current, int total) {
-                                                }
-                                            });
-                                    //------------------------------------------------------------------
-                                }else{
-                                    collectProfileImg.setImageResource(R.drawable.logo_red);
-                                }
-
-                            }*/
-                        }else{
-                            //getActivity().getSupportFragmentManager().popBackStack();
-                        }
+                        deleteCollectContentInSqlite(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
+                        deleteCollectContentInRemoteMySql(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
+                        collectDataArrayList.remove(position);
+                        collectUrlArrayList.remove(position);
                         deleteDialog.dismiss();
-                        ultraViewPager.getAdapter().notifyDataSetChanged();
+                        if(collectDataArrayList.isEmpty()){
+                            ((MainActivity)context).getSupportFragmentManager().popBackStack();
+                        }else {
+                            ultraViewPager.getAdapter().notifyDataSetChanged();
+                        }
                     }
                 });
 
