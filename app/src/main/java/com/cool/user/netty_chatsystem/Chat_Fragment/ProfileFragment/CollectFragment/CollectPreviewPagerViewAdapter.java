@@ -26,12 +26,12 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cool.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
-import com.cool.user.netty_chatsystem.Chat_Fragment.UItraViewPager.UltraViewPager;
 import com.cool.user.netty_chatsystem.Chat_Fragment.UItraViewPager.UltraViewPagerView;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Chat_AnimationElement.BubbleEffect.BubbleView;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Chat_AnimationElement.HeartEffect.BezierEvaluator;
@@ -73,6 +73,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
     ArrayList<String> collectUrlArrayList;
     ArrayList<CollectData>collectDataArrayList;
     ArrayList<String> friendArrayList;
+    ArrayList<Boolean> uiShowArrayList = new ArrayList<>();
     DisplayImageOptions options;
     UltraViewPagerView ultraViewPager;
 
@@ -85,7 +86,8 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
     ImageView collectAddFriendImg;
     ImageView showCollectEffectImg;
     ImageView collectProfileImg;
-    TextView collectNameText;
+    TextView collectNameTxt;
+
 
 
     public CollectPreviewPagerViewAdapter(boolean isMultiScr) {
@@ -112,6 +114,9 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         this.ultraViewPager = ultraViewPager;
+        for(int i = 0; i < collectDataArrayList.size(); i++){
+            uiShowArrayList.add(true);
+        }
     }
 
     @Override
@@ -139,13 +144,16 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
         collectEffectImg = (ImageView)relativeLayout.findViewById(R.id.collectEffectImg);
         collectAddFriendImg = (ImageView)relativeLayout.findViewById(R.id.collectAddFriendImg);
         showCollectEffectImg = (ImageView)relativeLayout.findViewById(R.id.showCollectEffectImg);
-        collectProfileImg = (ImageView)relativeLayout.findViewById(R.id.collectProfileImg);
-        collectNameText = (TextView)relativeLayout.findViewById(R.id.randomNameText);
+        collectProfileImg = (ImageView)relativeLayout.findViewById(R.id.friendContentProfileImg);
+        collectNameTxt = (TextView)relativeLayout.findViewById(R.id.collectNameTxt);
+        final LinearLayout iconBar = (LinearLayout)relativeLayout.findViewById(R.id.iconBar);
+        final RelativeLayout upBar = (RelativeLayout)relativeLayout.findViewById(R.id.upBar);
         container.addView(relativeLayout);
 
         if(differentiateFriendCondition(friendArrayList, collectDataArrayList.get(position))){
             collectAddFriendImg.setImageResource(R.drawable.logo);
         }
+        collectNameTxt.setText(collectDataArrayList.get(position).getCollectNickName());
 
         Typeface font = Typeface.createFromAsset(context.getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
         backTxt.setTypeface(font);
@@ -154,6 +162,22 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
             @Override
             public void onClick(View v) {
                 ((MainActivity)context).getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        collectPreViewImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(uiShowArrayList.get(position)){
+                    iconBar.setVisibility(View.GONE);
+                    upBar.setVisibility(View.GONE);
+                    uiShowArrayList.set(position, false);
+                }
+                else{
+                    iconBar.setVisibility(View.VISIBLE);
+                    upBar.setVisibility(View.VISIBLE);
+                    uiShowArrayList.set(position, true);
+                }
             }
         });
 
@@ -243,10 +267,11 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
                 yesImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deleteCollectContentInSqlite(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
-                        deleteCollectContentInRemoteMySql(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
+                        //deleteCollectContentInSqlite(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
+                        //deleteCollectContentInRemoteMySql(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
                         collectDataArrayList.remove(position);
                         collectUrlArrayList.remove(position);
+                        uiShowArrayList.remove(position);
                         deleteDialog.dismiss();
                         if(collectDataArrayList.isEmpty()){
                             ((MainActivity)context).getSupportFragmentManager().popBackStack();
@@ -405,7 +430,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
         showCollectEffectImg.setImageResource(R.drawable.animation_list_boom);
 
         //圖片大小
-        myimageviewsize(showCollectEffectImg, (int) (screenWidth / 1.7), (int) (screenHeight / 1.7));
+        myimageviewsize(showCollectEffectImg, (int) (screenHeight / 1.7), (int) (screenHeight / 1.7));
 
 
         showCollectEffectImg.clearAnimation();
