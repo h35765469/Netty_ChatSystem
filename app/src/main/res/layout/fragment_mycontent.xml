@@ -36,14 +36,6 @@
 
     </RelativeLayout>
 
-    <com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.CollectFragment.RecyclerViewPager.RecyclerViewPager
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recycleViewPager"
-        android:visibility="gone">
-
-    </com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.CollectFragment.RecyclerViewPager.RecyclerViewPager>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
