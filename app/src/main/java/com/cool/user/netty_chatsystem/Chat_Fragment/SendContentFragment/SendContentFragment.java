@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
@@ -110,7 +111,7 @@ public class SendContentFragment extends Fragment {
         txtPercentage = (TextView)rootView.findViewById(R.id.txtPercentage);
         sendText = (TextView)rootView.findViewById(R.id.sendText);
         sendLayout = (LinearLayout)rootView.findViewById(R.id.sendLayout);
-        ImageView goBackWhiteBoardImg = (ImageView)rootView.findViewById(R.id.goBackWhiteBoardImg);
+        TextView backTxt = (TextView)rootView.findViewById(R.id.backTxt);
 
 
         // Session class instance
@@ -171,6 +172,18 @@ public class SendContentFragment extends Fragment {
         final ArrayList<SendData> friendUserNameArray = new ArrayList<>();
 
         sendFriendListView.setAdapter(sendCustomAdapter);
+
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
+        backTxt.setTypeface(font);
+        backTxt.setText("\uf060");
+        backTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
 
         sendFriendListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -266,15 +279,6 @@ public class SendContentFragment extends Fragment {
                     }
                 }else{
                     Toast.makeText(getActivity(), "無法分享你的經典之作，請確認連線狀態", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        goBackWhiteBoardImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0){
-                    getActivity().getSupportFragmentManager().popBackStack();
                 }
             }
         });
