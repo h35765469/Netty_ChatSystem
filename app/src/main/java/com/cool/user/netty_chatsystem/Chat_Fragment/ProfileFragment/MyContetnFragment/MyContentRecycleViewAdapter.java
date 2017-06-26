@@ -88,7 +88,7 @@ public class MyContentRecycleViewAdapter extends RecyclerView.Adapter<MyContentR
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
-            myContentImg = (ImageView)view.findViewById(R.id.myContentImg);
+            myContentImg = (ImageView)view.findViewById(R.id.friendContentImg);
             collectIconImg = (ImageView)view.findViewById(R.id.collectIconImg);
             unReadIconImg = (ImageView)view.findViewById(R.id.unReadIconImg);
             collectCountTxt = (TextView)view.findViewById(R.id.collectCountTxt);
