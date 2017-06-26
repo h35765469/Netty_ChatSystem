@@ -14,6 +14,8 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ import android.widget.Toast;
 import com.cool.user.netty_chatsystem.ChatListViewAdapter.RowItem;
 import com.cool.user.netty_chatsystem.Chat_Client.handler.Client_MessageHandler;
 import com.cool.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
+import com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.MyContetnFragment.MyContentPreviewFragment;
+import com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.MyContetnFragment.MyContentRecycleViewAdapter;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment.MyLetterContentFragment.LetterContentAdapter;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment.MyLetterContentFragment.LetterDBConnector;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment.ShareContentFragment;
@@ -92,7 +96,34 @@ public class FriendLetterContentFragment extends Fragment {
 
         if(Client_UserHandler.getConnection() !=null) {
             friendLetterContentArrayList = friendLetterContentFromMySQL();
-            friendLetterContentListView.setAdapter(new FriendContentImageAdapter(getActivity().getApplicationContext(), friendLetterContentArrayList));
+            FriendContentRecycleViewAdapter friendContentRecycleViewAdapter = new FriendContentRecycleViewAdapter(getActivity(), friendLetterContentArrayList);
+            RecyclerView friendContentRecycleView  = (RecyclerView)rootView.findViewById(R.id.friendContentRecycleView);
+            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+            friendContentRecycleView.setLayoutManager(llm);
+            friendContentRecycleView.setAdapter(friendContentRecycleViewAdapter);
+            friendContentRecycleViewAdapter.setOnItemClickListener(new FriendContentRecycleViewAdapter.ClickListener() {
+                @Override
+                public void onItemClick(int position, View v) {
+                    if(Client_UserHandler.getConnection() != null){
+                        Bundle bundle = new Bundle();
+                        String[] friendContentArray = new String[friendLetterContentArrayList.size()];
+                        for(int i = 0 ; i < friendLetterContentArrayList.size() ; i++){
+                            friendContentArray[i] = friendLetterContentArrayList.get(i).getContent();
+                        }
+                        bundle.putInt("position", position);
+                        bundle.putParcelableArrayList("friendContentArrayList", friendLetterContentArrayList);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.addToBackStack(null);
+                        FriendContentPreviewFragment friendContentPreviewFragment = new FriendContentPreviewFragment();
+                        friendContentPreviewFragment.setArguments(bundle);
+                        fragmentTransaction.replace(R.id.shareContentContainer, friendContentPreviewFragment);
+                        fragmentTransaction.commit();
+                    }else{
+                        Toast.makeText(getActivity(), "無法進入驚喜時刻，請確認網路連線", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             if(friendLetterContentArrayList.size() == 0){
                 noFirstContentText.setVisibility(View.VISIBLE);
             }
