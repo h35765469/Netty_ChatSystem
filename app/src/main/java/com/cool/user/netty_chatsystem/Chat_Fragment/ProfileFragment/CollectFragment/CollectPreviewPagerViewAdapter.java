@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -146,6 +147,9 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
             collectAddFriendImg.setImageResource(R.drawable.logo);
         }
 
+        Typeface font = Typeface.createFromAsset(context.getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
+        backTxt.setTypeface(font);
+        backTxt.setText("\uf060");
         backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
