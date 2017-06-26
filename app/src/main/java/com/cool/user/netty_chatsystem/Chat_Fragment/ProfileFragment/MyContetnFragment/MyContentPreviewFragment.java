@@ -82,14 +82,6 @@ public class MyContentPreviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater ,ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_mycontentpreview , container, false);
         myContentPreviewRelativeLayout = (RelativeLayout)rootView.findViewById(R.id.myContentPreviewRelativeLayout);
-        TextView backTxt = (TextView)rootView.findViewById(R.id.backTxt);
-        final ImageView myContentPreviewImg = (ImageView)rootView.findViewById(R.id.myContentPreviewImg);
-        final ImageView deleteContentImg = (ImageView)rootView.findViewById(R.id.deleteMyContentImg);
-        nextContentImg = (ImageView)rootView.findViewById(R.id.nextMyContentImg);
-        ImageView myContentThinkImg = (ImageView)rootView.findViewById(R.id.myContentThinkImg);
-        myContentEffectImg = (ImageView)rootView.findViewById(R.id.myContentEffectImg);
-        ImageView unReadImg = (ImageView)rootView.findViewById(R.id.unReadImg);
-        showMyContentEffectImg = (ImageView)rootView.findViewById(R.id.showMyContentEffectImg);
 
         //螢幕的寬高
         DisplayMetrics dm = new DisplayMetrics();
@@ -111,15 +103,6 @@ public class MyContentPreviewFragment extends Fragment {
                 .build());
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        final DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.logo)
-                .showImageForEmptyUri(R.drawable.ic_empty)
-                .showImageOnFail(R.drawable.logo_red)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
 
         Bundle bundle = getArguments();
         position = bundle.getInt("position");
@@ -129,7 +112,6 @@ public class MyContentPreviewFragment extends Fragment {
         for(int i = 0 ; i < contentUrlArray.length ; i++){
             contentUrlArrayList.add(contentUrlArray[i]);
         }
-
 
         SharePreferenceManager sharePreferenceManager = new SharePreferenceManager(getActivity());
         final String loginId = sharePreferenceManager.getLoginId();
@@ -142,160 +124,6 @@ public class MyContentPreviewFragment extends Fragment {
         ultraViewPagerView.setAdapter(adapter);
         ultraViewPagerView.setCurrentItem(position);
 
-        Typeface font = Typeface.createFromAsset(getActivity().getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
-        backTxt.setTypeface(font);
-        backTxt.setText("\uf060");
-        backTxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0){
-                    getActivity().getSupportFragmentManager().popBackStack();
-                }
-            }
-        });
-
-        unReadImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(getActivity(),R.style.selectorDialog);
-                dialog.setContentView(R.layout.resource_mycontent_unread_dialog);
-                ListView unReadListView = (ListView)dialog.findViewById(R.id.unReadListView);
-                ArrayList<String>unReadArrayList = loadUnRead(loginId, myContentDataArrayList.get(position).getContent());
-                UnReadAdapter unReadAdapter = new UnReadAdapter(getActivity(), unReadArrayList);
-                unReadListView.setAdapter(unReadAdapter);
-
-                // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
-                WindowManager.LayoutParams lp=dialog.getWindow().getAttributes();
-                lp.dimAmount=0.2f;
-                dialog.getWindow().setAttributes(lp);
-                dialog.show();
-            }
-        });
-
-        deleteContentImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog deleteDialog = new Dialog(getActivity(), R.style.selectorDialog);
-                deleteDialog.setContentView(R.layout.resource_wordandbutton_dialog);
-                deleteDialog.show();
-                ImageView yesImg = (ImageView)deleteDialog.findViewById(R.id.yesImg);
-                ImageView noImg = (ImageView)deleteDialog.findViewById(R.id.noImg);
-                TextView descriptionTxv = (TextView)deleteDialog.findViewById(R.id.descriptionTxv);
-                descriptionTxv.setText("刪除驚喜?");
-                yesImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(Client_UserHandler.getConnection() !=null) {
-                            new deleteMyContentInRemoteMySql(loginId, myContentDataArrayList.get(position).getContent()).execute();
-                            if (position == 0) {
-                                System.out.println("position 0" + position);
-                                contentUrlArrayList.remove(position);
-                                myContentDataArrayList.remove(position);
-                            } else if ((position + 1) != myContentDataArrayList.size()) {
-                                System.out.println("position + 1 " + position);
-                                contentUrlArrayList.remove(position);
-                                myContentDataArrayList.remove(position);
-                                position++;
-                                System.out.println("after position + 1 " + position);
-
-                            } else {
-                                System.out.println("其他 " + position);
-                                contentUrlArrayList.remove(position);
-                                myContentDataArrayList.remove(position);
-                                position--;
-                                System.out.println("after 其他 " + position);
-                            }
-
-                            if(position < contentUrlArrayList.size()) {
-                                ImageLoader.getInstance()
-                                        .displayImage(contentUrlArrayList.get(position), myContentPreviewImg, options, new SimpleImageLoadingListener() {
-                                            @Override
-                                            public void onLoadingStarted(String imageUri, View view) {
-                                            }
-
-                                            @Override
-                                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                                            }
-
-                                            @Override
-                                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                                            }
-                                        }, new ImageLoadingProgressListener() {
-                                            @Override
-                                            public void onProgressUpdate(String imageUri, View view, int current, int total) {
-                                            }
-                                        });
-                            }else{
-                                getActivity().getSupportFragmentManager().popBackStack();
-                            }
-
-                            deleteDialog.dismiss();
-                        }else{
-                            Toast.makeText(getActivity(), "無法刪除驚喜，請確認離線狀態", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-                noImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteDialog.dismiss();
-                    }
-                });
-            }
-        });
-
-        nextContentImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(position < contentUrlArrayList.size()) {
-                    if((position + 1) != contentUrlArrayList.size()){
-                        position++;
-                    }else if(position + 1 == contentUrlArrayList.size()){
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }
-
-                    if(position < contentUrlArrayList.size()) {
-                        ImageLoader.getInstance()
-                                .displayImage(contentUrlArrayList.get(position), myContentPreviewImg, options, new SimpleImageLoadingListener() {
-                                    @Override
-                                    public void onLoadingStarted(String imageUri, View view) {
-                                    }
-
-                                    @Override
-                                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                                    }
-
-                                    @Override
-                                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                                    }
-                                }, new ImageLoadingProgressListener() {
-                                    @Override
-                                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
-                                    }
-                                });
-                    }
-                }
-            }
-        });
-
-        myContentThinkImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
-                dialog.setContentView(R.layout.resource_think_dialog);
-                TextView thinkText = (TextView) dialog.findViewById(R.id.thinkText);
-                if (myContentDataArrayList.get(position).getThink().length() > 0) {
-                    thinkText.setText(myContentDataArrayList.get(position).getThink());
-                }
-
-                // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
-                WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-                lp.dimAmount = 0.5f;
-                dialog.getWindow().setAttributes(lp);
-                dialog.show();
-            }
-        });
 
         myContentEffectImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -319,151 +147,7 @@ public class MyContentPreviewFragment extends Fragment {
             }
         });
 
-        ImageLoader.getInstance()
-                .displayImage(contentUrlArrayList.get(position), myContentPreviewImg, options, new SimpleImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    }
-                }, new ImageLoadingProgressListener() {
-                    @Override
-                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
-                    }
-                });
-
         return rootView;
-    }
-
-    //讀取未讀朋友名單
-    private ArrayList<String>loadUnRead(String loginId, String content){
-        ArrayList<String> unReadArrayList = new ArrayList<>();
-        if(Client_UserHandler.getConnection() != null) {
-            try {
-                ArrayList<NameValuePair> params = new ArrayList<>();
-                params.add(new BasicNameValuePair("ownerid", loginId));
-                params.add(new BasicNameValuePair("content", content));
-                String result = DBConnector.executeQuery("", Config.MYCONTENT_UNREAD_LOAD_URL, params);
-            /*
-                      SQL 結果有多筆資料時使用JSONArray
-                      只有一筆資料時直接建立JSONObject物件
-                      JSONObject jsonData = new JSONObject(result);
-                      */
-                if (!result.equals("\"\"\n")) {
-                    JSONArray jsonArray = new JSONArray(result);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        unReadArrayList.add(jsonObject.getString("nickname"));
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return unReadArrayList;
-    }
-
-    class UnReadAdapter extends BaseAdapter {
-
-        private ArrayList<String> unReadArrayList;
-
-        private LayoutInflater inflater;
-
-
-        UnReadAdapter(Context context, ArrayList<String> unReadArrayList) {
-            inflater = LayoutInflater.from(context);
-            this.unReadArrayList = unReadArrayList;
-        }
-
-        @Override
-        public int getCount() {
-            return unReadArrayList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-            View view = convertView;
-            if (view == null) {
-                view = inflater.inflate(R.layout.resource_unread_listview_dialog , parent, false);
-                holder = new ViewHolder();
-                assert view != null;
-                holder.unReadText = (TextView)view.findViewById(R.id.unReadText);
-                view.setTag(holder);
-            } else {
-                holder = (ViewHolder) view.getTag();
-            }
-
-            holder.unReadText.setText(unReadArrayList.get(position));
-
-            return view;
-        }
-
-
-        class ViewHolder {
-            TextView unReadText;
-        }
-    }
-
-
-    //刪除遠端的sticker data
-    class deleteMyContentInRemoteMySql extends AsyncTask<String, String, Void>
-    {
-
-        String content;
-        String loginId;
-        InputStream is = null ;
-        public deleteMyContentInRemoteMySql(String loginId, String content){
-            this.loginId = loginId;
-            this.content = content;
-        }
-
-        protected void onPreExecute()
-        {
-
-        }
-        @Override
-        protected Void doInBackground(String... params)
-        {
-            try
-            {
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                nameValuePairs.add(new BasicNameValuePair("ownerid", loginId));
-                nameValuePairs.add(new BasicNameValuePair("content", content));
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost(Config.RANDOMCONTENT_DELETE_URL);
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            }
-            catch(Exception e){
-                Log.e("log_tag", "Error in http connection" + e.toString());
-            }
-
-            return null;
-        }
-        protected void postExecute(Void v)
-        {
-            Toast.makeText(getActivity(), "刪除成功", Toast.LENGTH_LONG).show();
-        }
     }
 
 
