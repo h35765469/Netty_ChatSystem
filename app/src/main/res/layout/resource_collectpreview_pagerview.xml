@@ -20,29 +20,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <ImageView
-        android:id="@+id/nextCollectImg"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:src="@drawable/rightarrow" />
-
     <LinearLayout
         android:id="@+id/iconbar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_marginBottom="23dp"
         android:alpha="0.6"
         android:background="@android:color/black"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/deleteCollectImg"
@@ -91,50 +82,65 @@
     </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/collectAddFriendImg"
-        android:layout_width="23dp"
-        android:layout_height="23dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="30dp"
-        android:visibility="visible"
-        app:srcCompat="@drawable/friend" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/collectProfileImg"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/backTxt"
-        android:src="@drawable/profile" />
-
-    <TextView
-        android:id="@+id/randomNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="30dp"
-        android:layout_toRightOf="@+id/collectProfileImg"
-        android:autoText="false"
-        android:freezesText="false"
-        android:text="WenXuanLee"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/backTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/upBar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
         android:layout_centerVertical="false"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
+        android:alpha="0.6"
+        android:background="@android:color/black">
 
-        android:text="S"
-        android:textColor="@android:color/background_light"
-        android:textSize="22sp" />
+        <TextView
+            android:id="@+id/backTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerHorizontal="false"
+
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="S"
+            android:textColor="@android:color/background_light"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/randomNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/collectProfileImg"
+            android:autoText="false"
+            android:freezesText="false"
+            android:text="WenXuanLee"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/collectProfileImg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/backTxt"
+            android:src="@drawable/profile" />
+
+        <ImageView
+            android:id="@+id/collectAddFriendImg"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/friend" />
+    </RelativeLayout>
 
 </RelativeLayout>
