@@ -27,16 +27,16 @@
         android:id="@+id/iconbar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginBottom="23dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="28dp"
         android:alpha="0.6"
         android:background="@android:color/black"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/deleteMyContentImg"
@@ -85,9 +85,14 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/upBar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginTop="15dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:alpha="0.6"
+        android:background="@android:color/black">
 
         <ImageView
             android:id="@+id/unReadImg"
