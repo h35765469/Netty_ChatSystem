@@ -114,9 +114,9 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         this.ultraViewPager = ultraViewPager;
-        for(int i = 0; i < collectDataArrayList.size(); i++){
+        /*for(int i = 0; i < collectDataArrayList.size(); i++){
             uiShowArrayList.add(true);
-        }
+        }*/
     }
 
     @Override
@@ -145,7 +145,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
         collectAddFriendImg = (ImageView)relativeLayout.findViewById(R.id.collectAddFriendImg);
         showCollectEffectImg = (ImageView)relativeLayout.findViewById(R.id.showCollectEffectImg);
         collectProfileImg = (ImageView)relativeLayout.findViewById(R.id.friendContentProfileImg);
-        collectNameTxt = (TextView)relativeLayout.findViewById(R.id.collectNameTxt);
+        collectNameTxt = (TextView)relativeLayout.findViewById(R.id.friendNameTxt);
         final LinearLayout iconBar = (LinearLayout)relativeLayout.findViewById(R.id.iconBar);
         final RelativeLayout upBar = (RelativeLayout)relativeLayout.findViewById(R.id.upBar);
         container.addView(relativeLayout);
@@ -165,7 +165,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
             }
         });
 
-        collectPreViewImg.setOnClickListener(new View.OnClickListener() {
+        /*collectPreViewImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(uiShowArrayList.get(position)){
@@ -179,7 +179,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
                     uiShowArrayList.set(position, true);
                 }
             }
-        });
+        });*/
 
         collectAddFriendImg.setOnClickListener(new View.OnClickListener() {
             @Override
