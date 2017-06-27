@@ -3,6 +3,7 @@ package com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.AddFriendFr
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -89,6 +90,9 @@ public class AddBySearchFragment extends Fragment {
         searchFriendAdapter = new SearchFriendAdapter(getActivity(),friendRowItemArrayList, username, loginId, nickName, loadFriendNameArrayList);
 
 
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
+        backTxt.setTypeface(font);
+        backTxt.setText("\uf060");
         backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
