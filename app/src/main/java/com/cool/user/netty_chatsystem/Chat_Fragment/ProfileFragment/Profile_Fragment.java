@@ -30,6 +30,7 @@ import com.cool.user.netty_chatsystem.ChatListViewAdapter.RowItem;
 import com.cool.user.netty_chatsystem.Chat_Client.handler.Client_MessageHandler;
 import com.cool.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
 import com.cool.user.netty_chatsystem.Chat_Fragment.BaseFragment;
+import com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.AddFriendFragment.AddBySearchFragment;
 import com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.CollectFragment.AndroidVersion;
 import com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.CollectFragment.CollectFragment;
 import com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment.MyContetnFragment.MyContentData;
@@ -127,21 +128,6 @@ public class Profile_Fragment extends BaseFragment {
     @Override
     public View initView(LayoutInflater inflater){
         View view = inflater.inflate(R.layout.profile_fragment, null);
-        RelativeLayout myPostRL = (RelativeLayout)view.findViewById(R.id.myPostRL);
-        RelativeLayout myCollectionRL = (RelativeLayout)view.findViewById(R.id.myCollectionRL);
-        RelativeLayout myNewFriendRL = (RelativeLayout)view.findViewById(R.id.myNewFriendRL);
-        final GridView profileContentGridView = (GridView)view.findViewById(R.id.profileContentGridView);
-        TextView searchBarTxt = (TextView)view.findViewById(R.id.searchBarTxt);
-        TextView newPostTxt = (TextView)view.findViewById(R.id.newPostTxt);
-        final TextView postNumberTxt = (TextView)view.findViewById(R.id.postNumberTxt);
-        final TextView collectNumberTxt = (TextView)view.findViewById(R.id.collectNumberTxt);
-        TextView newFriendNumberTxt = (TextView)view.findViewById(R.id.newFriendNumberTxt);
-        Typeface font = Typeface.createFromAsset(getActivity().getAssets(),"fonts/fontawesome-webfont.ttf");
-        searchBarTxt.setTypeface(font);
-        searchBarTxt.setText("\uf002");
-        newPostTxt.setTypeface(font);
-        newPostTxt.setText("\uf030");
-
 
         effectProfile_imageview = (de.hdodenhof.circleimageview.CircleImageView)view.findViewById(R.id.effectprofile_imageview);
         final TextView myNameText = (TextView)view.findViewById(R.id.myNameText);
@@ -254,16 +240,6 @@ public class Profile_Fragment extends BaseFragment {
         }
 
 
-        searchBarTxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.replace(R.id.profileContainer, new SearchFragment());
-                fragmentTransaction.commit();
-            }
-        });
-
-
         effectProfile_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,6 +282,12 @@ public class Profile_Fragment extends BaseFragment {
                         break;
                     }
                     case 3:{
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.replace(R.id.profileContainer, new AddBySearchFragment());
+                        fragmentTransaction.commit();
+                        break;
+                    }
+                    case 4:{
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.replace(R.id.profileContainer, new PersonalSettingFragment());
                         fragmentTransaction.commit();
