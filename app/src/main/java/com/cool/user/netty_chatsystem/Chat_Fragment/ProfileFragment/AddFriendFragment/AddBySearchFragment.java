@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cool.user.netty_chatsystem.Chat_Client.handler.Client_UserHandler;
@@ -56,9 +57,8 @@ public class AddBySearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater ,ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.addbysearch_fragment, container, false);
-        ImageView backImg = (ImageView)rootView.findViewById(R.id.backImg);
-        final EditText searchFriendText = (EditText)rootView.findViewById(R.id.searchFriendText);
-        ImageView searchFriendImg = (ImageView)rootView.findViewById(R.id.searchFriendImg);
+        TextView backTxt = (TextView)rootView.findViewById(R.id.backTxt);
+        final EditText searchEditText = (EditText)rootView.findViewById(R.id.searchEditText);
         searchListView = (ListView)rootView.findViewById(R.id.searchListView);
 
         // Session class instance
@@ -89,7 +89,7 @@ public class AddBySearchFragment extends Fragment {
         searchFriendAdapter = new SearchFriendAdapter(getActivity(),friendRowItemArrayList, username, loginId, nickName, loadFriendNameArrayList);
 
 
-        backImg.setOnClickListener(new View.OnClickListener() {
+        backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //自動關閉鍵盤(如果有開啟的話)----------------------------------------------------------------------------------------------------------------------------------------
@@ -103,33 +103,7 @@ public class AddBySearchFragment extends Fragment {
             }
         });
 
-        searchFriendImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IMConnection connection = Client_UserHandler.getConnection();
-                if(connection != null) {
-                    searchFriendAdapter.cleanAll();
-                    searchFriendAdapter.notifyDataSetChanged();
-                    String inputFriendName = searchFriendText.getText().toString();
-                    if(!inputFriendName.isEmpty()) {
-                        Friend friend = new Friend();
-                        friend.setFriendName(inputFriendName);
-                        friend.setId(loginId);
-                        IMResponse resp = new IMResponse();
-                        Header header = new Header();
-                        header.setHandlerId(Handlers.USER);
-                        header.setCommandId(Commands.FRIEND_SEARCH_REQUEST);
-                        resp.setHeader(header);
-                        resp.writeEntity(new FriendDTO(friend));
-                        connection.sendResponse(resp);
-                    }
-                }else{
-                    Toast.makeText(getActivity(), "無法搜尋好友，請確認連線狀態", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        searchFriendText.addTextChangedListener(new TextWatcher() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -145,7 +119,7 @@ public class AddBySearchFragment extends Fragment {
                 if(connection != null) {
                     searchFriendAdapter.cleanAll();
                     searchFriendAdapter.notifyDataSetChanged();
-                    String inputFriendName = searchFriendText.getText().toString();
+                    String inputFriendName = searchEditText.getText().toString();
                     if(!inputFriendName.isEmpty()) {
                         Friend friend = new Friend();
                         friend.setFriendName(inputFriendName);
