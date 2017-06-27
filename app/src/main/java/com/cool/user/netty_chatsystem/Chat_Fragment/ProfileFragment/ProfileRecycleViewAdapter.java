@@ -15,7 +15,7 @@ import com.cool.user.netty_chatsystem.R;
  */
 
 public class ProfileRecycleViewAdapter extends RecyclerView.Adapter<ProfileRecycleViewAdapter.PersonViewHolder> {
-    String[] titleNames = {"我的驚喜", "我的收藏", "新朋友", "設定"};
+    String[] titleNames = {"我的驚喜", "我的收藏", "認證中", "新朋友", "設定"};
     int[] titleIcons = {R.drawable.action_btn};
     private static ClickListener clickListener;;
 
@@ -29,7 +29,7 @@ public class ProfileRecycleViewAdapter extends RecyclerView.Adapter<ProfileRecyc
             itemView.setOnClickListener(this);
             cv = (CardView)itemView.findViewById(R.id.cv);
             personName = (TextView)itemView.findViewById(R.id.person_name);
-            personPhoto = (ImageView)itemView.findViewById(R.id.myContentImg);
+            personPhoto = (ImageView)itemView.findViewById(R.id.friendContentImg);
         }
 
         @Override
@@ -40,7 +40,7 @@ public class ProfileRecycleViewAdapter extends RecyclerView.Adapter<ProfileRecyc
 
     @Override
     public int getItemCount() {
-        return 4;
+        return titleNames.length;
     }
 
     @Override
