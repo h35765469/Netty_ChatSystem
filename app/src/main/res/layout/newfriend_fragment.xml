@@ -28,7 +28,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="false"
             android:gravity="fill_vertical"
-            android:text="新朋友"
+            android:text="認證中"
             android:textColor="@android:color/background_light"
             android:textSize="20sp"
             android:textStyle="bold"
