@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ public class EffectShowFragment extends Fragment {
     private DisplayMetrics dm;
     private BubbleView bubbleView;
     RelativeLayout effetLayout;
-    ImageView backImg, contentImg, thinkImg, effectImg, showEffectImg;
+    ImageView contentImg, thinkImg, effectImg, showEffectImg;
     int screenHeight, screenWidth;
 
 
@@ -64,7 +65,6 @@ public class EffectShowFragment extends Fragment {
         screenHeight = dm.heightPixels;
 
         effetLayout = (RelativeLayout)rootView.findViewById(R.id.effectLayout);
-        backImg = (ImageView)rootView.findViewById(R.id.backImg);
         contentImg = (ImageView)rootView.findViewById(R.id.contentImg);
         thinkImg = (ImageView)rootView.findViewById(R.id.thinkImg);
         effectImg = (ImageView)rootView.findViewById(R.id.effectImg);
@@ -125,7 +125,11 @@ public class EffectShowFragment extends Fragment {
             }
         }
 
-        backImg.setOnClickListener(new View.OnClickListener() {
+        TextView backTxt = (TextView)rootView.findViewById(R.id.backTxt);
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
+        backTxt.setTypeface(font);
+        backTxt.setText("\uf060");
+        backTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().popBackStack();
