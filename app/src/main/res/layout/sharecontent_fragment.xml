@@ -91,7 +91,7 @@
             android:layout_marginTop="10dp"
             android:baselineAlignBottom="false"
             android:contextClickable="false"
-            app:srcCompat="@drawable/like" />
+            app:srcCompat="@drawable/agenda" />
 
         <ImageView
             android:id="@+id/launchEffectImg"
