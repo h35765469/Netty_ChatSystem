@@ -99,8 +99,9 @@
                     android:layout_centerInParent="false"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="favorite"
-                    android:textColor="@color/bootstrap_brand_secondary_border" />
+                    android:text="最愛"
+                    android:textColor="@color/bootstrap_brand_secondary_border"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -156,8 +157,9 @@
                     android:layout_centerInParent="false"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="friends"
-                    android:textColor="@color/bootstrap_brand_secondary_border" />
+                    android:text="朋友"
+                    android:textColor="@color/bootstrap_brand_secondary_border"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
