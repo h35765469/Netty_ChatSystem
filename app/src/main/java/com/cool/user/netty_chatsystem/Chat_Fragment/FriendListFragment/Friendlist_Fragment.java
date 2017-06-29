@@ -390,10 +390,9 @@ public class Friendlist_Fragment extends BaseFragment {
                 ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
                 File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
                 File file = new File(directory.getAbsolutePath(), favoriteFriendAdapter.getItem(position).getAvatarName());
-
-                if(favoriteFriendAdapter.getItem(position).getAvatarName().length() > 0){
+                if(favoriteFriendAdapter.getItem(position).getAvatarName().length() > 0) {
                     ImageLoader.getInstance()
-                            .displayImage("file://" + file.getAbsolutePath(), dialogProfileImg, options, new SimpleImageLoadingListener() {
+                            .displayImage("File://" + file.getAbsolutePath(), dialogProfileImg, options, new SimpleImageLoadingListener() {
                                 @Override
                                 public void onLoadingStarted(String imageUri, View view) {
                                 }
@@ -410,7 +409,6 @@ public class Friendlist_Fragment extends BaseFragment {
                                 public void onProgressUpdate(String imageUri, View view, int current, int total) {
                                 }
                             });
-
                 }else{
                     dialogProfileImg.setImageResource(R.drawable.logo_red);
                 }
