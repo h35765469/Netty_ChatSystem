@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/profileImg"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignParentRight="false"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical" />
@@ -53,6 +53,7 @@
         android:text="20:15"
         android:textColor="@android:color/background_dark"
         android:textSize="11sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
 
 </RelativeLayout>
