@@ -85,7 +85,7 @@ public class CollectRecycleViewAdapter extends RecyclerView.Adapter<CollectRecyc
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
-            collectContentImg = (ImageView)view.findViewById(R.id.myContentImg);
+            collectContentImg = (ImageView)view.findViewById(R.id.collectFriendContentImg);
             collectOwnerNameTxt = (TextView)view.findViewById(R.id.collectOwnerNameTxt);
         }
 
