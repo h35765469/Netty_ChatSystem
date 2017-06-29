@@ -66,6 +66,16 @@
         android:layout_below="@+id/other">
 
         <TextView
+            android:id="@+id/alreadyReadTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="已讀"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
             android:id="@+id/myselfChatTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
