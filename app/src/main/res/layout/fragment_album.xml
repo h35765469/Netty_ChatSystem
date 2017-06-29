@@ -16,27 +16,34 @@
             android:layout_weight="1"
             android:scaleType="fitXY" />
 
-        <ImageView
-            android:id="@+id/toPreviewPictureImg"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="false"
-            android:layout_marginRight="15dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_marginTop="15dp"
-            app:srcCompat="@drawable/arrows_white" />
+            android:alpha="0.6"
+            android:background="@android:color/black">
 
-        <TextView
-            android:id="@+id/backTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="false"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
+            <TextView
+                android:id="@+id/backTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
 
-            android:text="S"
-            android:textColor="@android:color/background_light"
-            android:textSize="22sp" />
+                android:layout_marginLeft="15dp"
+                android:text="S"
+                android:textColor="@android:color/background_light"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/toPreviewPictureImg"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                app:srcCompat="@drawable/arrows_white" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
