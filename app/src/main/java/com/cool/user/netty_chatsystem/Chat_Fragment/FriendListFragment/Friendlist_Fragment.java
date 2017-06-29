@@ -391,25 +391,29 @@ public class Friendlist_Fragment extends BaseFragment {
                 File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
                 File file = new File(directory.getAbsolutePath(), favoriteFriendAdapter.getItem(position).getAvatarName());
 
-                ImageLoader.getInstance()
-                        .displayImage("file://" + file.getAbsolutePath(), dialogProfileImg, options, new SimpleImageLoadingListener() {
-                            @Override
-                            public void onLoadingStarted(String imageUri, View view) {
-                            }
+                if(favoriteFriendAdapter.getItem(position).getAvatarName().length() > 0){
+                    ImageLoader.getInstance()
+                            .displayImage("file://" + file.getAbsolutePath(), dialogProfileImg, options, new SimpleImageLoadingListener() {
+                                @Override
+                                public void onLoadingStarted(String imageUri, View view) {
+                                }
 
-                            @Override
-                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                            }
+                                @Override
+                                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                                }
 
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                            }
-                        }, new ImageLoadingProgressListener() {
-                            @Override
-                            public void onProgressUpdate(String imageUri, View view, int current, int total) {
-                            }
-                        });
+                                @Override
+                                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                                }
+                            }, new ImageLoadingProgressListener() {
+                                @Override
+                                public void onProgressUpdate(String imageUri, View view, int current, int total) {
+                                }
+                            });
 
+                }else{
+                    dialogProfileImg.setImageResource(R.drawable.logo_red);
+                }
 
 
                 //進入別人的信件區
