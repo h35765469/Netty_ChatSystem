@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -62,8 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentRight="false"
-        android:layout_below="@+id/other"
-        android:visibility="gone">
+        android:layout_below="@+id/other">
 
         <TextView
             android:id="@+id/myselfChatTxt"
@@ -81,14 +81,47 @@
             android:paddingTop="10dp"
             android:text="Hi this is Ben"
             android:textColor="#ffffff"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="我"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/myChatTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="TextView" />
+
+        <ImageView
+            android:id="@+id/myChatImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/other"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:visibility="gone">
+        android:layout_height="100dp">
+
+        <ImageView
+            android:id="@+id/friendChatImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
 
         <TextView
             android:id="@+id/otherChatTxt"
@@ -107,7 +140,8 @@
             android:paddingTop="10dp"
             android:text="Hi this is Ben"
             android:textColor="@android:color/background_dark"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userphoto"
@@ -116,7 +150,24 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/logo_red" />
+            android:src="@drawable/logo_red"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="朋友"
+            android:textColor="@color/grape" />
+
+        <TextView
+            android:id="@+id/friendChatTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="TextView" />
 
     </RelativeLayout>
 
