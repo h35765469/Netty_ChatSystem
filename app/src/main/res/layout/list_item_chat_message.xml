@@ -61,19 +61,9 @@
     <RelativeLayout
         android:id="@+id/myself"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="false"
         android:layout_below="@+id/other">
-
-        <TextView
-            android:id="@+id/alreadyReadTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:text="已讀"
-            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/myselfChatTxt"
@@ -99,39 +89,63 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:text="我"
             android:textColor="@color/colorPrimary" />
 
-        <TextView
-            android:id="@+id/myChatTxt"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/myselfContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:text="TextView" />
+            android:layout_below="@+id/textView12"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp">
 
-        <ImageView
-            android:id="@+id/myChatImg"
+            <ImageView
+                android:id="@+id/myChatImg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="false" />
+
+            <TextView
+                android:id="@+id/myChatTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="false"
+                android:maxWidth="200dp"
+                android:text="TextView" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/alreadyReadTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp" />
+            android:layout_below="@+id/myselfContent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="已讀"
+            android:textColor="@color/colorPrimary" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/other"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/friendChatImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/textView13"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/otherChatTxt"
@@ -167,7 +181,8 @@
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:text="朋友"
             android:textColor="@color/grape" />
 
@@ -175,8 +190,11 @@
             android:id="@+id/friendChatTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/textView13"
+            android:layout_centerVertical="false"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:maxWidth="200dp"
             android:text="TextView" />
 
     </RelativeLayout>
