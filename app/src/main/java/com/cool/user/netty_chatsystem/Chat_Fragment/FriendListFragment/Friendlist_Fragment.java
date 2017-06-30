@@ -353,6 +353,7 @@ public class Friendlist_Fragment extends BaseFragment {
                                 updateFriendFavoriteInSqlite(adapter.getItem(position).getFriendId(), 1);
                                 favoriteFriendAdapter.addItem(adapter.getItem(position));
                                 favoriteFriendAdapter.notifyDataSetChanged();
+                                ListUtils.setDynamicHeight(favorite_listview);//改變ListView的Height
                             } else {
                                 favorite_imageview.setImageResource(R.drawable.candy);
                                 adapter.getItem(position).setFriendFavorite(0);
@@ -360,6 +361,7 @@ public class Friendlist_Fragment extends BaseFragment {
                                 updateFriendFavoriteInSqlite(adapter.getItem(position).getFriendId(), 0);
                                 favoriteFriendAdapter.removeItem(adapter.getItem(position));
                                 favoriteFriendAdapter.notifyDataSetChanged();
+                                ListUtils.setDynamicHeight(favorite_listview);//改變ListView的Height
                             }
                         }else{
                             Toast.makeText(getActivity(), "無法設定最愛，請確認連線狀態", Toast.LENGTH_SHORT).show();
@@ -480,6 +482,7 @@ public class Friendlist_Fragment extends BaseFragment {
                             adapter.getItem(adapterIndex).setFriendFavorite(0);
                             favoriteFriendAdapter.removePosition(position);
                             favoriteFriendAdapter.notifyDataSetChanged();
+                            ListUtils.setDynamicHeight(favorite_listview);//改變ListView的Height
                             dialog.dismiss();
                         }else{
                             Toast.makeText(getActivity(), "無法設定最愛，請確認連線狀態", Toast.LENGTH_SHORT).show();
@@ -1051,6 +1054,7 @@ public class Friendlist_Fragment extends BaseFragment {
                             }
                             adapter.removePosition(position);
                             adapter.notifyDataSetChanged();
+                            ListUtils.setDynamicHeight(favorite_listview);//改變ListView的Heigh
                             blockade_dialog.dismiss();
                         } else {
                             Toast.makeText(getActivity(), "無法封鎖好友，請確認連線狀態", Toast.LENGTH_SHORT).show();
