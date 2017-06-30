@@ -77,7 +77,6 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
     DisplayImageOptions options;
     UltraViewPagerView ultraViewPager;
 
-    RelativeLayout relativeLayout;
     ImageView collectPreViewImg ;
     TextView backTxt ;
     ImageView deleteCollectImg;
@@ -136,7 +135,8 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        relativeLayout = (RelativeLayout) LayoutInflater.from(container.getContext()).inflate(R.layout.resource_collectpreview_pagerview, null);
+        RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(container.getContext()).inflate(R.layout.resource_collectpreview_pagerview, null);
+        relativeLayout.setTag("relativelayout" + position);
         collectPreViewImg = (ImageView)relativeLayout.findViewById(R.id.collectPreViewImg);
         backTxt = (TextView)relativeLayout.findViewById(R.id.backTxt);
         deleteCollectImg = (ImageView)relativeLayout.findViewById(R.id.deleteCollectImg);
@@ -237,13 +237,13 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
 
                 switch (collectDataArrayList.get(position).getCollectEffect()) {
                     case 0:
-                        bombEffect();
+                        bombEffect(position);
                         break;
                     case 1:
-                        heartEffect();
+                        heartEffect(position);
                         break;
                     case 2:
-                        bubbleEffect();
+                        bubbleEffect(position);
                         break;
                     default:{
                         Toast.makeText(context, "無特效呵呵!", Toast.LENGTH_SHORT).show();
@@ -267,11 +267,11 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
                 yesImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //deleteCollectContentInSqlite(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
-                        //deleteCollectContentInRemoteMySql(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
+                        deleteCollectContentInSqlite(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
+                        deleteCollectContentInRemoteMySql(collectDataArrayList.get(position).getCollectId(), collectDataArrayList.get(position).getCollectContent());
                         collectDataArrayList.remove(position);
                         collectUrlArrayList.remove(position);
-                        uiShowArrayList.remove(position);
+                        //uiShowArrayList.remove(position);
                         deleteDialog.dismiss();
                         if(collectDataArrayList.isEmpty()){
                             ((MainActivity)context).getSupportFragmentManager().popBackStack();
@@ -424,7 +424,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
         }
     }
 
-    private void bombEffect(){
+    private void bombEffect(int position){
         showCollectEffectImg.setImageDrawable(null);
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.bombeffect);
         showCollectEffectImg.setImageResource(R.drawable.animation_list_boom);
@@ -446,14 +446,16 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
         animation.setAnimationListener(new effectListener());
     }
 
-    private void heartEffect(){
+    private void heartEffect(int position){
+        RelativeLayout relativeLayout = (RelativeLayout)ultraViewPager.findViewWithTag("relativelayout" + position);
         for(int i = 0 ; i < 55 ; i++){
             playheart(relativeLayout, screenWidth, screenHeight, i);
         }
     }
 
-    private void bubbleEffect(){
+    private void bubbleEffect(int position){
         final BubbleView bubbleView = new BubbleView(context, screenWidth, screenHeight);
+        final RelativeLayout relativeLayout = (RelativeLayout)ultraViewPager.findViewWithTag("relativelayout" + position);
         relativeLayout.addView(bubbleView);
         CountDownTimer countDownTimer = new CountDownTimer(6*1000, 1000) {
             @Override
@@ -559,7 +561,7 @@ public class CollectPreviewPagerViewAdapter extends PagerAdapter{
         pointF.y = random.nextInt(ScreenHeight)/ scale;
         return pointF;
     }
-
+    
     //愛心特效的動畫listener
     private class HeartAnimatorlistener implements Animator.AnimatorListener {
         RelativeLayout effectMessageRelativeLayout;
