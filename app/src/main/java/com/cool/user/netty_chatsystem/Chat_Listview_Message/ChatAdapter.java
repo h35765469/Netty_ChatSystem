@@ -214,6 +214,7 @@ public class ChatAdapter extends BaseAdapter {
             }else {
                 holder.myChatTxt.setVisibility(View.VISIBLE);
                 holder.myChatTxt.setText(chatMessage.getMessage());
+
             }
 
             if(position == getCount() - 1) {
