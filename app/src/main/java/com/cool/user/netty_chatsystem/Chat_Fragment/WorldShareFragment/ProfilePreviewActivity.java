@@ -2,12 +2,15 @@ package com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cool.user.netty_chatsystem.Chat_MySQL.Config;
+import com.cool.user.netty_chatsystem.MainActivity;
 import com.cool.user.netty_chatsystem.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -24,7 +27,16 @@ public class ProfilePreviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_preview);
         getSupportActionBar().hide();
         ImageView profilePreviewImg = (ImageView)findViewById(R.id.profilePreviewImg);
-        ImageView backImg = (ImageView)findViewById(R.id.backImg);
+        TextView backTxt = (TextView)findViewById(R.id.backTxt);
+        Typeface font = Typeface.createFromAsset(getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
+        backTxt.setTypeface(font);
+        backTxt.setText("\uf060");
+        backTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
         DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -40,7 +52,6 @@ public class ProfilePreviewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String Profile = bundle.getString("profile");
-        System.out.println("profiellength " + Profile.length());
 
         //download the profile----------------------------------
         if(Profile.length() > 0) {
@@ -65,12 +76,6 @@ public class ProfilePreviewActivity extends AppCompatActivity {
             profilePreviewImg.setImageResource(R.drawable.logo_red);
         }
 
-        backImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              finish();
-            }
-        });
 
     }
 }
