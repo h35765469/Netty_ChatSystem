@@ -255,7 +255,7 @@ public class ShareContentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(Client_UserHandler.getConnection() != null) {
-                    collectRandomContentImg.setImageResource(R.drawable.collectbook_gray);
+                    collectRandomContentImg.setImageResource(R.drawable.agenda);
                     addRandomFriendImg.setImageResource(R.drawable.adduser);
                     isCollectClick = true;
                     isFriendClick = true;
