@@ -153,7 +153,9 @@ public class MainFragment extends Fragment {
                 mFragmentList.add(new RootShareContentFragment());
                 mFragmentList.add(new RootFriendFragment());
                 mFragmentList.add(new RootMessageListFragment());
-
+                ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList);
+                fragmentPager.setAdapter(viewPagerAdapter);
+                fragmentPager.setCurrentItem(1);
 
             }else{
                 RootMessageListFragment rootMessageListFragment = new RootMessageListFragment();
@@ -167,12 +169,24 @@ public class MainFragment extends Fragment {
                 mFragmentList.add(new RootShareContentFragment());
                 mFragmentList.add(new RootFriendFragment());
                 mFragmentList.add(rootMessageListFragment);
+                if(bundle.getInt("notificationType") == 0) {
+                    ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList);
+                    fragmentPager.setAdapter(viewPagerAdapter);
+                    fragmentPager.setCurrentItem(3);
+                }else if(bundle.getInt("notificationType") ==1){
+                    ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList);
+                    fragmentPager.setAdapter(viewPagerAdapter);
+                    fragmentPager.setCurrentItem(0);
+                }
             }
         }else {
             mFragmentList.add(new RootProfileFragment());
             mFragmentList.add(new RootShareContentFragment());
             mFragmentList.add(new RootFriendFragment());
             mFragmentList.add(new RootMessageListFragment());
+            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList);
+            fragmentPager.setAdapter(viewPagerAdapter);
+            fragmentPager.setCurrentItem(1);
         }
 
         /*if(bundle != null){
@@ -204,9 +218,6 @@ public class MainFragment extends Fragment {
             fragmentTransaction.commit();
         }*/
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), mFragmentList);
-        fragmentPager.setAdapter(viewPagerAdapter);
-        fragmentPager.setCurrentItem(0);
 
 
 
