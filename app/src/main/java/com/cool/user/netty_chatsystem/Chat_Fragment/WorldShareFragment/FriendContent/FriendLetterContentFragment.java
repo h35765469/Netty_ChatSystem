@@ -33,6 +33,7 @@ import com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment.MyLetterC
 import com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment.MyLetterContentFragment.LetterDBConnector;
 import com.cool.user.netty_chatsystem.Chat_Fragment.WorldShareFragment.ShareContentFragment;
 import com.cool.user.netty_chatsystem.Chat_MySQL.Config;
+import com.cool.user.netty_chatsystem.Chat_MySQL.DBConnector;
 import com.cool.user.netty_chatsystem.Chat_Sharepreference.SharePreferenceManager;
 import com.cool.user.netty_chatsystem.Chat_Sqlite_ChatHistory.MyDBHelper;
 import com.cool.user.netty_chatsystem.Chat_biz.entity.Friend;
@@ -41,6 +42,8 @@ import com.cool.user.netty_chatsystem.Chat_biz.entity.file.ServerFile;
 import com.cool.user.netty_chatsystem.Chat_server.dto.FileDTO;
 import com.cool.user.netty_chatsystem.R;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -119,6 +122,7 @@ public class FriendLetterContentFragment extends Fragment {
                         friendContentPreviewFragment.setArguments(bundle);
                         fragmentTransaction.replace(R.id.shareContentContainer, friendContentPreviewFragment);
                         fragmentTransaction.commit();
+                        deleteFinishReadDataInRemoteMySql(friendLetterContentArrayList.get(position).getContent());
                     }else{
                         Toast.makeText(getActivity(), "無法進入驚喜時刻，請確認網路連線", Toast.LENGTH_SHORT).show();
                     }
@@ -173,6 +177,20 @@ public class FriendLetterContentFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    //閱讀後即將消除
+    private void deleteFinishReadDataInRemoteMySql(String content){
+
+        ArrayList<NameValuePair>params = new ArrayList<>();
+        params.add(new BasicNameValuePair("readerid", loginId));
+        params.add(new BasicNameValuePair("content", content));
+        try{
+            String result = DBConnector.executeQuery("",Config.FRIENDCONTENT_DELETE_URL, params);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private ArrayList<FriendContentData> friendLetterContentFromMySQL(){
