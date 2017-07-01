@@ -47,9 +47,9 @@
         android:gravity="center"
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
-        android:text="WowChat是一款社群軟體\n將為你帶來即消動態(驚喜)\n並且收藏"
+        android:text="WowChat是一款社群軟體\n將為你帶來即消動態(驚喜)\n點一下可更換內容\n有興趣記得收藏"
         android:textColor="#ffffff"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textView"
