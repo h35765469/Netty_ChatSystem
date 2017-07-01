@@ -3,6 +3,7 @@ package com.cool.user.netty_chatsystem.Chat_Fragment.ProfileFragment;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,9 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cool.user.netty_chatsystem.Chat_Fragment.CameraFragment.OpenCameraFragment;
 import com.cool.user.netty_chatsystem.Chat_Sharepreference.SharePreferenceManager;
+import com.cool.user.netty_chatsystem.MainActivity;
 import com.cool.user.netty_chatsystem.R;
 
 import java.io.File;
@@ -35,8 +38,17 @@ public class TakeProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_takeprofile, container, false);
         ImageView profilePreviewImg = (ImageView)rootView.findViewById(R.id.profilePreviewImg);
         ImageView takeProfileImg = (ImageView)rootView.findViewById(R.id.takeProfileImg);
-        ImageView backImg = (ImageView)rootView.findViewById(R.id.backImg);
+        TextView backTxt = (TextView)rootView.findViewById(R.id.backTxt);
 
+        Typeface font = Typeface.createFromAsset(getActivity().getAssets(),"fonts/fontawesome-webfont.ttf");//設定back的按紐
+        backTxt.setTypeface(font);
+        backTxt.setText("\uf060");
+        backTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
 
         SharePreferenceManager sharePreferenceManager = new SharePreferenceManager(getActivity());
         if(sharePreferenceManager.getProfileName().length() > 0){
@@ -63,15 +75,6 @@ public class TakeProfileFragment extends Fragment {
                 openCameraFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.profileContainer, openCameraFragment);
                 fragmentTransaction.commit();
-            }
-        });
-
-        backImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0){
-                    getActivity().getSupportFragmentManager().popBackStack();
-                }
             }
         });
 
