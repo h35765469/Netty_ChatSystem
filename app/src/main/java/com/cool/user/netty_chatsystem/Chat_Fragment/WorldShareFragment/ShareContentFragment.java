@@ -96,7 +96,7 @@ import java.util.Random;
  * Created by user on 2016/11/1.
  */
 public class ShareContentFragment extends Fragment {
-    private ImageView downLoadedImg, addRandomFriendImg, collectRandomContentImg, randomProfileImg, reLoadContentImg, randomEffectImg, launchEffectImg, thinkImg;
+    private ImageView downLoadedImg, addRandomFriendImg, collectRandomContentImg, randomProfileImg, randomEffectImg, launchEffectImg, thinkImg;
     private TextView randomNameTxt, firstContentText;
     private RelativeLayout shareContentRelativeLayout;
     private LinearLayout iconBar;
@@ -128,8 +128,7 @@ public class ShareContentFragment extends Fragment {
         collectRandomContentImg = (ImageView)rootView.findViewById(R.id.collectRandomContentImg);
         randomProfileImg = (ImageView)rootView.findViewById(R.id.randomProfileImg);
         downLoadedImg = (ImageView)rootView.findViewById(R.id.downLoadedImg);
-        randomNameTxt = (TextView)rootView.findViewById(R.id.randomNameText);
-        reLoadContentImg = (ImageView)rootView.findViewById(R.id.reLoadContentImg);
+        randomNameTxt = (TextView)rootView.findViewById(R.id.friendNameTxt);
         randomEffectImg = (ImageView)rootView.findViewById(R.id.randEffectImg);
         firstContentText = (TextView)rootView.findViewById(R.id.firstContentText);
         launchEffectImg = (ImageView)rootView.findViewById(R.id.launchEffectImg);
@@ -255,62 +254,6 @@ public class ShareContentFragment extends Fragment {
         downLoadedImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showHideUI();
-            }
-        });
-
-        firstContentText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.shareContentContainer, new FriendLetterContentFragment());
-                fragmentTransaction.commit();
-            }
-        });
-
-
-        addRandomFriendImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Client_UserHandler.getConnection() != null) {
-                    if(isFriendClick) {
-                        requestFriend(randomData.getRandomId());
-                        saveNewFriend(randomData.getRandomId(), randomData.getRandomUserName(), randomData.randomNickName, randomData.getRandomProfile());
-                        addRandomFriendImg.setImageResource(R.drawable.logo);
-                        isFriendClick = false;
-                    }else{
-                        Toast.makeText(getActivity(), "已是 好友", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Toast.makeText(getActivity(), "無法送出好友邀請，請確認連線狀態", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        collectRandomContentImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Client_UserHandler.getConnection() !=null) {
-                    if(isCollectClick) {
-                        saveCollectRandomContentToRemoteServe(randomData.getRandomId(), randomData.getRandomContent());//儲存收集資料到server
-                        sendCollectNotification(randomData.getRandomId());
-                        saveCollectRandomContentInSqlite(randomData.getRandomId(), randomData.getRandomContent());
-                        collectRandomContentImg.setImageResource(R.drawable.collectbook_color);
-                        isCollectClick = false;
-                    }else{
-                        Toast.makeText(getActivity(), "你已收藏過此內容", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Toast.makeText(getActivity(), "無法收藏，請確認連線狀態", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        //重新載圖
-        reLoadContentImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 if(Client_UserHandler.getConnection() != null) {
                     collectRandomContentImg.setImageResource(R.drawable.collectbook_gray);
                     addRandomFriendImg.setImageResource(R.drawable.adduser);
@@ -378,12 +321,60 @@ public class ShareContentFragment extends Fragment {
             }
         });
 
+        firstContentText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.shareContentContainer, new FriendLetterContentFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
+
+        addRandomFriendImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Client_UserHandler.getConnection() != null) {
+                    if(isFriendClick) {
+                        requestFriend(randomData.getRandomId());
+                        saveNewFriend(randomData.getRandomId(), randomData.getRandomUserName(), randomData.randomNickName, randomData.getRandomProfile());
+                        addRandomFriendImg.setImageResource(R.drawable.logo);
+                        isFriendClick = false;
+                    }else{
+                        Toast.makeText(getActivity(), "已是 好友", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "無法送出好友邀請，請確認連線狀態", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        collectRandomContentImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Client_UserHandler.getConnection() !=null) {
+                    if(isCollectClick) {
+                        saveCollectRandomContentToRemoteServe(randomData.getRandomId(), randomData.getRandomContent());//儲存收集資料到server
+                        sendCollectNotification(randomData.getRandomId());
+                        saveCollectRandomContentInSqlite(randomData.getRandomId(), randomData.getRandomContent());
+                        collectRandomContentImg.setImageResource(R.drawable.agenda_color);
+                        isCollectClick = false;
+                    }else{
+                        Toast.makeText(getActivity(), "你已收藏過此內容", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "無法收藏，請確認連線狀態", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         launchEffectImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(Client_UserHandler.getConnection() != null){
                     launchEffectImg.setEnabled(false);
-                    reLoadContentImg.setEnabled(false);
+                    downLoadedImg.setEnabled(false);
 
                     if(randomData.getRandomId() != null){
                         switch(randomData.getRandomEffect()){
@@ -396,7 +387,7 @@ public class ShareContentFragment extends Fragment {
                             default:
                                 Toast.makeText(getActivity(), "無特效呵呵!", Toast.LENGTH_SHORT).show();
                                 launchEffectImg.setEnabled(true);
-                                reLoadContentImg.setEnabled(true);
+                                downLoadedImg.setEnabled(true);
                                 break;
                         }
                     }
@@ -1032,7 +1023,7 @@ public class ShareContentFragment extends Fragment {
     private void  differentiateFriendCondition(String loginId, ArrayList<String>friendArrayList, ArrayList<CollectData>collectDataArrayList, RandomData randomData){
         if(randomData.getRandomId().equals(loginId)) {
             addRandomFriendImg.setImageResource(R.drawable.logo);
-            collectRandomContentImg.setImageResource(R.drawable.collectbook_color);
+            collectRandomContentImg.setImageResource(R.drawable.agenda_color);
             isCollectClick = false;
             isFriendClick = false;
         }else {
@@ -1044,7 +1035,7 @@ public class ShareContentFragment extends Fragment {
             for (int i = 0; i < collectDataArrayList.size(); i++) {
                 if (collectDataArrayList.get(i).getCollectId().equals(randomData.getRandomId())) {
                     if (collectDataArrayList.get(i).getCollectContent().equals(randomData.getRandomContent())) {
-                        collectRandomContentImg.setImageResource(R.drawable.collectbook_color);
+                        collectRandomContentImg.setImageResource(R.drawable.agenda_color);
                         isCollectClick = false;
                     }
                 }
@@ -1095,7 +1086,7 @@ public class ShareContentFragment extends Fragment {
             @Override
             public void onFinish() {
                 shareContentRelativeLayout.removeView(bubbleView);
-                reLoadContentImg.setEnabled(true);
+                downLoadedImg.setEnabled(true);
                 launchEffectImg.setEnabled(true);
             }
         };
@@ -1117,7 +1108,7 @@ public class ShareContentFragment extends Fragment {
         @Override
         public void onAnimationEnd(Animation arg0) {
             // TODO Auto-generated method stub
-            reLoadContentImg.setEnabled(true);
+            downLoadedImg.setEnabled(true);
             launchEffectImg.setEnabled(true);
         }
 
@@ -1207,7 +1198,7 @@ public class ShareContentFragment extends Fragment {
         public void onAnimationEnd(Animator animation) {
             effectMessageRelativeLayout.removeView((target));
             if(count == 54){
-                reLoadContentImg.setEnabled(true);
+                downLoadedImg.setEnabled(true);
                 launchEffectImg.setEnabled(true);
             }
         }
