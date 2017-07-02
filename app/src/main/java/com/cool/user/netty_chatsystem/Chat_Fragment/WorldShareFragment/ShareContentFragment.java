@@ -337,10 +337,14 @@ public class ShareContentFragment extends Fragment {
             public void onClick(View v) {
                 if (Client_UserHandler.getConnection() != null) {
                     if(isFriendClick) {
-                        requestFriend(randomData.getRandomId());
-                        saveNewFriend(randomData.getRandomId(), randomData.getRandomUserName(), randomData.randomNickName, randomData.getRandomProfile());
-                        addRandomFriendImg.setImageResource(R.drawable.logo);
-                        isFriendClick = false;
+                        if(randomData!=null) {
+                            requestFriend(randomData.getRandomId());
+                            saveNewFriend(randomData.getRandomId(), randomData.getRandomUserName(), randomData.randomNickName, randomData.getRandomProfile());
+                            addRandomFriendImg.setImageResource(R.drawable.logo);
+                            isFriendClick = false;
+                        }else{
+                            Toast.makeText(getActivity(), "無資料，點擊圖片更新資料", Toast.LENGTH_SHORT).show();
+                        }
                     }else{
                         Toast.makeText(getActivity(), "已是 好友", Toast.LENGTH_SHORT).show();
                     }
@@ -355,11 +359,15 @@ public class ShareContentFragment extends Fragment {
             public void onClick(View v) {
                 if(Client_UserHandler.getConnection() !=null) {
                     if(isCollectClick) {
-                        saveCollectRandomContentToRemoteServe(randomData.getRandomId(), randomData.getRandomContent());//儲存收集資料到server
-                        sendCollectNotification(randomData.getRandomId());
-                        saveCollectRandomContentInSqlite(randomData.getRandomId(), randomData.getRandomContent());
-                        collectRandomContentImg.setImageResource(R.drawable.agenda_color);
-                        isCollectClick = false;
+                        if(randomData!=null) {
+                            saveCollectRandomContentToRemoteServe(randomData.getRandomId(), randomData.getRandomContent());//儲存收集資料到server
+                            sendCollectNotification(randomData.getRandomId());
+                            saveCollectRandomContentInSqlite(randomData.getRandomId(), randomData.getRandomContent());
+                            collectRandomContentImg.setImageResource(R.drawable.agenda_color);
+                            isCollectClick = false;
+                        }else{
+                            Toast.makeText(getActivity(), "無資料，點擊圖片更新資料", Toast.LENGTH_SHORT).show();
+                        }
                     }else{
                         Toast.makeText(getActivity(), "你已收藏過此內容", Toast.LENGTH_SHORT).show();
                     }
@@ -373,23 +381,30 @@ public class ShareContentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(Client_UserHandler.getConnection() != null){
-                    launchEffectImg.setEnabled(false);
-                    downLoadedImg.setEnabled(false);
+                    if(randomData!= null) {
+                        launchEffectImg.setEnabled(false);
+                        downLoadedImg.setEnabled(false);
 
-                    if(randomData.getRandomId() != null){
-                        switch(randomData.getRandomEffect()){
-                            case "0" : bombEffect();
-                                break;
-                            case "1" : heartEffect();
-                                break;
-                            case "2" : bubbleEffect();
-                                break;
-                            default:
-                                Toast.makeText(getActivity(), "無特效呵呵!", Toast.LENGTH_SHORT).show();
-                                launchEffectImg.setEnabled(true);
-                                downLoadedImg.setEnabled(true);
-                                break;
+                        if (randomData.getRandomId() != null) {
+                            switch (randomData.getRandomEffect()) {
+                                case "0":
+                                    bombEffect();
+                                    break;
+                                case "1":
+                                    heartEffect();
+                                    break;
+                                case "2":
+                                    bubbleEffect();
+                                    break;
+                                default:
+                                    Toast.makeText(getActivity(), "無特效呵呵!", Toast.LENGTH_SHORT).show();
+                                    launchEffectImg.setEnabled(true);
+                                    downLoadedImg.setEnabled(true);
+                                    break;
+                            }
                         }
+                    }else{
+                        Toast.makeText(getActivity(), "無資料，點擊圖片更新資料", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(getActivity(), "無法觀看特效，請確認連線狀態", Toast.LENGTH_SHORT).show();
@@ -401,18 +416,22 @@ public class ShareContentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(Client_UserHandler.getConnection() != null) {
-                    final Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
-                    dialog.setContentView(R.layout.resource_think_dialog);
-                    TextView thinkText = (TextView) dialog.findViewById(R.id.thinkText);
-                    if (randomData.getRandomThink().length() > 0 && randomData != null) {
-                        thinkText.setText(randomData.getRandomThink());
-                    }
+                    if(randomData!=null) {
+                        final Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
+                        dialog.setContentView(R.layout.resource_think_dialog);
+                        TextView thinkText = (TextView) dialog.findViewById(R.id.thinkText);
+                        if (randomData.getRandomThink().length() > 0 && randomData != null) {
+                            thinkText.setText(randomData.getRandomThink());
+                        }
 
-                    // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
-                    WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-                    lp.dimAmount = 0.5f;
-                    dialog.getWindow().setAttributes(lp);
-                    dialog.show();
+                        // 由程式設定 Dialog 視窗外的明暗程度, 亮度從 0f 到 1f
+                        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+                        lp.dimAmount = 0.5f;
+                        dialog.getWindow().setAttributes(lp);
+                        dialog.show();
+                    }else{
+                        Toast.makeText(getActivity(), "無資料，點擊圖片更新資料", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(getActivity(), "無法觀看心情，請確認連線狀態", Toast.LENGTH_SHORT).show();
                 }
@@ -424,12 +443,16 @@ public class ShareContentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(Client_UserHandler.getConnection() != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("profile", randomData.getRandomProfile());
-                    Intent intent = new Intent();
-                    intent.putExtras(bundle);
-                    intent.setClass(getActivity(), ProfilePreviewActivity.class);
-                    startActivity(intent);
+                    if(randomData!=null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("profile", randomData.getRandomProfile());
+                        Intent intent = new Intent();
+                        intent.putExtras(bundle);
+                        intent.setClass(getActivity(), ProfilePreviewActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getActivity(), "無資料，點擊圖片更新資料", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(getActivity(), "無法觀看大頭貼，請確認連線狀態 ", Toast.LENGTH_SHORT).show();
                 }
