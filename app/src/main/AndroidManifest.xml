@@ -85,12 +85,6 @@
             android:name="com.cool.user.netty_chatsystem.Register_Activity"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name="com.cool.user.netty_chatsystem.ChangePassword_Activity"
-            android:theme="@style/FriendlistBarTheme"></activity>
-        <activity
-            android:name="com.cool.user.netty_chatsystem.DrawBoard_Activity"
-            android:theme="@style/FriendlistBarTheme"></activity>
-        <activity
             android:name="com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.MultiImageSelectorActivity"
             android:theme="@style/FriendlistBarTheme"></activity>
 
@@ -114,9 +108,6 @@
             android:authorities="com.facebook.app.FacebookContentProvider1901536723418390"
             android:exported="true"></provider>
 
-        <activity
-            android:name="com.cool.user.netty_chatsystem.EffectShowActivity"
-            android:theme="@style/FriendlistBarTheme"></activity>
         <activity
             android:name="com.cool.user.netty_chatsystem.Chat_Fragment.WhiteBoardFragment.Camera.FaceTrackerActivity"
             android:theme="@style/FriendlistBarTheme"></activity>
