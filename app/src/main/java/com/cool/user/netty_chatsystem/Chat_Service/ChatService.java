@@ -960,11 +960,11 @@ public class ChatService extends Service {
 
     public void alarmManagerToKeepServiceAlive(){
         Intent intent = new Intent(this, ChatRestartServiceBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 10, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 6 * AlarmManager.INTERVAL_HOUR, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 4 * AlarmManager.INTERVAL_HOUR, pendingIntent);
         System.out.println("ChatService alarmServiceAlive");
     }
 
